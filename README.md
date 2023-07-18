@@ -61,3 +61,6 @@
 ## 프로젝트 상세 설명
 
 // 개발 환경, 기술 스택, 시스템 구성도, ERD, 기능 상세 설명 등
+
+- 기능 명세서
+  URL: https://docs.google.com/spreadsheets/d/1O32YplAubbfuTQXYcalk0eOGPgbrJcIjubget0UKy50/edit?usp=sharing
