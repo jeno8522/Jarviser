@@ -64,3 +64,6 @@
 
 - 기능 명세서
   URL: https://docs.google.com/spreadsheets/d/1O32YplAubbfuTQXYcalk0eOGPgbrJcIjubget0UKy50/edit?usp=sharing
+
+- API 명세서
+  URL: https://www.notion.so/a506/API-a23e6ca4f19c4bd880c5966a769efe3d
