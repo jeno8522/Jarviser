@@ -67,3 +67,6 @@
 
 - API 명세서
   URL: https://www.notion.so/a506/API-a23e6ca4f19c4bd880c5966a769efe3d
+
+- ERD
+  URL: https://www.erdcloud.com/d/jk5stnWAuo7hQXrn6
