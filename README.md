@@ -72,3 +72,6 @@
 
 - ERD
   URL: https://www.erdcloud.com/d/jk5stnWAuo7hQXrn6
+
+- 와이어 프레임
+  URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=0-1&mode=design&t=X5OFxk8g24IGmGBP-0
