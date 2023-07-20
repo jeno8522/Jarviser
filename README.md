@@ -75,3 +75,6 @@
 
 - 와이어 프레임
   URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=0-1&mode=design&t=X5OFxk8g24IGmGBP-0
+
+- 프로토타입 
+  URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=24-4850&mode=design&t=K0HhTdpJApg9diFP-0
