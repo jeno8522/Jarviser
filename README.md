@@ -80,4 +80,4 @@
   URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=24-4850&mode=design&t=K0HhTdpJApg9diFP-0
 
 - 브랜치전략 
-  URL: https://lavish-breath-9c9.notion.site/584ad0956ccf4028aa3c234c6bbf0bb4?pvs=4
+  https://lavish-breath-9c9.notion.site/Git-9cb259e652ef4316ad8e3e8486f37b5c?pvs=4
