@@ -5,14 +5,16 @@ import Register from "./pages/Register";
 function App() {
   return (
     <>
-    <div><h1>JARVISER HEADER</h1></div>
-   <Router>
-      <Routes>
-        <Route path ="/login" element={<Login />} />
-        <Route path ="/register" element={<Register />} />
-      </Routes>
-     </Router>
-     </>
+      <div>
+        <h1>JARVISER HEADER</h1>
+      </div>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
