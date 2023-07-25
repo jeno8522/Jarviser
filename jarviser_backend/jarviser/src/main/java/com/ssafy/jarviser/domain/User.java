@@ -1,18 +1,18 @@
 package com.ssafy.jarviser.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private long id;
 
     private String userId;
 
@@ -22,19 +22,12 @@ public class User {
 
     private String email;
 
-    private String provider;
-
-    private String providedId;
-
     @Builder
-    public User(int id, String userId, String password, String name, String email
-            ,String provider, String providedId) {
+    public User(long id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.provider = provider;
-        this.providedId = providedId;
     }
 }
