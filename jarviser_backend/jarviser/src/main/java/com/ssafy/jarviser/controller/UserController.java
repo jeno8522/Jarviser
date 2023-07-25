@@ -34,6 +34,7 @@ public class UserController {
             resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
+            //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
             log.error("회원가입 실패 : {}", e);
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
