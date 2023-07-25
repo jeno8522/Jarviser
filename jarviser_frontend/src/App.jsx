@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Header from "./molecules/Header";
 
 function App() {
   return (
     <>
-    <div><h1>JARVISER HEADER</h1></div>
+    <div><Header>g  </Header></div>
    <Router>
       <Routes>
         <Route path ="/login" element={<Login />} />
