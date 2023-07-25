@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +28,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="jarviser" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -36,13 +44,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature/setting_modify" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,6 +74,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/SSAFY/IdeaProjects/S09P12A506",
     "node.js.detected.package.eslint": "true",
@@ -73,9 +86,21 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "spring.configuration.checksum": "480e78269d6edbbb8d9f1c94c120a380",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ssafy.jarviser.repository" />
+      <recent name="com.ssafy.jarviser.service" />
+    </key>
+  </component>
   <component name="RunManager" selected="Spring Boot.JarviserApplication">
     <configuration name="JarviserApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jarviser.test" />
@@ -129,11 +154,70 @@
       <workItem from="1689826693596" duration="587000" />
       <workItem from="1689920776902" duration="1104000" />
       <workItem from="1689923709241" duration="1594000" />
-      <workItem from="1690176083203" duration="6173000" />
+      <workItem from="1690176083203" duration="9027000" />
+      <workItem from="1690244037450" duration="14105000" />
     </task>
+    <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
+      <option name="closed" value="true" />
+      <created>1690183092751</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1690183092751</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="e9983385-02df-4f60-90f3-fe2983f569b6" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/feature/setting_modify" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="e9983385-02df-4f60-90f3-fe2983f569b6">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/feature/setting_modify" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
   </component>
 </project>
