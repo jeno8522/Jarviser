@@ -28,7 +28,7 @@ public class User {
 
     @Builder
     public User(int id, String userId, String password, String name, String email
-            ,String provider, String providedId) {
+            , String provider, String providedId) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -37,4 +37,5 @@ public class User {
         this.provider = provider;
         this.providedId = providedId;
     }
+
 }

@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SwaggerConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +38,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -54,7 +49,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/setting_modify" />
+        <entry key="$PROJECT_DIR$" value="feature/login" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -76,6 +71,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
     "last_opened_file_path": "C:/Users/SSAFY/IdeaProjects/S09P12A506",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -85,7 +83,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "settings.editor.selected.configurable": "reactor",
     "spring.configuration.checksum": "480e78269d6edbbb8d9f1c94c120a380",
     "vue.rearranger.settings.migration": "true"
   },
@@ -95,13 +93,37 @@
     ]
   }
 }]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.ssafy.jarviser.repository" />
       <recent name="com.ssafy.jarviser.service" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ssafy.jarviser.security" />
+    </key>
   </component>
   <component name="RunManager" selected="Spring Boot.JarviserApplication">
+    <configuration name="JWTTokenProviderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jarviser.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ssafy.jarviser.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ssafy.jarviser.security" />
+      <option name="MAIN_CLASS_NAME" value="com.ssafy.jarviser.security.JWTTokenProviderTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="JarviserApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jarviser.test" />
       <extension name="coverage">
@@ -139,6 +161,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JWTTokenProviderTest" />
         <item itemvalue="JUnit.JarviserApplicationTests" />
       </list>
     </recent_temporary>
@@ -155,7 +178,8 @@
       <workItem from="1689920776902" duration="1104000" />
       <workItem from="1689923709241" duration="1594000" />
       <workItem from="1690176083203" duration="9027000" />
-      <workItem from="1690244037450" duration="14105000" />
+      <workItem from="1690244037450" duration="19484000" />
+      <workItem from="1690329716528" duration="5865000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
@@ -165,7 +189,31 @@
       <option name="project" value="LOCAL" />
       <updated>1690183092751</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: 스프링 security를 이용해 애플리케이션 전체 권한 설정">
+      <option name="closed" value="true" />
+      <created>1690331723033</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690331723033</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: JWT 토큰 provider 구현">
+      <option name="closed" value="true" />
+      <created>1690335255003</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1690335255003</updated>
+    </task>
+    <task id="LOCAL-00004" summary="test: JWT 토큰 발급 및 만료 테스트 코드 작성">
+      <option name="closed" value="true" />
+      <created>1690336201114</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690336201114</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +266,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
+    <MESSAGE value="feat: 스프링 security를 이용해 애플리케이션 전체 권한 설정" />
+    <MESSAGE value="feat: JWT 토큰 provider 구현" />
+    <MESSAGE value="test: JWT 토큰 발급 및 만료 테스트 코드 작성" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: JWT 토큰 발급 및 만료 테스트 코드 작성" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
