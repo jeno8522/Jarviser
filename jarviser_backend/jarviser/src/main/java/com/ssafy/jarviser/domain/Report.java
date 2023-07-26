@@ -15,6 +15,7 @@ public class Report {
     @Column(name = "summary")
     private String summary;
 
-    @OneToOne(mappedBy = "report")
+    @OneToOne
+    @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
 }

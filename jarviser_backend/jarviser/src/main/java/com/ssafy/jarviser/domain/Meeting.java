@@ -25,20 +25,18 @@ public class Meeting {
     @Column(name = "meeting_url")
     private String meetingUrl;
 
-    @Column(name = "meeting_status")
-    @Enumerated(EnumType.STRING)
-    private MeetingStatus meetingStatus; //미팅상태 [NOW,RES]
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
 
-    @OneToOne
-    @JoinColumn(name = "report_id")
+    @OneToMany(mappedBy = "meeting")
+    private List<AudioMessage> audioMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "meeting")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    @OneToOne(mappedBy = "meeting")
     private Report report;
 
     @OneToMany(mappedBy = "meeting")
-    List<Participant> participants = new ArrayList<>();
-
-    @OneToMany(mappedBy = "meeting")
-    List<ChatMessage> chatMessages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "meeting")
-    List<AudioMessage> audioMessages = new ArrayList<>();
+    private List<Participant> participants = new ArrayList<>();
 }

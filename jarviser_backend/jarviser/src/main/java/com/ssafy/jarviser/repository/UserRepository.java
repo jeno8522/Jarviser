@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findById(long id);
-    User findByUserId(String userId);
+    User findByUid(String uId);
 }

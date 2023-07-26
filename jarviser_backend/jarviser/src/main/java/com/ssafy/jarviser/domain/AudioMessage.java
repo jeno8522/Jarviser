@@ -24,7 +24,7 @@ public class AudioMessage {
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "meeting_id")
+    @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
 
 }

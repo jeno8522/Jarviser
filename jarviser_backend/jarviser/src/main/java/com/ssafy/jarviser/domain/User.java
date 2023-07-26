@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -14,7 +17,7 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    private String userId;
+    private String uid;
 
     private String password;
 
@@ -22,10 +25,13 @@ public class User {
 
     private String email;
 
+    @OneToMany(mappedBy = "user")
+    private List<Participant> participants = new ArrayList<>();
+
     @Builder
-    public User(long id, String userId, String password, String name, String email) {
+    public User(long id, String uid, String password, String name, String email) {
         this.id = id;
-        this.userId = userId;
+        this.uid = uid;
         this.password = password;
         this.name = name;
         this.email = email;
