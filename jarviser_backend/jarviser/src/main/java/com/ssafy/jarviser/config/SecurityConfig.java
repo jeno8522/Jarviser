@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,14 +25,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/signup", "/signin"};	// sign-up, sign-in 추가
+    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "*/signup", "*/signin"};	// sign-up, sign-in 추가
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf()
+                .disable()
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers(allowedUrls).permitAll()	// 허용할 url 목록을 배열로 분리했다
-                                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                //.requestMatchers(PathRequest.toH2Console()).permitAll() 추후 H2사용할 때
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
