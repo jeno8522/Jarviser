@@ -2,7 +2,6 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.RequestUserDto;
 import com.ssafy.jarviser.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,8 @@ public class UserController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<>(resultMap, status);
     }
+
+
 }

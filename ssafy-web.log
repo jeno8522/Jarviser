@@ -523,3 +523,13 @@ java.lang.NullPointerException: Cannot invoke "com.ssafy.jarviser.service.UserSe
 2023-07-25T14:34:57.021+09:00 DEBUG 9712 --- [http-nio-8081-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
 2023-07-25T14:34:57.022+09:00 DEBUG 9712 --- [http-nio-8081-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=success}]
 2023-07-25T14:34:57.022+09:00 DEBUG 9712 --- [http-nio-8081-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 202 ACCEPTED
+2023-07-25T14:35:47.868+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/user/signup", parameters={}
+2023-07-25T14:35:47.869+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-25T14:35:47.870+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [RequestUserDto(userId=string, password=string, name=string, email=string, provider=string, providedI (truncated)...]
+2023-07-25T14:35:47.879+09:00  INFO 9712 --- [http-nio-8081-exec-6] c.s.jarviser.service.UserServiceImpl     : DB에 회원 저장 성공
+2023-07-25T14:35:47.880+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2023-07-25T14:35:47.880+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=success}]
+2023-07-25T14:35:47.880+09:00 DEBUG 9712 --- [http-nio-8081-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 202 ACCEPTED
+2023-07-25T17:57:24.704+09:00  INFO 9712 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-07-25T17:57:24.715+09:00  INFO 9712 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-25T17:57:24.717+09:00  INFO 9712 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
