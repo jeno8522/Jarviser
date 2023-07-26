@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SwaggerConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,8 +38,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -108,7 +108,7 @@
       <recent name="com.ssafy.jarviser.security" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.JWTTokenProviderTest">
+  <component name="RunManager" selected="Spring Boot.JarviserApplication">
     <configuration name="JWTTokenProviderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jarviser.test" />
       <extension name="coverage">
@@ -179,7 +179,7 @@
       <workItem from="1689923709241" duration="1594000" />
       <workItem from="1690176083203" duration="9027000" />
       <workItem from="1690244037450" duration="19484000" />
-      <workItem from="1690329716528" duration="5405000" />
+      <workItem from="1690329716528" duration="5865000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
@@ -205,7 +205,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690335255003</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="test: JWT 토큰 발급 및 만료 테스트 코드 작성">
+      <option name="closed" value="true" />
+      <created>1690336201114</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690336201114</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,18 +268,8 @@
     <MESSAGE value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
     <MESSAGE value="feat: 스프링 security를 이용해 애플리케이션 전체 권한 설정" />
     <MESSAGE value="feat: JWT 토큰 provider 구현" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: JWT 토큰 provider 구현" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/jarviser_backend/jarviser/src/test/java/com/ssafy/jarviser/security/JWTTokenProviderTest.java</url>
-          <line>39</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="test: JWT 토큰 발급 및 만료 테스트 코드 작성" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: JWT 토큰 발급 및 만료 테스트 코드 작성" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
