@@ -16,9 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
 @EnableWebSecurity //default security setting을 모두 버리겠다.
+@Configuration
 public class SecurityConfig {
 
-    // authenticationManager를 Bean 등록합니다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
