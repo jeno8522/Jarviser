@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/FirebaseRTC" beforeDir="false" afterPath="$PROJECT_DIR$/test/FirebaseRTC" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "webRTCtest",
     "last_opened_file_path": "C:/Users/SSAFY/IdeaProjects/S09P12A506",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -156,6 +152,7 @@
       <workItem from="1689923709241" duration="1594000" />
       <workItem from="1690176083203" duration="9027000" />
       <workItem from="1690244037450" duration="14105000" />
+      <workItem from="1690349763398" duration="599000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
