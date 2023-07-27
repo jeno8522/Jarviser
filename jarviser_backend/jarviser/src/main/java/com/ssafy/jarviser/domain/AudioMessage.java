@@ -27,4 +27,9 @@ public class AudioMessage {
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
 
+    //양방향 맵핑
+    public void setMeeting(Meeting meeting){
+        this.meeting = meeting;
+        meeting.getAudioMessages().add(this);
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.domain;
 
+import com.ssafy.jarviser.repository.MeetingRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -26,5 +27,11 @@ public class ChatMessage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
+
+    //양방향 맵핑
+    public void setChatMessage(Meeting meeting){
+        this.meeting = meeting;
+        meeting.getChatMessages().add(this);
+    }
 
 }
