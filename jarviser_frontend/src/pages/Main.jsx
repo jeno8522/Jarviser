@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Signup from "./Signup";
-
+import Navigation from "../components/molecules/Navigation"
 function Main() {
   return (
     <>
+    <Navigation/>
         <div>
             <h1>업무를 더욱 가볍게.</h1>
         </div>
