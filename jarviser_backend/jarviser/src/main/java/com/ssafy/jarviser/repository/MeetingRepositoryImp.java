@@ -14,13 +14,13 @@ public class MeetingRepositoryImp implements MeetingRepository{
     private EntityManager em;
 
     @Override
-    public List<Meeting> findMeetingByUserUid(String uid) {
+    public List<Meeting> findMeetingByUserEmail(String email) {
         return em.createQuery(
                         "SELECT m FROM Meeting m " +
                                 "JOIN m.participants p " +
                                 "JOIN p.user u " +
-                                "WHERE u.uid = :uid", Meeting.class)
-                .setParameter("uid", uid)
+                                "WHERE u.email = :email", Meeting.class)
+                .setParameter("email", email)
                 .getResultList();
     }
 }
