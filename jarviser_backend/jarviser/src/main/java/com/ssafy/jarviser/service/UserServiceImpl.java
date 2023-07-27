@@ -39,9 +39,4 @@ public class UserServiceImpl implements UserService {
         log.info("DB에 회원 저장 성공");
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
-    }
 }
