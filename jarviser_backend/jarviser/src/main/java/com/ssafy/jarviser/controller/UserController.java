@@ -1,7 +1,9 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.User;
+import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,23 +17,23 @@ import java.util.Map;
 @RequestMapping("/user")
 @Slf4j
 @CrossOrigin
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) {
-        log.debug("User............................regist user:" + user);
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody RequestUserDto requestUserDto) {
+        log.debug("User............................regist user:" + requestUserDto);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try {
-            userService.regist(user);
+            userService.regist(requestUserDto);
             resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {

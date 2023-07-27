@@ -17,21 +17,19 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    private String uid;
+    private String email;
 
     private String password;
 
     private String name;
 
-    private String email;
 
     @OneToMany(mappedBy = "user")
     private List<Participant> participants = new ArrayList<>();
 
     @Builder
-    public User(long id, String uid, String password, String name, String email) {
+    public User(long id, String password, String name, String email) {
         this.id = id;
-        this.uid = uid;
         this.password = password;
         this.name = name;
         this.email = email;

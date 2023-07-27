@@ -1,6 +1,6 @@
 package com.ssafy.jarviser.service;
 
-import com.ssafy.jarviser.domain.RequestUserDto;
+import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.repository.UserRepository;
 import com.ssafy.jarviser.security.JWTTokenProvider;

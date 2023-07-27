@@ -1,9 +1,7 @@
 package com.ssafy.jarviser.service;
 
-import com.ssafy.jarviser.domain.RequestUserDto;
+import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.domain.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 
 public interface UserService {
