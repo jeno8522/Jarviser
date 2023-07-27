@@ -1,14 +1,15 @@
 package com.ssafy.jarviser.service;
 
+import com.ssafy.jarviser.dto.RequestLoginDto;
 import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.domain.User;
+import com.ssafy.jarviser.dto.ResponseAuthenticationDto;
 import com.ssafy.jarviser.repository.UserRepository;
 import com.ssafy.jarviser.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder encoder;
+    private final AuthenticationManager authenticationManager;
     @Override
     // TODO: 2023-07-25
-    public User login(User user) throws Exception {
-        return null;
+    public ResponseAuthenticationDto login(RequestLoginDto loginDto) throws Exception {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getEmail(),
+                        loginDto.getPassword()
+                )
+        );
+        var user = userRepository.findByEmail(loginDto.getEmail())
+                .orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
+        return ResponseAuthenticationDto.builder()
+                .token(jwtToken)
+                .build();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.User;
+import com.ssafy.jarviser.dto.RequestLoginDto;
 import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,24 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDto requestLoginDto){
+        log.debug("User............................regist user:" + requestLoginDto);
 
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try {
+            resultMap.put("message", SUCCESS);
+            resultMap.put("access-token", userService.login(requestLoginDto).getToken());
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
+            log.error("로그인 실패", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(resultMap, status);
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.dto;
 
+import com.ssafy.jarviser.domain.Role;
 import com.ssafy.jarviser.domain.User;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class RequestUserDto {
                 .email(email)
                 .password(password)
                 .name(name)
+                .role(Role.USER)
                 .build();
     }
 

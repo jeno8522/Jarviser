@@ -22,13 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity //default security setting을 모두 버리겠다.
 @Configuration
 public class SecurityConfig {
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "*/signup", "*/signin"};	// sign-up, sign-in 추가
+    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "*/signup", "*/login"};	// sign-up, sign-in 추가
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     @Bean
@@ -41,10 +35,10 @@ public class SecurityConfig {
                                 //.requestMatchers(PathRequest.toH2Console()).permitAll() 추후 H2사용할 때
                                 .anyRequest().authenticated()
                 )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .permitAll()
-                )
+//                .formLogin(formLogin -> formLogin
+//                        .loginPage("/login")
+//                        .permitAll()
+//                )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

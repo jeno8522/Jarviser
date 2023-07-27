@@ -35,11 +35,12 @@ public class User implements UserDetails {
     private List<Participant> participants = new ArrayList<>();
 
     @Builder
-    public User(long id, String password, String name, String email) {
+    public User(long id, String password, String name, String email, Role role) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.role = role;
     }
 
     @Override

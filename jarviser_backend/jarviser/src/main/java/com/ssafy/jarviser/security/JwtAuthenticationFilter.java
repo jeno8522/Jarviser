@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//Request -> 
             filterChain.doFilter(request, response); //검증되면 다음 필터로 넘거간다.
             return;
         }
-        jwt = authHeader.substring(7); //authHeader에서 Bearer 이후의 실질적 jwt토큰을 뽑아냄.
+        jwt = authHeader.split(" ")[1].trim(); //authHeader에서 Bearer 이후의 실질적 jwt토큰을 뽑아냄.
         userEmail = jwtService.extractUserEmail(jwt);
 
         //SecurityContextHolder로부터 검증받기 위함
