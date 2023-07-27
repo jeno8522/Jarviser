@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Register from "../pages/Register";
+import Signup from "./Signup";
 
 function Main() {
   return (
@@ -23,7 +23,7 @@ function Main() {
             <div>랭킹</div>
         </div>
 
-        <Link to="/Register">
+        <Link to="/Signup">
             <button type="button" id="register_button">가입하러 가기</button>
         </Link>
 

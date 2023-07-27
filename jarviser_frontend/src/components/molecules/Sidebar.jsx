@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Register from "../../pages/Register";
+import Register from "../../pages/Signup";
 import Login from "../../pages/Login";
 import { Link } from "react-router-dom";
 import SidebarItem from "./SidebarItem";

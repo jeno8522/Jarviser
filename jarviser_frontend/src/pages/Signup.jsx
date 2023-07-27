@@ -1,9 +1,12 @@
+ 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
-function Login() {
+function Signup() {
   const onSubmit = async (data) => {
     await new Promise((r) => setTimeout(r, 1000));
+    axios.post("http://localhost:8081/user/signup", data);
     alert(JSON.stringify(data));
   };
   const {
@@ -15,7 +18,7 @@ function Login() {
   return (
     <>
       <div>
-        <h1>로그인</h1>
+        <h1>회원가입</h1>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,11 +60,29 @@ function Login() {
           <small role="alert">{errors.password.message}</small>
         )}
         <br />
+        <label htmlFor="name">이름</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="이름을 입력해주세요."
+          aria-invalid={
+            isSubmitted ? (errors.name ? "true" : "false") : undefined
+          }
+          {...register("name", {
+            required: "이름은 필수 입력입니다.",
+            minLength: {
+              value: 2,
+              message: "2자리 이상 이름을 입력하세요.",
+            },
+          })}
+        />
+        {errors.password && <small role="alert">{errors.name.message}</small>}
+        <br />
         <button type="submit" disabled={isSubmitting}>
-          로그인
+          회원가입
         </button>
       </form>
     </>
   );
 }
-export default Login;
+export default Signup;
