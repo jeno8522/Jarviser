@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-function Register() {
+function Signup() {
   const onSubmit = async (data) => {
     await new Promise((r) => setTimeout(r, 1000));
     axios.post("http://localhost:8081/user/signup/", data);
@@ -84,4 +84,4 @@ function Register() {
     </>
   );
 }
-export default Register;
+export default Signup;
