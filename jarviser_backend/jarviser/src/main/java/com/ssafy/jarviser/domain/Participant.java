@@ -27,4 +27,13 @@ public class Participant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
+
+    //양방향 맵핑
+    public void setParticipant(User user,Meeting meeting){
+        this.user = user;
+        this.meeting = meeting;
+
+        user.getParticipants().add(this);
+        meeting.getParticipants().add(this);
+    }
 }
