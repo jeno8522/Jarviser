@@ -39,4 +39,9 @@ public class Meeting {
 
     @OneToMany(mappedBy = "meeting")
     private List<Participant> participants = new ArrayList<>();
+
+
+    public void setReport(Report report){
+        this.report = report;
+    }
 }
