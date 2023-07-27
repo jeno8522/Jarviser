@@ -6,6 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,6 +20,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {//Request -> filter에서 jwt를 검증하도록
 
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -31,6 +37,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//Request -> 
         }
         jwt = authHeader.substring(7); //authHeader에서 Bearer 이후의 실질적 jwt토큰을 뽑아냄.
         userEmail = jwtService.extractUserEmail(jwt);
+
+        //SecurityContextHolder로부터 검증받기 위함
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            if (jwtService.isTokenValid(jwt, userDetails)){
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+        filterChain.doFilter(request, response);
     }
 
 }
