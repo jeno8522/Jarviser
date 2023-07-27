@@ -3,10 +3,9 @@ package com.ssafy.jarviser.service;
 import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.repository.UserRepository;
-import com.ssafy.jarviser.security.JWTTokenProvider;
+import com.ssafy.jarviser.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final JWTTokenProvider tokenProvider;
+    private final JwtService jwtService;
     private final PasswordEncoder encoder;
     @Override
     // TODO: 2023-07-25

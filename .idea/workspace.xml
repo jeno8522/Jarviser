@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
+    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="refactor: User entity 수정: role 추가, Spring Security에서 제공하는 UserDetails 상속받도록 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/test/java/com/ssafy/jarviser/JarviserApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/test/java/com/ssafy/jarviser/JarviserApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JWTTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JWTTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/test/java/com/ssafy/jarviser/security/JWTTokenProviderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssafy-web.log" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy-web.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,8 +43,8 @@
       <list>
         <option value="Dockerfile" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -102,6 +103,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.ssafy.jarviser.security" />
       <recent name="com.ssafy.jarviser.domain" />
       <recent name="com.ssafy.jarviser.repository" />
       <recent name="com.ssafy.jarviser.service" />
@@ -242,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690418020464</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="refactor: User entity 수정: role 추가, Spring Security에서 제공하는 UserDetails 상속받도록 수정">
+      <option name="closed" value="true" />
+      <created>1690419987864</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1690419987864</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,7 +311,8 @@
     <MESSAGE value="feat: Swagger환경에서 jwt 테스트 할 수 있도록 설정" />
     <MESSAGE value="feat: 비밀번호 security encoding" />
     <MESSAGE value="refactor: User Controller, Service, domain 리팩토링" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: User Controller, Service, domain 리팩토링" />
+    <MESSAGE value="refactor: User entity 수정: role 추가, Spring Security에서 제공하는 UserDetails 상속받도록 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: User entity 수정: role 추가, Spring Security에서 제공하는 UserDetails 상속받도록 수정" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

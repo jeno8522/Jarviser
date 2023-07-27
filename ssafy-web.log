@@ -515,3 +515,82 @@ This generated password is for development use only. Your security configuration
 2023-07-27T09:32:01.426+09:00 DEBUG 19740 --- [http-nio-8081-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
 2023-07-27T09:32:01.427+09:00 DEBUG 19740 --- [http-nio-8081-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=success}]
 2023-07-27T09:32:01.431+09:00 DEBUG 19740 --- [http-nio-8081-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 202 ACCEPTED
+2023-07-27T09:40:53.693+09:00 DEBUG 19740 --- [http-nio-8081-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:40:53.697+09:00 DEBUG 19740 --- [http-nio-8081-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:40:53.699+09:00 DEBUG 19740 --- [http-nio-8081-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:40:53.701+09:00 DEBUG 19740 --- [http-nio-8081-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:40:53.701+09:00 DEBUG 19740 --- [http-nio-8081-exec-7] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:47:38.931+09:00  INFO 19740 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-07-27T09:47:38.939+09:00  INFO 19740 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-07-27T09:47:38.951+09:00  INFO 19740 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-07-27T09:47:48.041+09:00  INFO 11992 --- [restartedMain] com.ssafy.jarviser.JarviserApplication   : Starting JarviserApplication using Java 17.0.7 with PID 11992 (C:\Users\SSAFY\IdeaProjects\S09P12A506\jarviser_backend\jarviser\out\production\classes started by SSAFY in C:\Users\SSAFY\IdeaProjects\S09P12A506)
+2023-07-27T09:47:48.044+09:00  INFO 11992 --- [restartedMain] com.ssafy.jarviser.JarviserApplication   : No active profile set, falling back to 1 default profile: "default"
+2023-07-27T09:47:48.153+09:00  INFO 11992 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-07-27T09:47:48.154+09:00  INFO 11992 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-07-27T09:47:49.821+09:00  INFO 11992 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-27T09:47:50.182+09:00  INFO 11992 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 346 ms. Found 1 JPA repository interfaces.
+2023-07-27T09:47:51.275+09:00  INFO 11992 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2023-07-27T09:47:51.289+09:00  INFO 11992 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-07-27T09:47:51.290+09:00  INFO 11992 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.11]
+2023-07-27T09:47:51.417+09:00  INFO 11992 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-07-27T09:47:51.418+09:00  INFO 11992 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3261 ms
+2023-07-27T09:47:51.678+09:00  INFO 11992 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-07-27T09:47:51.801+09:00  INFO 11992 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.6.Final
+2023-07-27T09:47:51.805+09:00  INFO 11992 --- [restartedMain] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-07-27T09:47:52.089+09:00  INFO 11992 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-07-27T09:47:52.387+09:00  INFO 11992 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-07-27T09:47:52.421+09:00  INFO 11992 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-27T09:47:52.679+09:00  INFO 11992 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@62cdf638
+2023-07-27T09:47:52.684+09:00  INFO 11992 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-27T09:47:52.793+09:00  WARN 11992 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2023-07-27T09:47:53.673+09:00  INFO 11992 --- [restartedMain] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-07-27T09:47:55.103+09:00  INFO 11992 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-07-27T09:47:55.479+09:00  INFO 11992 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-27T09:47:55.955+09:00  WARN 11992 --- [restartedMain] ocalVariableTableParameterNameDiscoverer : Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.ssafy.jarviser.repository.UserRepository
+2023-07-27T09:47:56.310+09:00  WARN 11992 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-07-27T09:47:56.333+09:00  WARN 11992 --- [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f3aca078-cd1f-4a92-ab27-d1e1fc9b7f2a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2023-07-27T09:47:56.629+09:00 DEBUG 11992 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 7 mappings in 'requestMappingHandlerMapping'
+2023-07-27T09:47:57.857+09:00 DEBUG 11992 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2023-07-27T09:47:57.906+09:00  INFO 11992 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@45c9e50c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@65bf8411, org.springframework.security.web.context.SecurityContextHolderFilter@6919da3, org.springframework.security.web.header.HeaderWriterFilter@1468773c, org.springframework.security.web.authentication.logout.LogoutFilter@19620421, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@357efa95, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@62c76705, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4176b944, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2c4c969d, org.springframework.security.web.session.SessionManagementFilter@3675de44, org.springframework.security.web.access.ExceptionTranslationFilter@660e3cbe, org.springframework.security.web.access.intercept.AuthorizationFilter@52cd414a]
+2023-07-27T09:47:58.081+09:00 DEBUG 11992 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-07-27T09:47:58.148+09:00 DEBUG 11992 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-07-27T09:48:02.276+09:00  INFO 11992 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-07-27T09:48:02.346+09:00  INFO 11992 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2023-07-27T09:48:02.359+09:00  INFO 11992 --- [restartedMain] com.ssafy.jarviser.JarviserApplication   : Started JarviserApplication in 15.308 seconds (process running for 17.311)
+2023-07-27T09:48:21.987+09:00  INFO 11992 --- [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-07-27T09:48:21.988+09:00  INFO 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-07-27T09:48:21.988+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2023-07-27T09:48:21.988+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2023-07-27T09:48:21.988+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2023-07-27T09:48:21.991+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@76db18e8
+2023-07-27T09:48:21.992+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@22124045
+2023-07-27T09:48:21.993+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2023-07-27T09:48:21.993+09:00  INFO 11992 --- [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2023-07-27T09:48:22.029+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:48:22.032+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:48:22.032+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:48:22.034+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:48:22.036+09:00 DEBUG 11992 --- [http-nio-8081-exec-1] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped to ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+2023-07-27T09:51:13.412+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.414+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.414+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.415+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.419+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] o.s.web.servlet.DispatcherServlet        : OPTIONS "/user/signup", parameters={}
+2023-07-27T09:51:13.422+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.443+09:00 DEBUG 11992 --- [http-nio-8081-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2023-07-27T09:51:13.451+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.452+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.452+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.452+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.452+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/user/signup", parameters={}
+2023-07-27T09:51:13.453+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.ssafy.jarviser.controller.UserController#signUp(RequestUserDto)
+2023-07-27T09:51:13.569+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [RequestUserDto(password=1234123123, name=skeleton, email=taehyun0121@naver.com, provider=null, provi (truncated)...]
+2023-07-27T09:51:13.858+09:00  INFO 11992 --- [http-nio-8081-exec-4] c.s.jarviser.service.UserServiceImpl     : DB에 회원 저장 성공
+2023-07-27T09:51:13.888+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2023-07-27T09:51:13.890+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=success}]
+2023-07-27T09:51:13.914+09:00 DEBUG 11992 --- [http-nio-8081-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 202 ACCEPTED
