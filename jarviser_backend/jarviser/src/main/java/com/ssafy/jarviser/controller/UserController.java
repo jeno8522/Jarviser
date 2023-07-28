@@ -67,4 +67,12 @@ public class UserController {
 
         return new ResponseEntity<>(resultMap, status);
     }
+
+    @PostMapping("/{uid}")
+    public ResponseEntity<Map<String,Object>> update(@RequestBody User){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        return new ResponseEntity<>(resultMap, status);
+    }
 }
+c
