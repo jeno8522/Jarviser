@@ -4,19 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
+    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="feat: 인증(jwt Authentication), 인가(filter를 거쳐 authorization), 로그인 구현 완료">
+      <change afterPath="$PROJECT_DIR$/audio/녹음.m4a" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/AuthenticationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/AuthenticationConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/dto/RequestUserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/dto/RequestUserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/security/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/jwt.yml" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/jwt.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssafy-web.log" beforeDir="false" afterPath="$PROJECT_DIR$/ssafy-web.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +41,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="JUnit5 Test Class" />
         <option value="Enum" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -61,7 +53,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/validation_check" />
+        <entry key="$PROJECT_DIR$" value="feature/authority" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -118,7 +110,13 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\SSAFY\IdeaProjects\S09P12A506" />
+      <recent name="C:\Users\SSAFY\IdeaProjects\S09P12A506\jarviser_backend\jarviser\audio" />
+      <recent name="C:\Users\SSAFY\IdeaProjects\S09P12A506\jarviser_backend\jarviser\audios" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.ssafy.jarviser.service" />
       <recent name="com.ssafy.jarviser.security" />
     </key>
   </component>
@@ -153,6 +151,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OpenAIServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jarviser.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ssafy.jarviser.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ssafy.jarviser.service" />
+      <option name="MAIN_CLASS_NAME" value="com.ssafy.jarviser.service.OpenAIServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OpenAIServiceTest.testWhisper" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jarviser.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ssafy.jarviser.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ssafy.jarviser.service" />
+      <option name="MAIN_CLASS_NAME" value="com.ssafy.jarviser.service.OpenAIServiceTest" />
+      <option name="METHOD_NAME" value="testWhisper" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="S09P12A506" />
       <method v="2">
@@ -175,6 +204,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.OpenAIServiceTest.testWhisper" />
+        <item itemvalue="JUnit.OpenAIServiceTest" />
         <item itemvalue="JUnit.JWTTokenProviderTest" />
         <item itemvalue="JUnit.JarviserApplicationTests" />
       </list>
@@ -283,7 +314,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690427851404</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="feat: 인증(jwt Authentication), 인가(filter를 거쳐 authorization), 로그인 구현 완료">
+      <option name="closed" value="true" />
+      <created>1690432933067</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1690432933067</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,7 +385,8 @@
     <MESSAGE value="feat: Jwt 생성, 추출 서비스 구현" />
     <MESSAGE value="feat: JwtFilter 구현" />
     <MESSAGE value="feat: Authentication Configuration 구현" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Authentication Configuration 구현" />
+    <MESSAGE value="feat: 인증(jwt Authentication), 인가(filter를 거쳐 authorization), 로그인 구현 완료" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 인증(jwt Authentication), 인가(filter를 거쳐 authorization), 로그인 구현 완료" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
