@@ -9,6 +9,7 @@ import UserMain from "./pages/UserMain";
 import MyPage from "./pages/MyPage";
 import MyCalendar from "./pages/MyCalendar";
 import MyReport from "./pages/MyReport";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
