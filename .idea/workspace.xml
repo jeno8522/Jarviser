@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/java/com/ssafy/jarviser/JarviserApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_backend/jarviser/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test1/sample_test.js" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test1/sample_test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../S09P12A506\exportToHTML" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/jarviser_backend/jarviser">
@@ -54,7 +52,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/setting_modify" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -76,7 +74,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/IdeaProjects/S09P12A506",
+    "last_opened_file_path": "C:/Users/SSAFY/git/master2/S09P12A506",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -156,6 +154,11 @@
       <workItem from="1689923709241" duration="1594000" />
       <workItem from="1690176083203" duration="9027000" />
       <workItem from="1690244037450" duration="14105000" />
+      <workItem from="1690330211380" duration="1260000" />
+      <workItem from="1690361307767" duration="170000" />
+      <workItem from="1690416312543" duration="601000" />
+      <workItem from="1690440054929" duration="2389000" />
+      <workItem from="1690498308283" duration="2233000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
@@ -165,7 +168,39 @@
       <option name="project" value="LOCAL" />
       <updated>1690183092751</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 작성 )">
+      <option name="closed" value="true" />
+      <created>1690271505620</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690271505620</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 수정 및 개선 )">
+      <option name="closed" value="true" />
+      <created>1690361358932</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1690361358932</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 수정 및 개선 )">
+      <option name="closed" value="true" />
+      <created>1690361379965</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690361379965</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )">
+      <option name="closed" value="true" />
+      <created>1690446730289</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1690446730289</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +253,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="setting: application.properties, build.gradle 등 세팅 파일 수정" />
+    <MESSAGE value="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 작성 )" />
+    <MESSAGE value="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 수정 및 개선 )" />
+    <MESSAGE value="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )" />
   </component>
 </project>

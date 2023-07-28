@@ -20,6 +20,8 @@ const recorder = new SpeechRecorder({
   onChunkEnd: () => {
     console.log(Date.now(), "Chunk end");
   },
+  sileroVadSpeakingThreshold: 0.3,
+  sileroVadSilenceThreshold: 0.1,
 });
 
 console.log("Recording for 60 seconds...");
