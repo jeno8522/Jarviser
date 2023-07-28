@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )">
+    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="Feat: 오디오 전처리 개발중 ( node.js 시연 서비스 진행중 )">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test1/sample_test.js" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test1/sample_test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test3/audio_auto.js" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test3/audio_auto.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +158,7 @@
       <workItem from="1690361307767" duration="170000" />
       <workItem from="1690416312543" duration="601000" />
       <workItem from="1690440054929" duration="2389000" />
-      <workItem from="1690498308283" duration="2233000" />
+      <workItem from="1690498308283" duration="3387000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
@@ -200,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690446730289</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Feat: 오디오 전처리 개발중 ( node.js 시연 서비스 진행중 )">
+      <option name="closed" value="true" />
+      <created>1690508159737</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1690508159738</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,6 +264,7 @@
     <MESSAGE value="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 작성 )" />
     <MESSAGE value="Feat: 오디오 전처리 개발중 ( 초기 테스트 코드 수정 및 개선 )" />
     <MESSAGE value="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: 오디오 전처리 개발중 ( 서버와 통신하는 예시 코드 생성 )" />
+    <MESSAGE value="Feat: 오디오 전처리 개발중 ( node.js 시연 서비스 진행중 )" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: 오디오 전처리 개발중 ( node.js 시연 서비스 진행중 )" />
   </component>
 </project>
