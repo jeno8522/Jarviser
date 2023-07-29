@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User userInfo(String userid) throws Exception {
+    public User mypage(String userid) throws Exception {
         return null;
     }
 
@@ -50,6 +50,21 @@ public class UserServiceImpl implements UserService {
         User user = dto.toEntity();
         userRepository.save(user);
         log.info("DB에 회원 저장 성공");
+    }
+
+    @Override
+    public long loggout(String userid) throws Exception {
+        return 0;
+    }
+
+    @Override
+    public void withdrawal(String userid) throws Exception {
+
+    }
+
+    @Override
+    public long update(String userid) throws Exception {
+        return 0;
     }
 
 }
