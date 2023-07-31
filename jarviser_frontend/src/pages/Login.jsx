@@ -1,9 +1,20 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 function Login() {
   const onSubmit = async (data) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    try {
+      await new Promise((r) => setTimeout(r, 1000));
+      const response = await axios.post(
+        "http://localhost:8081/user/login",
+        data
+      );
+      const accessToken = response.data["access-token"];
+      localStorage.setItem("access-token", accessToken);
+    } catch (error) {
+      console.error("로그인 요청 에러:", error);
+    }
     alert(JSON.stringify(data));
   };
   const {
