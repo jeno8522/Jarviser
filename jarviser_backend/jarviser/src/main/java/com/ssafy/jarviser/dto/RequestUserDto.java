@@ -4,11 +4,13 @@ import com.ssafy.jarviser.domain.Role;
 import com.ssafy.jarviser.domain.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
 @Builder
+
 public class RequestUserDto {
 
     private String password;
@@ -38,4 +40,6 @@ public class RequestUserDto {
         this.provider = provider;
         this.providedId = providedId;
     }
+
+
 }
