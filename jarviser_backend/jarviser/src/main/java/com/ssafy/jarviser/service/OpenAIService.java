@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -45,14 +46,14 @@ public class OpenAIService {
                 });
     }
 
-    public Mono<String> chatGPTCall(String filePath){
+    public Mono<String> chatGPTPartSummary(String filePath){
         WebClient webClient = WebClient.create("https://api.openai.com/v1/chat/completions");
         String model = "gpt-3.5-turbo";
 
         // Read the file content
         String fileContent;
         try {
-            fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+            fileContent = Files.readString(Paths.get(filePath));
         } catch (IOException e) {
             throw new RuntimeException("Error reading file", e);
         }
@@ -61,10 +62,10 @@ public class OpenAIService {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", model);
         requestBody.put("messages", Arrays.asList(
-                new HashMap<String, String>() {{ put("role", "user"); put("content", fileContent); }},
-                new HashMap<String, String>() {{ put("role", "system"); put("content", "이거 짧게 한글로 요약해줘"); }}
+                new HashMap<String, String>() {{ put("role", "user"); put("content", fileContent + "이거 짧게 한글로 요약해줘"); }}
         ));
 
+        System.out.println(fileContent);
         return
                 webClient.post()
                         .header("Authorization", "Bearer " + token) // Replace "YOUR_OPENAI_API_KEY" with your actual OpenAI API key.
