@@ -14,6 +14,24 @@ public class MeetingRepositoryImp implements MeetingRepository{
     @PersistenceContext
     private EntityManager em;
 
+
+    @Override
+    public long insertMeeting(Meeting meeting) {
+        em.persist(meeting);
+        return meeting.getId();
+    }
+
+    @Override
+    public Meeting getMeeting(long meetingId) {
+        return em.createQuery(
+                "SELECT m " +
+                        "FROM Meeting m " +
+                        "WHERE m.id = :meetingId "
+        ,Meeting.class)
+                .setParameter("meetingId",meetingId)
+                .getSingleResult();
+    }
+
     @Override
     public Report findMeetingReport(long meetingId) {
         return em.createQuery(

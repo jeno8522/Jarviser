@@ -1,5 +1,7 @@
 package com.ssafy.jarviser;
 
+import com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer;
+import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.RequestLoginDto;
 import com.ssafy.jarviser.dto.RequestUpdateUserDto;
@@ -16,13 +18,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.parameters.P;
 import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SpringBootTest
 class JarviserApplicationTests {
 
-	@Autowired
-	private UserRepository ur;
 	@Autowired
 	private UserService us;
 
@@ -83,16 +84,16 @@ class JarviserApplicationTests {
 		us.update(user.getId(),requestUpdateUserDto);
 
 		//then
-//		Assertions.assertThat(user.getName()).isEqualTo("sexking");
-//		Assertions.assertThat(user.getPassword()).isEqualTo("abcdefg");
+		Assertions.assertThat(user.getName()).isEqualTo("sexking");
+		Assertions.assertThat(user.getPassword()).isEqualTo("abcdefg");
 	}
 
 	@Test
-	@DisplayName("회원 아이디를 기반한 참여 미티목록")
+	@DisplayName("회원 탈퇴")
 	@Transactional
 	@Rollback(value = false)
-	void testMeetingList() throws Exception{
-	    //given
+	void testDeleteUser() throws Exception{
+		//given
 
 		RequestUserDto requestUserDto = new RequestUserDto();
 		requestUserDto.setName("wooseok");
@@ -100,6 +101,40 @@ class JarviserApplicationTests {
 		requestUserDto.setEmail("wooseok777777@gmail.com");
 
 		us.regist(requestUserDto);
+
+		User user = us.getUser(requestUserDto.getEmail());
+		//when
+
+		us.withdrawal(user.getId());
+
+		//then
+
+		User notFoundUser = us.getUser("wooseok777777@gmail.com");
+		Assertions.assertThat(notFoundUser).isEqualTo(null);
+	}
+
+	@Test
+	@DisplayName("회원 아이디를 기반한 참여 미탕목록")
+	@Transactional
+	@Rollback(value = false)
+	void testMeetingListByUserId() throws Exception{
+	    //given
+
+		//유저 등록
+		RequestUserDto requestUserDto = new RequestUserDto();
+		requestUserDto.setName("wooseok");
+		requestUserDto.setPassword("1234");
+		requestUserDto.setEmail("wooseok777777@gmail.com");
+
+		us.regist(requestUserDto);
+
+		//유저가 참여한 미팅 등록
+		Meeting meeting = Meeting.builder()
+				.meetingName("testMeeting")
+				.meetingUrl("www.ssafy.com/sampleurl")
+				.hostId(123L)
+				.startTime(LocalDateTime.now())
+				.build();
 
 
 	    //when

@@ -67,14 +67,13 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Map<String,Object>> update(@PathVariable long id, @RequestBody RequestUpdateUserDto requestUpdateUserDto){
+    @PatchMapping("/{userid}")
+    public ResponseEntity<Map<String,Object>> update(@PathVariable long userid, @RequestBody RequestUpdateUserDto requestUpdateUserDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try{
-            ResponseUpdatedDto responseUpdatedDto = userService.update(id,requestUpdateUserDto);
-            resultMap.put("response",responseUpdatedDto);
+            userService.update(userid,requestUpdateUserDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -82,7 +81,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @GetMapping("{userid}")
+    @GetMapping("/{userid}")
     public ResponseEntity<Map<String,Object>> mypage(@PathVariable("userid") long id){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -90,6 +89,20 @@ public class UserController {
         try{
             ResponseMypageDto responseMypageDto = userService.mypage(id);
             resultMap.put("response",responseMypageDto);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    @DeleteMapping("/{userid}")
+    public ResponseEntity<Map<String,Object>> delete(@PathVariable long userid){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try{
+            userService.withdrawal(userid);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);

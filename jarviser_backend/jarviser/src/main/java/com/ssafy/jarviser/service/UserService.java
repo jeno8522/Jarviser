@@ -14,7 +14,7 @@ public interface UserService {
     //회원탈퇴
     public void withdrawal(Long id) throws Exception;
     //회원정보수정
-    public ResponseUpdatedDto update(long id, RequestUpdateUserDto updateUserDto) throws Exception;
+    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception;
 
     User getUser(String email) throws Exception;
 }
