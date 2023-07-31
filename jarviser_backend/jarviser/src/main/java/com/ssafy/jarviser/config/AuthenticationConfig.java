@@ -26,8 +26,7 @@ public class AuthenticationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+        return userRepository::findByEmail;
     }
 
     //data access object which is responsible to fetch user details and encode password
