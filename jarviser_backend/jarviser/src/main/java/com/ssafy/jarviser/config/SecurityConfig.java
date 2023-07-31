@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers(allowedUrls).permitAll()	// 허용할 url 목록을 배열로 분리했다
+                        requests.requestMatchers("**").permitAll()	// 허용할 url 목록을 배열로 분리했다
                                 //.requestMatchers(PathRequest.toH2Console()).permitAll() 추후 H2사용할 때
                                 .anyRequest().authenticated()
                 )
