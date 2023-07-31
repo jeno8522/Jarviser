@@ -1,10 +1,7 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.User;
-import com.ssafy.jarviser.dto.RequestLoginDto;
-import com.ssafy.jarviser.dto.RequestUpdateUserDto;
-import com.ssafy.jarviser.dto.RequestUserDto;
-import com.ssafy.jarviser.dto.ResponseUpdatedDto;
+import com.ssafy.jarviser.dto.*;
 import com.ssafy.jarviser.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +75,21 @@ public class UserController {
         try{
             ResponseUpdatedDto responseUpdatedDto = userService.update(id,requestUpdateUserDto);
             resultMap.put("response",responseUpdatedDto);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    @GetMapping("{userid}")
+    public ResponseEntity<Map<String,Object>> mypage(@PathVariable("userid") long id){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try{
+            ResponseMypageDto responseMypageDto = userService.mypage(id);
+            resultMap.put("response",responseMypageDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);

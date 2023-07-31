@@ -2,6 +2,7 @@ package com.ssafy.jarviser.repository;
 
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.RequestUpdateUserDto;
+import com.ssafy.jarviser.dto.ResponseMypageDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -14,13 +15,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User findById(long id);
+public interface UserRepository extends JpaRepository<User,Long>{
+    User findByEmail(String email);
 
-    Optional<User> findByEmail(String email); //what is Optional?
-
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("UPDATE User u SET u.password = :password, u.name = :name WHERE u.id = :id")
-    void updateUser(@Param("id") long id, @Param("password") String password, @Param("name") String name);
-
+    void updateUserById(long id,String password,String name);
 }
