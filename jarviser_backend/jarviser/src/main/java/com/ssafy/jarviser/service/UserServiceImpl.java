@@ -1,9 +1,7 @@
 package com.ssafy.jarviser.service;
 
-import com.ssafy.jarviser.dto.RequestLoginDto;
-import com.ssafy.jarviser.dto.RequestUserDto;
+import com.ssafy.jarviser.dto.*;
 import com.ssafy.jarviser.domain.User;
-import com.ssafy.jarviser.dto.ResponseAuthenticationDto;
 import com.ssafy.jarviser.repository.UserRepository;
 import com.ssafy.jarviser.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +10,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User mypage(String userid) throws Exception {
-        return null;
+    public User mypage(long userid) throws Exception {
+        return userRepository.findById(userid);
     }
 
     @Override
@@ -53,18 +53,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long loggout(String userid) throws Exception {
-        return 0;
+    public void withdrawal(long id) throws Exception {
+        userRepository.deleteById((int) id);
     }
+
 
     @Override
-    public void withdrawal(String userid) throws Exception {
+    public ResponseUpdatedDto update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
+        userRepository.updateUser(id,updateUserDto.getPassword(),updateUserDto.getName());
 
+        return null;
     }
-
-    @Override
-    public long update(String userid) throws Exception {
-        return 0;
-    }
-
 }
