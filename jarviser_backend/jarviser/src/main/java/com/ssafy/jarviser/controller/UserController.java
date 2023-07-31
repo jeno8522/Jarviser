@@ -2,7 +2,9 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.RequestLoginDto;
+import com.ssafy.jarviser.dto.RequestUpdateUserDto;
 import com.ssafy.jarviser.dto.RequestUserDto;
+import com.ssafy.jarviser.dto.ResponseUpdatedDto;
 import com.ssafy.jarviser.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +67,21 @@ public class UserController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Map<String,Object>> update(@PathVariable long id, @RequestBody RequestUpdateUserDto requestUpdateUserDto){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try{
+            ResponseUpdatedDto responseUpdatedDto = userService.update(id,requestUpdateUserDto);
+            resultMap.put("response",responseUpdatedDto);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(resultMap, status);
     }
 }

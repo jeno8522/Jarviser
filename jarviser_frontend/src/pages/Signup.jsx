@@ -1,4 +1,3 @@
- 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -76,7 +75,7 @@ function Signup() {
             },
           })}
         />
-        {errors.password && <small role="alert">{errors.name.message}</small>}
+        {errors.name && <small role="alert">{errors.name.message}</small>}
         <br />
         <button type="submit" disabled={isSubmitting}>
           회원가입
@@ -85,4 +84,5 @@ function Signup() {
     </>
   );
 }
+
 export default Signup;
