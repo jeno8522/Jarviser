@@ -52,6 +52,7 @@ public class Meeting {
         this.hostId = hostId;
         this.meetingUrl = meetingUrl;
         this.startTime = startTime;
+        
     }
 
     public void setReport(Report report){
