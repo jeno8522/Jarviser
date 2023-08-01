@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# 웹/모바일(웹 기술) 스켈레톤 프로젝트
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- 필수 항목 -->
 
-## Available Scripts
+## 카테고리
 
-In the project directory, you can run:
+| Application                       | Domain                                | Language                         | Framework                            |
+| --------------------------------- | ------------------------------------- | -------------------------------- | ------------------------------------ |
+| :white_check_mark: Desktop Web    | :black_square_button: AI              | :white_check_mark: JavaScript    | :white_check_mark: Vue.js            |
+| :white_check_mark: Mobile Web     | :black_square_button: Big Data        | :black_square_button: TypeScript | :black_square_button: React          |
+| :white_check_mark: Responsive Web | :black_square_button: Blockchain      | :black_square_button: C/C++      | :black_square_button: Angular        |
+| :black_square_button: Android App | :black_square_button: IoT             | :black_square_button: C#         | :black_square_button: Node.js        |
+| :black_square_button: iOS App     | :black_square_button: AR/VR/Metaverse | :white_check_mark: Python        | :white_check_mark: Flask/Django      |
+| :black_square_button: Desktop App | :black_square_button: Game            | :white_check_mark: Java          | :white_check_mark: Spring/Springboot |
+|                                   |                                       | :black_square_button: Kotlin     |                                      |
 
-### `npm start`
+<!-- 필수 항목 -->
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 프로젝트 소개
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 프로젝트명: 그룹 비디오 컨퍼런스 서비스
+- 서비스 특징: 웹/모바일(웹 기술) 프로젝트를 위한 스켈레톤 프로젝트
+- 주요 기능
+  - 회원 관리
+  - 화상 미팅룸
+  - 그룹 채팅
+- 주요 기술
+  - WebRTC
+  - WebSocket
+  - JWT Authentication
+  - REST API
+- 참조 리소스
+  - Vuetify: 디자인 전반 적용
+  - Vue Argon Design System: 디자인 전반 적용
+  - Vue Black Dashboard Pro(유료): 캘린더 컴포넌트 사용
+  - AR Core: 구글에서 제공하는 AR 지원 라이브러리. 이미지 인식 및 오버레이 영상에 활용
+  - Color Thief: 이미지 색상 추출 라이브러리. 커버 사진 색상 추출 및 배경 변경에 활용
+  - Animation.css: CSS 애니메이션 지원 라이브러리. 메인 페이지 진입 애니메이션에 활용
+- 배포 환경
+  - URL: // 웹 서비스, 랜딩 페이지, 프로젝트 소개 등의 배포 URL 기입
+  - 테스트 계정: // 로그인이 필요한 경우, 사용 가능한 테스트 계정(ID/PW) 기입
 
-### `npm test`
+<!-- 자유 양식 -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 팀 소개
 
-### `npm run build`
+- 나현웅: 팀장, Infra + QA Leader
+- 김태현: 부팀장, Infra + DB Leader
+- 최우석: Back-End Leader
+- 주창훈: PM + Front-End Leader
+- 문홍웅: Front-End Leader
+- 김민우: UX/UI Leader
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 팀 규칙
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. 세부 역할은 기능별 분담을 기본으로 한다.
+2. 업무별 총괄 책임자를 설정하여 프로젝트의 통일성과 통합성을 보장한다.
+3. 회으의 진행은 팀장이 담당한다.
+4. 서기는 매주 돌아가면서 담당한다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<!-- 자유 양식 -->
 
-### `npm run eject`
+## 프로젝트 상세 설명
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+// 개발 환경, 기술 스택, 시스템 구성도, ERD, 기능 상세 설명 등
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- User Story
+  URL: https://docs.google.com/spreadsheets/d/13_HTseXXOg-cjfIF451v9omdUTzKeXCAqw1RpzNfBb0/edit?usp=sharing
+- 기능 명세서
+  URL: https://docs.google.com/spreadsheets/d/1O32YplAubbfuTQXYcalk0eOGPgbrJcIjubget0UKy50/edit?usp=sharing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- API 명세서
+  URL: https://www.notion.so/a506/API-a23e6ca4f19c4bd880c5966a769efe3d
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- ERD
+  URL: https://www.erdcloud.com/d/jk5stnWAuo7hQXrn6
 
-## Learn More
+- 와이어 프레임
+  URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=0-1&mode=design&t=X5OFxk8g24IGmGBP-0
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 프로토타입
+  URL: https://www.figma.com/file/1Bcb6UG4vM44a0lrOWaAzM/Untitled?type=design&node-id=24-4850&mode=design&t=K0HhTdpJApg9diFP-0
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 브랜치전략
+  https://lavish-breath-9c9.notion.site/Git-9cb259e652ef4316ad8e3e8486f37b5c?pvs=4
