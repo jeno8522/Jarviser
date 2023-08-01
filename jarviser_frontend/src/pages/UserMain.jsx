@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { BrowserRouter, Route } from "react-router-dom";
-import Register from "../pages/Register";
+import Signup from "./Signup";
 import Sidebar from "../components/molecules/Sidebar";
 import MyPage from "./MyPage";
 import MyCalendar from "./MyCalendar";
