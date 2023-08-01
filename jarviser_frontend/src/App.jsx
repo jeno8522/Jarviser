@@ -1,15 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/molecules/Header";
+import Footer from "./components/molecules/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Reservation from "./pages/Reservation";
 
+
+
 function App() {
   return (
     <>
-      <div>
-        <h1>JARVISER HEADER</h1>
-      </div>
+      <Header></Header>
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
@@ -18,6 +20,7 @@ function App() {
           <Route path="/reservation" element={<Reservation />} />
         </Routes>
       </Router>
+      <Footer></Footer>
     </>
   );
 }
