@@ -75,7 +75,7 @@ function Signup() {
             },
           })}
         />
-        {errors.password && <small role="alert">{errors.name.message}</small>}
+        {errors.name && <small role="alert">{errors.name.message}</small>}
         <br />
         <button type="submit" disabled={isSubmitting}>
           회원가입
