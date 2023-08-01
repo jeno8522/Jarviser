@@ -12,8 +12,10 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "user")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +34,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Participant> participants = new ArrayList<>();
-
-    @Builder
-    public User(long id, String password, String name, String email, Role role) {
-        this.id = id;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

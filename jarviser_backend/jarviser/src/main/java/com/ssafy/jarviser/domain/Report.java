@@ -1,11 +1,17 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "report")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,13 +1,19 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "participant")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
