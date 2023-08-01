@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Header from "./components/molecules/Header";
 import Footer from "./components/molecules/Footer";
 import Login from "./pages/Login";
@@ -9,8 +9,7 @@ import MyPage from "./pages/MyPage";
 import MyCalendar from "./pages/MyCalendar";
 import MyReport from "./pages/MyReport";
 import Reservation from "./pages/Reservation";
-
-
+import CreateMeeting from "./pages/CreateMeeting";
 
 function App() {
   return (
@@ -26,6 +25,7 @@ function App() {
           <Route path="/mycalendar" element={<MyCalendar />} />
           <Route path="/myreport" element={<MyReport />} />
           <Route path="/reservation" element={<Reservation />} />
+          <Route path="/createmeeting" element={<CreateMeeting />} />
         </Routes>
       </Router>
       <Footer></Footer>
