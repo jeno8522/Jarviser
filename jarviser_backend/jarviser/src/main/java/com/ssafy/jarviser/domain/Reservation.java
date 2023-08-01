@@ -24,6 +24,14 @@ public class Reservation {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "reservated_meeting_id")
     private ReservatedMeeting reservatedMeeting;
+
+    public void setReservation(User user,ReservatedMeeting reservatedMeeting){
+        this.user = user;
+        this.reservatedMeeting = reservatedMeeting;
+
+        user.getReservations().add(this);
+        reservatedMeeting.getReservations().add(this);
+    }
 }

@@ -31,6 +31,16 @@ public class ReservatedMeeting {
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
-    @OneToMany(mappedBy = "meeting")
+    @Column(name = "description")
+    private String description;
+
+    @OneToMany(mappedBy = "reservatedMeeting")
     private List<Reservation> reservations = new ArrayList<>();
+
+    public List<Reservation> getReservations() {
+        if (reservations == null) {
+            reservations = new ArrayList<>();
+        }
+        return reservations;
+    }
 }

@@ -31,13 +31,22 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @OneToMany(mappedBy = "user")
     private List<Participant> participants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public List<Reservation> getReservations() {
+        if (reservations == null) {
+            reservations = new ArrayList<>();
+        }
+        return reservations;
     }
 
     @Override
