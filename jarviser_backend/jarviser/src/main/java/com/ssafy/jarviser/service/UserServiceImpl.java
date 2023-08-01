@@ -61,9 +61,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseUpdatedDto update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
+    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
         userRepository.updateUserById(id,updateUserDto.getPassword(),updateUserDto.getName());
-        return null;
     }
 
     @Override
