@@ -4,6 +4,10 @@ import Footer from "./components/molecules/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Main from "./pages/Main";
+import UserMain from "./pages/UserMain";
+import MyPage from "./pages/MyPage";
+import MyCalendar from "./pages/MyCalendar";
+import MyReport from "./pages/MyReport";
 import Reservation from "./pages/Reservation";
 
 
@@ -17,6 +21,10 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/usermain" element={<UserMain />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mycalendar" element={<MyCalendar />} />
+          <Route path="/myreport" element={<MyReport />} />
           <Route path="/reservation" element={<Reservation />} />
         </Routes>
       </Router>
