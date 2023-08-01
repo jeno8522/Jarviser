@@ -7,7 +7,7 @@ import Navigation from "../components/molecules/Navigation";
 function Main() {
   return (
     <>
-    <Navigation></Navigation>
+      <Navigation />
       <div>
         <h1>업무를 더욱 가볍게.</h1>
       </div>
