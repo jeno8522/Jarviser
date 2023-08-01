@@ -1,12 +1,15 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
+import jakarta.servlet.http.Part;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Getter @Setter
 @Table(name = "participant")
 public class Participant {
     @Id
@@ -28,12 +31,13 @@ public class Participant {
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
 
-    //양방향 맵핑
-    public void setParticipant(User user,Meeting meeting){
-        this.user = user;
-        this.meeting = meeting;
-
-        user.getParticipants().add(this);
-        meeting.getParticipants().add(this);
+    //참여자 미팅 등록
+    public static Participant setParticipant(User user, Meeting meeting){
+        Participant participant = new Participant();
+        participant.setUser(user);
+        participant.setMeeting(meeting);
+        participant.setStartTime(LocalDateTime.now());
+        meeting.getParticipants().add(participant);
+        return participant;
     }
 }

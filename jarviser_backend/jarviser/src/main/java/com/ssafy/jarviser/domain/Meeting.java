@@ -1,7 +1,10 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +12,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@ToString
 @Table(name = "meeting")
 public class Meeting {
     @Id
@@ -40,6 +45,14 @@ public class Meeting {
     @OneToMany(mappedBy = "meeting")
     private List<Participant> participants = new ArrayList<>();
 
+    @Builder
+    public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
+        this.id = id;
+        this.meetingName = meetingName;
+        this.hostId = hostId;
+        this.meetingUrl = meetingUrl;
+        this.startTime = startTime;
+    }
 
     public void setReport(Report report){
         this.report = report;
