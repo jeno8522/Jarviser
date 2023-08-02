@@ -1,12 +1,31 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 function Reservation() {
   const onSubmit = async (data) => {
     data.userEmail = userEmail;
-    await new Promise((r) => setTimeout(r, 1000));
+    const ReservatedRoom = {
+      title: data.title,
+      date: data.date,
+      time: data.time,
+      content: data.content,
+    };
 
-    alert(JSON.stringify(data));
+    const sendData = {
+      reservatedRoom: ReservatedRoom,
+      emails: userEmail,
+    };
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    };
+
+    await new Promise((r) => setTimeout(r, 1000));
+    console.log(headers);
+    console.log(sendData);
+    await axios.post("http://localhost:8081/reservation", sendData, headers);
+
+    alert(JSON.stringify(sendData));
 
     setUserEmail([]);
     reset();
@@ -113,13 +132,9 @@ function Reservation() {
           aria-invalid={
             isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
           }
-          {...register("userEmail", {
-            required: "초대 이메일은 필수 입력입니다.",
-          })}
+          {...register("userEmail", {})}
         />
-        {errors.userEmail && (
-          <small role="alert">{errors.userEmail.message}</small>
-        )}
+
         <button
           type="button" // Add this line to prevent the button from submitting the form
           disabled={isSubmitting}
@@ -138,7 +153,7 @@ function Reservation() {
             </button>
           </div>
         ))}
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting || userEmail.length === 0}>
           예약하기
         </button>
       </form>
