@@ -99,17 +99,17 @@ public class MeetingTest {
         //when
 
         //회의 참여
-        Participant participant1 = Participant.setParticipant(user1, meeting1);
-        Participant participant2 = Participant.setParticipant(user2, meeting1);
-        Participant participant3 = Participant.setParticipant(user3, meeting1);
-        Participant participant4 = Participant.setParticipant(user1, meeting2);
-        Participant participant5 = Participant.setParticipant(user1, meeting3);
-
-        ms.joinMeeting(participant1);
-        ms.joinMeeting(participant2);
-        ms.joinMeeting(participant3);
-        ms.joinMeeting(participant4);
-        ms.joinMeeting(participant5);
+//        Participant participant1 = Participant.setParticipant(user1, meeting1);
+//        Participant participant2 = Participant.setParticipant(user2, meeting1);
+//        Participant participant3 = Participant.setParticipant(user3, meeting1);
+//        Participant participant4 = Participant.setParticipant(user1, meeting2);
+//        Participant participant5 = Participant.setParticipant(user1, meeting3);
+//
+//        ms.joinMeeting(participant1);
+//        ms.joinMeeting(participant2);
+//        ms.joinMeeting(participant3);
+//        ms.joinMeeting(participant4);
+//        ms.joinMeeting(participant5);
         //then
         List<Meeting> meetings = ms.meetingList(user1.getId());
         List<String> actualNames = new ArrayList<>();

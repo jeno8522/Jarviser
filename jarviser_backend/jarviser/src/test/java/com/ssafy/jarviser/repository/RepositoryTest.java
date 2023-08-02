@@ -28,12 +28,12 @@ public class RepositoryTest {
     @Autowired
     private UserService userService;
 
-    @Test
     @Transactional
     @Rollback(value = false)
-    @BeforeAll
+    @Test
+    @BeforeAll //이 테스트를 직접 실행하면 beforeall 어노테이션때문에 두번 실행됨
     public void insertDummyData() throws Exception {
-
+        System.out.println("insertDummyData");
         User user = User.builder()
                 .email("user@test.com")
                 .password("password")
@@ -48,6 +48,19 @@ public class RepositoryTest {
                 .startTime(LocalDateTime.now().plusDays(1))
                 .build();
         reservatedMeetingRepository.save(meeting);
+
+        for (int i = 10; i <= 20; i++) {
+            ReservatedMeeting meeting1 = ReservatedMeeting.builder()
+                    .meetingName("Meeting" + i)
+                    .hostId(user.getId())
+                    .startTime(LocalDateTime.now().plusDays(1))
+                    .build();
+
+            reservatedMeetingRepository.save(meeting1);
+            Reservation reservation = new Reservation();
+            reservation.setReservation(user, meeting1);
+            reservationRepository.save(reservation);
+        }
 
         for (int i = 10; i <= 20; i++) {
             user = User.builder()
