@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
       await new Promise((r) => setTimeout(r, 1000));
@@ -12,6 +13,7 @@ function Login() {
       );
       const accessToken = response.data["access-token"];
       localStorage.setItem("access-token", accessToken);
+      navigate("/userMain");
     } catch (error) {
       console.error("로그인 요청 에러:", error);
     }

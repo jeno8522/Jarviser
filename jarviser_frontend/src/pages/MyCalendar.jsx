@@ -3,7 +3,6 @@ import Calendar from "react-calendar";
 import calendarCss from "../components/CSS/calendar.css";
 import moment from "moment";
 import MeetingInfo from "../components/meetingInfo"; // MeetingInfo 컴포넌트를 import합니다.
-
 function MyCalendar() {
   const [date, setDate] = useState(new Date());
   const marks = [
@@ -37,5 +36,4 @@ function MyCalendar() {
     </>
   );
 }
-
 export default MyCalendar;
