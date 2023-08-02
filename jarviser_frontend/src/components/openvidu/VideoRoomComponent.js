@@ -13,19 +13,24 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
+
+// const APPLICATION_SERVER_URL =
+// process.env.NODE_ENV === "production" ? "" : "http://70.12.247.66:5000/";
+
 // const APPLICATION_SERVER_URL = "https://i9a506.p.ssafy.io/";
 
 class VideoRoomComponent extends Component {
   constructor(props) {
+    console.log("1232132131312321232132props", props);
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     let sessionName = this.props.sessionName
       ? this.props.sessionName
-      : "Session" + Math.floor(Math.random() * 100);
+      : "SessionA";
     let userName = this.props.user
       ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100);
+      : "OpenVidu_User" + Math.floor(Math.random() * 10000);
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
