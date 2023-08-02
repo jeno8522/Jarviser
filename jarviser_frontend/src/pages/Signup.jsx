@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     await new Promise((r) => setTimeout(r, 1000));
     axios.post("http://localhost:8081/user/signup", data);
+
     alert(JSON.stringify(data));
+    navigate("/login");
   };
   const {
     register,
