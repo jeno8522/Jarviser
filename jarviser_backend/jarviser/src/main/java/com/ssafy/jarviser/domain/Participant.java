@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "participant")
 @Builder
 @AllArgsConstructor
@@ -41,7 +42,6 @@ public class Participant {
         participant.setUser(user);
         participant.setMeeting(meeting);
         participant.setStartTime(LocalDateTime.now());
-
         meeting.getParticipants().add(participant);
         return participant;
     }

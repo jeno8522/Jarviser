@@ -20,4 +20,6 @@ public interface MeetingRepository{
 
     //미팅의 리포트 겨저오기
     Report findMeetingReportByMeetingId(long meetingId);
+
+
 }

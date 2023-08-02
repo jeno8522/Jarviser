@@ -47,11 +47,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void regist(RequestUserDto dto) throws Exception {
+    public Long regist(RequestUserDto dto) throws Exception {
         dto.setPassword(encoder.encode(dto.getPassword())); //security encode password
         User user = dto.toEntity();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         log.info("DB에 회원 저장 성공");
+        return savedUser.getId();
     }
 
     @Override
