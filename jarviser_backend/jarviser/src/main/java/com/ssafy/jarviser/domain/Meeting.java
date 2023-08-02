@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "meeting")
 @Builder
 @AllArgsConstructor
@@ -33,16 +34,16 @@ public class Meeting {
     private LocalDateTime startTime;
 
     @OneToMany(mappedBy = "meeting")
-    private List<AudioMessage> audioMessages = new ArrayList<>();
+    private final List<AudioMessage> audioMessages = new ArrayList<>();
 
     @OneToMany(mappedBy = "meeting")
-    private List<ChatMessage> chatMessages = new ArrayList<>();
+    private final List<ChatMessage> chatMessages = new ArrayList<>();
 
     @OneToOne(mappedBy = "meeting")
     private Report report;
 
     @OneToMany(mappedBy = "meeting")
-    private List<Participant> participants = new ArrayList<>();
+    private final List<Participant> participants = new ArrayList<>();
 
     @Builder
     public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
@@ -51,10 +52,6 @@ public class Meeting {
         this.hostId = hostId;
         this.meetingUrl = meetingUrl;
         this.startTime = startTime;
-        
     }
 
-    public void setReport(Report report){
-        this.report = report;
-    }
 }
