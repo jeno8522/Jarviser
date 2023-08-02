@@ -1,10 +1,7 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"meeting"})
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

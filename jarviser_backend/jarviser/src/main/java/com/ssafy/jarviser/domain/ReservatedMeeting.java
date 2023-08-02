@@ -1,10 +1,7 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"reservations"})
 public class ReservatedMeeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
