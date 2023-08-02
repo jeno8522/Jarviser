@@ -1,11 +1,15 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
 @Table(name = "report")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"meeting"})
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

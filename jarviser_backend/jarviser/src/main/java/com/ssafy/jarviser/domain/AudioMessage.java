@@ -1,13 +1,17 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "audio_message")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"meeting"})
 public class AudioMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

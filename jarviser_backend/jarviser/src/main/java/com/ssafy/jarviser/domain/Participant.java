@@ -1,16 +1,17 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import jakarta.servlet.http.Part;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.security.core.parameters.P;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
 @Table(name = "participant")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"user", "meeting"})
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
