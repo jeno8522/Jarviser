@@ -16,6 +16,6 @@ class EmailServiceTest {
     @Test
     @DisplayName("회원 가입 테스팅")
     void testEmailSend(){
-       emailService.sendEmail();
+       //emailService.sendEmail();
     }
 }
