@@ -21,16 +21,19 @@ const APPLICATION_SERVER_URL =
 
 class VideoRoomComponent extends Component {
   constructor(props) {
-    console.log("1232132131312321232132props", props);
+    // console.log("1232132131312321232132props", props);
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
-    let userName = this.props.user
-      ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 10000);
+    console.log("this.props.sessionName ========= ", this.props.sessionName);
+    let sessionName = this.props.sessionName;
+    let userName = this.props.user;
+    // let sessionName = this.props.sessionName
+    //   ? this.props.sessionName
+    //   : "SessionA";
+    // let userName = this.props.user
+    //   ? this.props.user
+    //   : "OpenVidu_User" + Math.floor(Math.random() * 10000);
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -168,7 +171,7 @@ class VideoRoomComponent extends Component {
     });
     var devices = await this.OV.getDevices();
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
-
+    console.log("camera 연결 시 localUser ==== ", localUser);
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: videoDevices[0].deviceId,
