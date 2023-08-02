@@ -44,6 +44,15 @@ public class Meeting {
     @OneToMany(mappedBy = "meeting")
     private List<Participant> participants = new ArrayList<>();
 
+    @Builder
+    public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
+        this.id = id;
+        this.meetingName = meetingName;
+        this.hostId = hostId;
+        this.meetingUrl = meetingUrl;
+        this.startTime = startTime;
+        
+    }
 
     public void setReport(Report report){
         this.report = report;
