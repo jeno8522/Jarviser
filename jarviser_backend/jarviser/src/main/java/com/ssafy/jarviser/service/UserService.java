@@ -16,5 +16,7 @@ public interface UserService {
     //회원정보수정
     public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception;
 
-    User getUser(String email) throws Exception;
+    User findUserById(Long id) throws Exception;
+
+    User findUserByEmail(String email) throws Exception;
 }

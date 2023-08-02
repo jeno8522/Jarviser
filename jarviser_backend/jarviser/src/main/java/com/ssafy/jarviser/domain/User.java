@@ -77,8 +77,4 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void updateUser(String password, String name){
-        this.password = password;
-        this.name = name;
-    }
 }

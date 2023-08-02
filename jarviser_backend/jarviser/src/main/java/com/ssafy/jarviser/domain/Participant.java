@@ -23,6 +23,9 @@ public class Participant {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Enumerated(EnumType.STRING)
+    private ParticipantRole role;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -31,12 +34,13 @@ public class Participant {
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;
 
-    //참여자 미팅 등록
-    public static Participant setParticipant(User user, Meeting meeting){
+    // N : M 연관 테이블의 양방향 맵핑 설정
+    public static Participant participate(User user, Meeting meeting){
         Participant participant = new Participant();
         participant.setUser(user);
         participant.setMeeting(meeting);
         participant.setStartTime(LocalDateTime.now());
+
         meeting.getParticipants().add(participant);
         return participant;
     }
