@@ -2,7 +2,7 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.ReservatedMeeting;
 import com.ssafy.jarviser.dto.ReservatedMeetingDto;
-import com.ssafy.jarviser.dto.reserveWrapperDto;
+import com.ssafy.jarviser.dto.ReserveWrapperDto;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.ReservationService;
 import com.ssafy.jarviser.service.UserService;
@@ -31,7 +31,7 @@ public class ReservationController {
     @PostMapping("")
     public ResponseEntity<Map<String,Object>> reservate(
             @RequestHeader("Authorization") String token,
-            @RequestBody reserveWrapperDto reserveWrapperDto
+            @RequestBody ReserveWrapperDto reserveWrapperDto
     ){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -39,6 +39,8 @@ public class ReservationController {
         try{
             List<String> emails = reserveWrapperDto.getEmails();
             ReservatedMeetingDto reservatatedMeetingDto = reserveWrapperDto.getReservatedMeetingDto();
+            log.info(token);
+            token = token.substring(7);
             Long hostId = jwtService.extractUserId(token);
 
             ReservatedMeeting reservatedMeeting = ReservatedMeeting.builder()

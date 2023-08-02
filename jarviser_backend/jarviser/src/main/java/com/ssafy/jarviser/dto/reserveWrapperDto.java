@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class reserveWrapperDto {
+public class ReserveWrapperDto {
     private ReservatedMeetingDto reservatedMeetingDto;
     List<String> emails;
 }
