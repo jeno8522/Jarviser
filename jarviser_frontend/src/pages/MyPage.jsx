@@ -1,28 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import jwt_decode from "jwt-decode"; // jwt-decode 라이브러리를 사용합니다.
 
 // Modal component
 function ConfirmationModal({ isOpen, onCancel, onConfirm }) {
-    if (!isOpen) return null;
-  
-    return (
-      <div>
-        <h2>정말로 탈퇴하시겠습니까?</h2>
-        <button onClick={onConfirm}>확인</button>
-        <button onClick={onCancel}>취소</button>
-      </div>
-    );
-  }  
+  if (!isOpen) return null;
+
+  return (
+    <div>
+      <h2>정말로 탈퇴하시겠습니까?</h2>
+      <button onClick={onConfirm}>확인</button>
+      <button onClick={onCancel}>취소</button>
+    </div>
+  );
+}
 
 function MyPage({ user }) {
-  const { email, password, name } = user || {};
-
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [newName, setNewName] = useState("");
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(
-    false
-  );    
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
+    useState(false);
+  // const [userId, setUserId] = useState(""); // user.id를 userId로 변경
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access-token");
+    if (accessToken) {
+      try {
+        const decodedToken = jwt_decode(accessToken); // 토큰 디코딩
+        const userEmail = decodedToken?.sub; // 이메일 추출
+        const userid = 
+        axios
+          .get(`http://localhost:8081/user/${userid}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((response) => {
+            const userData = response.data;
+            setUserInfo(userData);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("사용자 정보 가져오기 실패:", error);
+            setLoading(false);
+          });
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        setLoading(false);
+      }
+    }
+  }, []);
 
   const handlePasswordUpdate = () => {
     // TODO: Password 업데이트 로직을 구현합니다.
@@ -49,6 +80,17 @@ function MyPage({ user }) {
     window.location.replace("/");
   };
 
+  // 데이터가 로딩 중일 때 로딩 상태를 보여줌
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // 데이터를 받아오지 못한 경우 에러 메시지를 보여줌
+  if (!userInfo) {
+    return <div>Error: 사용자 정보를 가져오지 못했습니다.</div>;
+  }
+
+  // 사용자 정보를 받아온 경우
   return (
     <>
       <h1>회원정보</h1>
@@ -58,7 +100,7 @@ function MyPage({ user }) {
       </button>
 
       <dt>Email</dt>
-      <dd>{email}</dd>
+      <dd>{userInfo.email}</dd>
 
       {isEditingPassword ? (
         <>
@@ -75,7 +117,7 @@ function MyPage({ user }) {
       ) : (
         <>
           <dt>Password</dt>
-          <dd>{password}</dd>
+          <dd>{userInfo.password}</dd>
           <button type="button" id="update_password_button" onClick={() => setIsEditingPassword(true)}>
             변경하기
           </button>
@@ -97,7 +139,7 @@ function MyPage({ user }) {
       ) : (
         <>
           <dt>Name</dt>
-          <dd>{name}</dd>
+          <dd>{userInfo.name}</dd>
           <button type="button" id="update_name_button" onClick={() => setIsEditingName(true)}>
             변경하기
           </button>
