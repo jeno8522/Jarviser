@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.security;
 
+import com.ssafy.jarviser.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,6 +40,14 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Long extractUserId(String token) {
+        return Long.valueOf(extractClaim(token, claims -> claims.get("userId").toString()));
+    }
+
+    public String extractUserName(String token) {
+        return extractClaim(token, claims -> claims.get("username", String.class));
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String userEmail = extractUserEmail(token);
         return (userEmail.equals(userDetails.getUsername())) && !isTokenExpired(token);
@@ -60,6 +69,10 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        User user = (User) userDetails;
+        extraClaims.put("userId", user.getId());
+        extraClaims.put("username", user.getUsername());
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
