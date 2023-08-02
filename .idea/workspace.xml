@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="Feat: 오디오 전처리 개발중 (VAD 적용 전 웹 버전 작성 완료)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test4/test_code.html" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test4/test_code.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test4/test_logic2.js" beforeDir="false" afterPath="$PROJECT_DIR$/jarviser_frontend/src/Audio/test4/test_logic2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/skeleton_backend/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/skeleton_backend/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-    </list>
+    <list default="true" id="f89b7d2d-a73f-439d-83b3-92d0f3eb761f" name="Changes" comment="Feat: 오디오 전처리 개발중 (웹 버전 VAD 적용 1차 완료 후 webRTC 프론트에 적용 전 단계)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -162,7 +157,7 @@
       <workItem from="1690440054929" duration="2389000" />
       <workItem from="1690498308283" duration="3387000" />
       <workItem from="1690533932427" duration="2068000" />
-      <workItem from="1690856297043" duration="1197000" />
+      <workItem from="1690856297043" duration="1805000" />
     </task>
     <task id="LOCAL-00001" summary="setting: application.properties, build.gradle 등 세팅 파일 수정">
       <option name="closed" value="true" />
@@ -228,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690793027257</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Feat: 오디오 전처리 개발중 (웹 버전 VAD 적용 1차 완료 후 webRTC 프론트에 적용 전 단계)">
+      <option name="closed" value="true" />
+      <created>1690879794189</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1690879794189</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,6 +290,7 @@
     <MESSAGE value="Feat: 오디오 전처리 개발중 ( node.js 시연 서비스 진행중 )" />
     <MESSAGE value="Feat: 오디오 전처리 개발중 (시연 파일 생성 및 기존 테스트 파일 삭제)" />
     <MESSAGE value="Feat: 오디오 전처리 개발중 (VAD 적용 전 웹 버전 작성 완료)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat: 오디오 전처리 개발중 (VAD 적용 전 웹 버전 작성 완료)" />
+    <MESSAGE value="Feat: 오디오 전처리 개발중 (웹 버전 VAD 적용 1차 완료 후 webRTC 프론트에 적용 전 단계)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: 오디오 전처리 개발중 (웹 버전 VAD 적용 1차 완료 후 webRTC 프론트에 적용 전 단계)" />
   </component>
 </project>
