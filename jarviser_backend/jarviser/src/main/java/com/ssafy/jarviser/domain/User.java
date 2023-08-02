@@ -12,8 +12,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "user")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"participants", "reservations"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,22 +32,22 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @OneToMany(mappedBy = "user")
     private List<Participant> participants = new ArrayList<>();
 
-    @Builder
-    public User(long id, String password, String name, String email, Role role) {
-        this.id = id;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public List<Reservation> getReservations() {
+        if (reservations == null) {
+            reservations = new ArrayList<>();
+        }
+        return reservations;
     }
 
     @Override

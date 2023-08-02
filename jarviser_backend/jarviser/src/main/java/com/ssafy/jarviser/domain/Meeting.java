@@ -1,10 +1,7 @@
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,9 +9,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@ToString
 @Table(name = "meeting")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"audioMessages", "chatMessages", "report", "participants"})
 public class Meeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
