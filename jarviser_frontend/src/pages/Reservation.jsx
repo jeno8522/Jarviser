@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
 function Reservation() {
   const onSubmit = async (data) => {
-    data.userEmail = userEmail;
+    const date = data.date.replaceAll("-", "");
+    const time = data.time.replaceAll(":", "");
     const ReservatedRoom = {
-      title: data.title,
-      date: data.date,
-      time: data.time,
-      content: data.content,
+      meetingName: data.title,
+      startTime: date + time,
+      description: data.content,
     };
 
     const sendData = {
       reservatedRoom: ReservatedRoom,
-      emails: userEmail,
+      emails: userEmail, // 이메일 배열을 바로 할당
     };
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access-token")}`,
@@ -23,12 +22,18 @@ function Reservation() {
     await new Promise((r) => setTimeout(r, 1000));
     console.log(headers);
     console.log(sendData);
-    await axios.post("http://localhost:8081/reservation", sendData, headers);
+    try {
+      await axios.post("http://localhost:8081/reservation", sendData, {
+        headers,
+      });
 
-    alert(JSON.stringify(sendData));
+      alert(JSON.stringify(sendData));
 
-    setUserEmail([]);
-    reset();
+      setUserEmail([]);
+      reset();
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
   };
   const [userEmail, setUserEmail] = useState([]);
   const addUserEmail = (email) => {
