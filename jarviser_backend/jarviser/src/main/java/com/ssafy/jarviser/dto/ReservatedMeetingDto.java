@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ReservatedMeetingDto {
     private String meetingName;
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmmss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmm")
     private LocalDateTime startTime;
     private String description;
 }
