@@ -1,79 +1,61 @@
 package com.ssafy.jarviser.meeting;
 
 import com.ssafy.jarviser.domain.Meeting;
-import com.ssafy.jarviser.domain.Participant;
-import com.ssafy.jarviser.domain.Role;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.RequestUserDto;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.UserService;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @SpringBootTest
 public class MeetingTest {
-    @Autowired
-    UserService us;
-    @Autowired
-    MeetingService ms;
+    @Autowired UserService us;
+    @Autowired MeetingService ms;
 
     @Test
-    @DisplayName("미팅 생성 테스트")
+    @DisplayName("MeetingCreateTest")
     @Transactional
     @Rollback(value = false)
     void testMeetingInsertByMeetingId() throws Exception{
 
-        //호스트
+        //given 호스트
         RequestUserDto userDto = RequestUserDto.builder()
                 .name("host")
                 .password("1234")
                 .email("host@naver.com")
                 .build();
 
-        us.regist(userDto);
-        User user = us.findUserByEmail(userDto.getEmail());
+        Long id = us.regist(userDto);
 
-        //미팅 생성
-        Meeting meeting = Meeting.builder()
-                .meetingName("testMeeting")
-                .meetingUrl("www.ssafy.com/sampleurl")
-                .hostId(123L)
-                .startTime(LocalDateTime.now())
-                .build();
-        //미팅 등록
+        //when 미팅 생성
+        Meeting meeting = ms.createMeeting(id,"wooseokMeeting");
 
-        //when
-        ms.createMeeting(user,meeting);
+
         //then
 
         //미팅룸 찾기
         Meeting findMeeting = ms.findMeetingById(meeting.getId());
         //호스트 찾기
-        User findHost = us.findUserById(user.getId());
+        User findHost = us.findUserById(id);
 
         //미팅 이름 확인
         Assertions.assertThat(findMeeting.getMeetingName()).isEqualTo(meeting.getMeetingName());
         //호스트 이름 확인
-        Assertions.assertThat(findHost.getName()).isEqualTo(user.getName());
+        Assertions.assertThat(findHost.getName()).isEqualTo(userDto.getName());
 
     }
 
     @Test
-    @DisplayName("특정 미팅의 참여 회원 정보 목록")
+    @DisplayName("List of Users who joined the meeting")
     @Transactional
     @Rollback(value = false)
     void testJoinMeeting() throws Exception{
@@ -116,8 +98,8 @@ public class MeetingTest {
                 .build();
 
         //회원가입
-        us.regist(wooseokDto);
-        us.regist(minwooDto);
+        Long wooseokId = us.regist(wooseokDto);
+        Long minwooId = us.regist(minwooDto);
         us.regist(changhoonDto);
         us.regist(hongwoongDto);
         us.regist(hyunwoongDto);
@@ -130,38 +112,22 @@ public class MeetingTest {
         User hyunwoong =  us.findUserByEmail(hyunwoongDto.getEmail());
         User taehyun =  us.findUserByEmail(taehyunDto.getEmail());
 
-        //미팅룸 개설
-        Meeting meeting1 = Meeting.builder()
-                .meetingName("wooseokMeeting")
-                .meetingUrl("www.ssafy.com/wooseok")
-                .hostId(wooseok.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-
-
-        Meeting meeting2 = Meeting.builder()
-                .meetingName("minwooMeeting")
-                .meetingUrl("www.ssafy.com/minwoojjang")
-                .hostId(minwoo.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
+        //미팅 생성
         //wooseok 미팅1 개설
-        ms.createMeeting(wooseok,meeting1);
+        Meeting wooseokMeeting = ms.createMeeting(wooseokId, "wooseokMeeting");
 //        //minwoo 미팅2 개설
-        ms.createMeeting(minwoo,meeting2);
+        Meeting minwooMeeting = ms.createMeeting(minwooId, "minwooMeeting");
         //when
 
 //        //회의 참여
-        ms.joinMeeting(changhoon,meeting1);
-        ms.joinMeeting(hongwoong,meeting2);
-        ms.joinMeeting(hyunwoong,meeting1);
-        ms.joinMeeting(taehyun,meeting2);
+        ms.joinMeeting(changhoon.getId(),wooseokMeeting);
+        ms.joinMeeting(hongwoong.getId(),minwooMeeting);
+        ms.joinMeeting(hyunwoong.getId(),wooseokMeeting);
+        ms.joinMeeting(taehyun.getId(),minwooMeeting);
 //
 //        //then
-        List<User> wooseokListByMeetingId = ms.findUserListByMeetingId(meeting1.getId());
-        List<User> minwooListByMeetingId = ms.findUserListByMeetingId(meeting2.getId());
+        List<User> wooseokListByMeetingId = ms.findUserListByMeetingId(wooseokMeeting.getId());
+        List<User> minwooListByMeetingId = ms.findUserListByMeetingId(minwooMeeting.getId());
 
         String[] wooseokMeetingUserList = {"wooseok","changhoon","hyunwoong"};
         String[] minwooMeetingUserList = {"minwoo","hongwoong","taehyun"};
@@ -182,7 +148,7 @@ public class MeetingTest {
     }
 
     @Test
-    @DisplayName("특정 회원의 미팅 참여 리스트 조회")
+    @DisplayName("List of meetings that the user has joined")
     @Transactional
     @Rollback(value = false)
     void testMeetingList() throws Exception{
@@ -226,80 +192,36 @@ public class MeetingTest {
                 .build();
 
         //회원가입
-        us.regist(wooseokDto);
-        us.regist(minwooDto);
-        us.regist(changhoonDto);
-        us.regist(hongwoongDto);
-        us.regist(hyunwoongDto);
-        us.regist(taehyunDto);
+        Long wooseokId = us.regist(wooseokDto);
+        Long minwooId = us.regist(minwooDto);
+        Long changhoonId = us.regist(changhoonDto);
+        Long hongwoongId = us.regist(hongwoongDto);
+        Long hyunwoongId = us.regist(hyunwoongDto);
+        Long taehyunId = us.regist(taehyunDto);
 
-        User wooseok = us.findUserByEmail(wooseokDto.getEmail());
-        User minwoo =  us.findUserByEmail(minwooDto.getEmail());
-        User changhoon =  us.findUserByEmail(changhoonDto.getEmail());
-        User hongwoong =  us.findUserByEmail(hongwoongDto.getEmail());
-        User hyunwoong =  us.findUserByEmail(hyunwoongDto.getEmail());
-        User taehyun =  us.findUserByEmail(taehyunDto.getEmail());
 
         //미팅룸 개설
+
+        Meeting minwooMeeting = ms.createMeeting(minwooId, "minwooMeeting");
+        Meeting changhoonMeeting = ms.createMeeting(changhoonId, "changhoonMeeting");
+        Meeting hongwoongMeeting = ms.createMeeting(hongwoongId, "hongwoongMeeting");
+        Meeting hyunwoongMeeting = ms.createMeeting(hyunwoongId, "hyunwoongMeeting");
+        Meeting taehyunMeeting = ms.createMeeting(taehyunId, "taehyunMeeting");
         //미팅룸 개설
 
-        Meeting meeting2 = Meeting.builder()
-                .meetingName("minwooMeeting")
-                .meetingUrl("www.ssafy.com/minwoojjang")
-                .hostId(minwoo.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-        Meeting meeting3 = Meeting.builder()
-                .meetingName("changhoonMeeting")
-                .meetingUrl("www.ssafy.com/changhoon")
-                .hostId(wooseok.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-
-
-        Meeting meeting4 = Meeting.builder()
-                .meetingName("hongwoongMeeting")
-                .meetingUrl("www.ssafy.com/hongwoong")
-                .hostId(minwoo.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-        Meeting meeting5 = Meeting.builder()
-                .meetingName("hyunwoongMeeting")
-                .meetingUrl("www.ssafy.com/hyunwoong")
-                .hostId(wooseok.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-
-        Meeting meeting6 = Meeting.builder()
-                .meetingName("taehyunMeeting")
-                .meetingUrl("www.ssafy.com/taehyun")
-                .hostId(minwoo.getId())
-                .startTime(LocalDateTime.now())
-                .build();
-
-        //미팅룸 개설
-        ms.createMeeting(minwoo,meeting2);
-        ms.createMeeting(changhoon,meeting3);
-        ms.createMeeting(hongwoong,meeting4);
-        ms.createMeeting(hyunwoong,meeting5);
-        ms.createMeeting(taehyun,meeting6);
 
 
         //when
         //우석이의 다국적 미팅참여
-        ms.joinMeeting(wooseok,meeting2);
-        ms.joinMeeting(wooseok,meeting3);
-        ms.joinMeeting(wooseok,meeting4);
-        ms.joinMeeting(wooseok,meeting5);
-        ms.joinMeeting(wooseok,meeting6);
+        ms.joinMeeting(wooseokId,minwooMeeting);
+        ms.joinMeeting(wooseokId,changhoonMeeting);
+        ms.joinMeeting(wooseokId,hongwoongMeeting);
+        ms.joinMeeting(wooseokId,hyunwoongMeeting);
+        ms.joinMeeting(wooseokId,taehyunMeeting);
         //then
         //우석이의 모든 미팅 참여내역 확인
         String[] targetWooseokAttendanceMeeting = {"minwooMeeting","changhoonMeeting","hongwoongMeeting","hyunwoongMeeting","taehyunMeeting"};
-        List<Meeting> wooseokAttendacneMeetings = ms.findMeetingListByUserId(wooseok.getId());
+        List<Meeting> wooseokAttendacneMeetings = ms.findMeetingListByUserId(wooseokId);
 
         for(int i = 0 ; i<wooseokAttendacneMeetings.size();i++){
             String name = wooseokAttendacneMeetings.get(i).getMeetingName();

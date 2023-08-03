@@ -47,11 +47,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void regist(RequestUserDto dto) throws Exception {
+    public Long regist(RequestUserDto dto) throws Exception {
         dto.setPassword(encoder.encode(dto.getPassword())); //security encode password
         User user = dto.toEntity();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         log.info("DB에 회원 저장 성공");
+        return savedUser.getId();
     }
 
     @Override
@@ -61,8 +62,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
-        userRepository.updateUserById(id,updateUserDto.getPassword(),updateUserDto.getName());
+    public ResponseUpdatedDto update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
+        ResponseUpdatedDto responseUpdatedDto = new ResponseUpdatedDto();
+
+        //기존 회원정보로 세팅
+        User user = userRepository.findById(id).orElse(null);
+        responseUpdatedDto.setName(user.getUsername());
+        responseUpdatedDto.setPassword(user.getPassword());
+
+        String updatedPassword = encoder.encode(updateUserDto.getPassword());
+        String updatedName = updateUserDto.getName();
+
+        //패스워드 바뀌면 반환객체
+        if(!(updatedPassword == null || updatedPassword.equals(""))) {
+            responseUpdatedDto.setPassword(updatedPassword);
+        }
+
+        //이름 바뀐게 없으면 아이디 유지
+        if (!(updatedName == null || updatedName.equals(""))) {
+            responseUpdatedDto.setName(updatedName);
+        }
+
+        userRepository.updateUserById(id, responseUpdatedDto.getPassword(), responseUpdatedDto.getName());
+
+        return responseUpdatedDto;
     }
 
     @Override

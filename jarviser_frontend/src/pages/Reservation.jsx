@@ -1,15 +1,39 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import axios from "axios";
 function Reservation() {
   const onSubmit = async (data) => {
-    data.userEmail = userEmail;
+    const date = data.date.replaceAll("-", "");
+    const time = data.time.replaceAll(":", "");
+    const ReservatedRoom = {
+      meetingName: data.title,
+      startTime: date + time,
+      description: data.content,
+    };
+
+    const sendData = {
+      reservatedRoom: ReservatedRoom,
+      emails: userEmail, // 이메일 배열을 바로 할당
+    };
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    };
+
     await new Promise((r) => setTimeout(r, 1000));
+    console.log(headers);
+    console.log(sendData);
+    try {
+      await axios.post("http://localhost:8081/reservation", sendData, {
+        headers,
+      });
 
-    alert(JSON.stringify(data));
+      alert(JSON.stringify(sendData));
 
-    setUserEmail([]);
-    reset();
+      setUserEmail([]);
+      reset();
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
   };
   const [userEmail, setUserEmail] = useState([]);
   const addUserEmail = (email) => {
@@ -113,13 +137,9 @@ function Reservation() {
           aria-invalid={
             isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
           }
-          {...register("userEmail", {
-            required: "초대 이메일은 필수 입력입니다.",
-          })}
+          {...register("userEmail", {})}
         />
-        {errors.userEmail && (
-          <small role="alert">{errors.userEmail.message}</small>
-        )}
+
         <button
           type="button" // Add this line to prevent the button from submitting the form
           disabled={isSubmitting}
@@ -138,7 +158,7 @@ function Reservation() {
             </button>
           </div>
         ))}
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting || userEmail.length === 0}>
           예약하기
         </button>
       </form>

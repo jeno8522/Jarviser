@@ -15,7 +15,7 @@ public class JwtTest {
     @Autowired
     JwtService jwtService;
 
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic3RyaW5nIiwic3ViIjoic3RyaW5nIiwiaWF0IjoxNjkwOTU0NzI0LCJleHAiOjE2OTA5NTQ3MjR9.10bkZm7Rr3-i6QiuJ-J6YTTK380vMQCtpKzK7fPqGBo";
+    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic3RyaW5nIiwic3ViIjoic3RyaW5nIiwiaWF0IjoxNjkwOTY0NDgxLCJleHAiOjE2OTA5NzUyODF9.07udc0-NcjAB391FepX8Zwrc7XYxpYEicVSJ_pIJW7k";
 
         @Test
         public void test() {
