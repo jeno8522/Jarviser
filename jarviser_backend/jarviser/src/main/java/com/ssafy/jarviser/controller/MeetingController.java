@@ -72,11 +72,10 @@ public class MeetingController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
+        token = token.split(" ")[1];
         try {
             Long hostId = jwtService.extractUserId(token);
-            Meeting meeting = meetingService.createMeeting(hostId,meetingName);
-            resultMap.put("meeting", meeting);
+            meetingService.createMeeting(hostId,meetingName);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
@@ -89,7 +88,7 @@ public class MeetingController {
     @PostMapping("/joinMeeting/{meetingId}")
     public ResponseEntity<Map<String,Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
-            @RequestParam Long meetingId) {
+            @PathVariable Long meetingId) {
 
         Meeting meeting = meetingService.findMeetingById(meetingId);
         log.debug("JoinMeeting............................Join meetingName:" + meeting.getMeetingName());
