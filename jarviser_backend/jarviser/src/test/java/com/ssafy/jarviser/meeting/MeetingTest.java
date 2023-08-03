@@ -18,10 +18,8 @@ import java.util.List;
 
 @SpringBootTest
 public class MeetingTest {
-    @Autowired
-    UserService us;
-    @Autowired
-    MeetingService ms;
+    @Autowired UserService us;
+    @Autowired MeetingService ms;
 
     @Test
     @DisplayName("MeetingCreateTest")
@@ -150,7 +148,7 @@ public class MeetingTest {
     }
 
     @Test
-    @DisplayName("특정 회원의 미팅 참여 리스트 조회")
+    @DisplayName("List of meetings that the user has joined")
     @Transactional
     @Rollback(value = false)
     void testMeetingList() throws Exception{
