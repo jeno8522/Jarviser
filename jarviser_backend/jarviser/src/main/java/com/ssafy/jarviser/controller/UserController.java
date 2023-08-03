@@ -25,6 +25,8 @@ public class UserController {
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
+
+    //회원가입
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signUp(@RequestBody RequestUserDto requestUserDto) {
         log.debug("User............................regist user:" + requestUserDto);
@@ -46,6 +48,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDto requestLoginDto){
         log.debug("User............................regist user:" + requestLoginDto);
@@ -67,6 +70,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //회원정보수정
     @PatchMapping("/{userid}")
     public ResponseEntity<Map<String,Object>> update(@PathVariable long userid, @RequestBody RequestUpdateUserDto requestUpdateUserDto){
         Map<String, Object> resultMap = new HashMap<>();
@@ -81,6 +85,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //마이페이지
     @GetMapping("/{userid}")
     public ResponseEntity<Map<String,Object>> mypage(@PathVariable("userid") long id){
         Map<String, Object> resultMap = new HashMap<>();
@@ -96,6 +101,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //회원탈퇴
     @DeleteMapping("/{userid}")
     public ResponseEntity<Map<String,Object>> delete(@PathVariable long userid){
         Map<String, Object> resultMap = new HashMap<>();

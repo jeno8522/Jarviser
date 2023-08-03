@@ -42,7 +42,6 @@ public class Participant {
         participant.setUser(user);
         participant.setMeeting(meeting);
         participant.setStartTime(LocalDateTime.now());
-
         meeting.getParticipants().add(participant);
         return participant;
     }
