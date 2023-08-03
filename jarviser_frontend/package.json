@@ -9,14 +9,11 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
-<<<<<<< HEAD
     "jquery": "3.5.0",
-=======
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "jquery": "3.5.0",
     "jsonwebtoken": "^9.0.1",
->>>>>>> 835e0928723f6da34c1aa9877b20c60361a34a7a
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "openvidu-browser": "2.27.0",
