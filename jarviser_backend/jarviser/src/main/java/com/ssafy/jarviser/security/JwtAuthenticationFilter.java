@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//Request -> 
             @NonNull FilterChain filterChain //거쳐갈 다른 필터들
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization"); //헤더에 jwt토큰
+        final Long userId;
         final String jwt;
         final String userEmail;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -37,9 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {//Request -> 
         }
         jwt = authHeader.split(" ")[1].trim(); //authHeader에서 Bearer 이후의 실질적 jwt토큰을 뽑아냄.
         userEmail = jwtService.extractUserEmail(jwt);
-
+        userId = jwtService.extractUserId(jwt);
         //SecurityContextHolder로부터 검증받기 위함
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId!= null && userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
