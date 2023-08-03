@@ -39,6 +39,7 @@ public class MeetingRepositoryImp implements MeetingRepository{
 
     @Override
     public List<Meeting> findAllMeetingByUserId(long userid) {
+
         return em.createQuery(
                         "SELECT m FROM Meeting m " +
                                 "JOIN m.participants p " +

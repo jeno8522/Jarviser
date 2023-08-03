@@ -1,6 +1,9 @@
 package com.ssafy.jarviser.controller;
 
-import com.ssafy.jarviser.dto.AudioDto;
+import com.ssafy.jarviser.domain.Meeting;
+import com.ssafy.jarviser.dto.RequestJoinMeetingDto;
+import com.ssafy.jarviser.security.JwtService;
+import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,9 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("meeting")
 public class MeetingController {
+    private final JwtService jwtService;
     private final OpenAIService openAIService;
+    private final MeetingService meetingService;
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file) throws IOException {
@@ -59,4 +61,57 @@ public class MeetingController {
 
         return new ResponseEntity<>(resultMap, status.OK);
     }
+
+
+    //미팅생성
+    @PostMapping("/create/{meetingName}")
+    public ResponseEntity<Map<String ,Object>> createMeeting(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String meetingName){
+        log.debug("CreateMeeting............................create meetingName:" + meetingName);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try {
+            Long hostId = jwtService.extractUserId(token);
+            Meeting meeting = meetingService.createMeeting(hostId,meetingName);
+            resultMap.put("meeting", meeting);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            log.error("미팅 생성 실패 : {}", e);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(resultMap, status);
+    }
+    //미팅 참여
+    @PostMapping("/joinMeeting/{meetingId}")
+    public ResponseEntity<Map<String,Object>> joinMeeting(
+            @RequestHeader("Authorization") String token,
+            @RequestParam Long meetingId) {
+
+        Meeting meeting = meetingService.findMeetingById(meetingId);
+        log.debug("JoinMeeting............................Join meetingName:" + meeting.getMeetingName());
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try {
+            Long joinUserId = jwtService.extractUserId(token);
+            meetingService.joinMeeting(joinUserId, meeting);
+            resultMap.put("meeting", meeting);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            log.error("미팅 참여 실패 : {}", e);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(resultMap, status);
+    }
+    //미팅 조회
+    //미팅 참여자 조회
+    //미팅 통계 상세보기
+    //사용자 미팅 참여내역 보기
+    //리포트 열람
 }

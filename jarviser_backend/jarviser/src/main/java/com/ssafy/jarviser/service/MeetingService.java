@@ -3,25 +3,24 @@ package com.ssafy.jarviser.service;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.domain.User;
-import com.ssafy.jarviser.dto.ResponseMeetingStatics;
 
 import java.util.List;
 
 public interface MeetingService{
     //미팅 생성
-    void createMeeting(User host, Meeting meeting);
-    //참여자 등록
-    void joinMeeting(User user, Meeting meeting);
+    Meeting createMeeting(Long hostId, String meetingName);
+    //미팅 참여자 등록
+    void joinMeeting(Long joinUserId, Meeting meeting);
 
-    //미팅 조회
+    //미팅 아이디로 미팅 조회
     Meeting findMeetingById(long meetingId);
-    //미팅 참여자 조회
+    //미팅 아이디로 미팅 참여자들 조회
     List<User> findUserListByMeetingId(long meetingId);
 
     //미팅 통계 상세보기
-    ResponseMeetingStatics meetingStatics(long meetingId);
+    Report findMeetingStaticsByMeetingId(long meetingId);
 
-    //미팅 참여내역 보기
+    //유저아이디로 미팅참여 보기
     List<Meeting> findMeetingListByUserId(long userid);
 
     //리포트 열람
