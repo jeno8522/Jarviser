@@ -10,11 +10,11 @@ public interface UserService {
     //마이페이지
     ResponseMypageDto mypage(long id) throws Exception;
     //회원가입
-    public void regist(RequestUserDto dto) throws Exception;
+    public Long regist(RequestUserDto dto) throws Exception;
     //회원탈퇴
     public void withdrawal(Long id) throws Exception;
     //회원정보수정
-    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception;
+    void updateUser(long id, RequestUpdateUserDto updateUserDto) throws Exception;
 
     User findUserById(Long id) throws Exception;
 

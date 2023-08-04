@@ -18,8 +18,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long>{
     User findByEmail(String email);
 
-    @Modifying
-    @Query("UPDATE User u SET u.password = :password, u.name = :name WHERE u.id = :id")
-    void updateUserById(long id,String password,String name);
+//    @Modifying
+//    @Query("UPDATE User u SET u.password = :password, u.name = :name WHERE u.id = :id")
+//    void updateUserById(long id,String name,String password);
 
 }

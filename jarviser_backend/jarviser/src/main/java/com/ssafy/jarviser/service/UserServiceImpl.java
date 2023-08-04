@@ -47,11 +47,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void regist(RequestUserDto dto) throws Exception {
+    public Long regist(RequestUserDto dto) throws Exception {
         dto.setPassword(encoder.encode(dto.getPassword())); //security encode password
         User user = dto.toEntity();
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
         log.info("DB에 회원 저장 성공");
+        return savedUser.getId();
     }
 
     @Override
@@ -61,8 +62,22 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
-        userRepository.updateUserById(id,updateUserDto.getPassword(),updateUserDto.getName());
+    public void updateUser(long id, RequestUpdateUserDto updateUserDto) throws Exception {
+        User user = userRepository.findById(id).orElse(null);
+
+        assert user!=null;
+
+        if(!updateUserDto.getName().equals("")){
+            user.setName(updateUserDto.getName());
+        }else{
+            user.setName(user.getName());
+        }
+
+        if(!updateUserDto.getPassword().equals("")){
+            user.setPassword(updateUserDto.getPassword());
+        }else{
+            user.setPassword(user.getPassword());
+        }
     }
 
     @Override

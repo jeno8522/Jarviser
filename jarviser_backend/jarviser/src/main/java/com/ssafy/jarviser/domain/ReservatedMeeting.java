@@ -33,12 +33,6 @@ public class ReservatedMeeting {
     private String description;
 
     @OneToMany(mappedBy = "reservatedMeeting")
-    private List<Reservation> reservations = new ArrayList<>();
+    private final List<Reservation> reservations = new ArrayList<>();
 
-    public List<Reservation> getReservations() {
-        if (reservations == null) {
-            reservations = new ArrayList<>();
-        }
-        return reservations;
-    }
 }

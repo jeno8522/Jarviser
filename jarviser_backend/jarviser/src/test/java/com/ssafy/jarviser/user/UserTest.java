@@ -63,20 +63,16 @@ public class UserTest {
         //given
         //임의 유저 등록
         RequestUserDto requestUserDto = RequestUserDto.builder().name("wooseok").password("1234").email("wooseok777777@gmail.com").build();
-        us.regist(requestUserDto);
+        Long userId = us.regist(requestUserDto);
 
-        //유저 영속성으로 조회
-        User user = us.findUserByEmail(requestUserDto.getEmail());
-        long userId = user.getId();
         //when
-        RequestUpdateUserDto requestUpdateUserDto = new RequestUpdateUserDto(user.getId(),"abcdefg","sexking");
-
-
-        us.update(user.getId(),requestUpdateUserDto);
+       RequestUpdateUserDto requestUpdateUserDto = new RequestUpdateUserDto("", "4321");
 
         //then
-        Assertions.assertThat(user.getName()).isEqualTo("sexking");
-        Assertions.assertThat(user.getPassword()).isEqualTo("abcdefg");
+       us.updateUser(userId, requestUpdateUserDto);
+
+       Assertions.assertThat(us.findUserById(userId).getName()).isEqualTo("wooseok");
+       Assertions.assertThat(us.findUserById(userId).getPassword()).isEqualTo("4321");
     }
 
     @Test

@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "user")
 @Builder
 @AllArgsConstructor
@@ -33,10 +34,10 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<Participant> participants = new ArrayList<>();
+    private final List<Participant> participants = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Reservation> reservations = new ArrayList<>();
+    private final List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,9 +45,6 @@ public class User implements UserDetails {
     }
 
     public List<Reservation> getReservations() {
-        if (reservations == null) {
-            reservations = new ArrayList<>();
-        }
         return reservations;
     }
 
@@ -75,9 +73,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public String getPassword(){
-        return password;
-    }
 
 }

@@ -2,6 +2,7 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.*;
+import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,12 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-
+    private final JwtService jwtService;
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
+
+    //회원가입
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signUp(@RequestBody RequestUserDto requestUserDto) {
         log.debug("User............................regist user:" + requestUserDto);
@@ -46,6 +49,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody RequestLoginDto requestLoginDto){
         log.debug("User............................regist user:" + requestLoginDto);
@@ -67,13 +71,18 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @PatchMapping("/{userid}")
-    public ResponseEntity<Map<String,Object>> update(@PathVariable long userid, @RequestBody RequestUpdateUserDto requestUpdateUserDto){
+    //회원정보수정
+    @PatchMapping("/update")
+    public ResponseEntity<Map<String,Object>> update(
+            @RequestHeader("Authorization") String token,
+            @RequestBody RequestUpdateUserDto requestUpdateUserDto){
+
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
+        token = token.split(" ")[1];
         try{
-            userService.update(userid,requestUpdateUserDto);
+            Long userId = jwtService.extractUserId(token);
+            userService.updateUser(userId,requestUpdateUserDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -81,13 +90,16 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @GetMapping("/{userid}")
-    public ResponseEntity<Map<String,Object>> mypage(@PathVariable("userid") long id){
+    //마이페이지
+    @GetMapping("/mypage")
+    public ResponseEntity<Map<String,Object>> mypage(
+            @RequestHeader("Authorization") String token){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
+        token = token.split(" ")[1];
         try{
-            ResponseMypageDto responseMypageDto = userService.mypage(id);
+            Long userId = jwtService.extractUserId(token);
+            ResponseMypageDto responseMypageDto = userService.mypage(userId);
             resultMap.put("response",responseMypageDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
@@ -96,11 +108,15 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @DeleteMapping("/{userid}")
-    public ResponseEntity<Map<String,Object>> delete(@PathVariable long userid){
+    //회원탈퇴
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String,Object>> delete(
+            @RequestHeader("Authorization") String token
+    ){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
+        token = token.split(" ")[1];
+        Long userid = jwtService.extractUserId(token);
         try{
             userService.withdrawal(userid);
             status = HttpStatus.ACCEPTED;

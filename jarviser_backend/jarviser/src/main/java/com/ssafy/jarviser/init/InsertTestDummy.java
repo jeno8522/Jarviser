@@ -1,4 +1,4 @@
-package com.ssafy.jarviser.service;
+package com.ssafy.jarviser.init;
 
 import com.ssafy.jarviser.domain.ReservatedMeeting;
 import com.ssafy.jarviser.domain.Reservation;
@@ -7,35 +7,27 @@ import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
 import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@SpringBootTest
-class EmailServiceTest {
-
-    @Autowired
-    EmailService emailService;
-
-    @Autowired
-    ReservatedMeetingRepository reservatedMeetingRepository;
+@Component
+public class InsertTestDummy implements CommandLineRunner {
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    ReservationRepository reservationRepository;
-    @BeforeEach
-    void set(){
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private ReservatedMeetingRepository reservatedMeetingRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        // 여기에 애플리케이션 시작 시에 실행할 쿼리를 작성하세요.
         User user1 = User.builder()
                 .email("taehyun0121@naver.com")
                 .password("password")
@@ -68,12 +60,5 @@ class EmailServiceTest {
         reservation2.setReservation(user2, meeting);
         reservationRepository.save(reservation2);
 
-    }
-
-    @Test
-    @DisplayName("회원 가입 테스팅")
-    void testEmailSend(){
-        ReservatedMeeting reservatedMeeting = reservatedMeetingRepository.findById(1L).get();
-        emailService.setMailContent(reservatedMeeting);
     }
 }
