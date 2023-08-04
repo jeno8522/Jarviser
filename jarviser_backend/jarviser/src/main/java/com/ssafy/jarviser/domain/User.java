@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "user")
 @Builder
 @AllArgsConstructor
@@ -72,9 +73,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public String getPassword(){
-        return password;
-    }
 
 }

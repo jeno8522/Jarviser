@@ -62,30 +62,28 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseUpdatedDto update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
-        ResponseUpdatedDto responseUpdatedDto = new ResponseUpdatedDto();
+    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
 
         //기존 회원정보로 세팅
         User user = userRepository.findById(id).orElse(null);
-        responseUpdatedDto.setName(user.getUsername());
-        responseUpdatedDto.setPassword(user.getPassword());
 
-        String updatedPassword = encoder.encode(updateUserDto.getPassword());
-        String updatedName = updateUserDto.getName();
+        assert user != null;
+        String updatedPassword = user.getPassword();
+        String updatedName = user.getName();
 
         //패스워드 바뀌면 반환객체
         if(!(updatedPassword == null || updatedPassword.equals(""))) {
-            responseUpdatedDto.setPassword(updatedPassword);
+            user.setPassword(updatedPassword);
         }
 
         //이름 바뀐게 없으면 아이디 유지
         if (!(updatedName == null || updatedName.equals(""))) {
-            responseUpdatedDto.setName(updatedName);
+            user.setName(updatedName);
         }
 
-        userRepository.updateUserById(id, responseUpdatedDto.getPassword(), responseUpdatedDto.getName());
+        userRepository.updateUserById(id, updatedPassword, updatedName);
 
-        return responseUpdatedDto;
+        return;
     }
 
     @Override
