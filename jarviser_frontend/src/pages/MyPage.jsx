@@ -1,9 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useAccessToken from "../components/useAccessToken";
 // import jwt_decode from "jwt-decode"; // jwt-decode 라이브러리를 사용합니다.
 
 function MyPage() {
-  const accessToken = localStorage.getItem("access-token");
+  const navigate = useNavigate();
+  const { accessToken } = useAccessToken();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
+
   // const { userId } = jwt_decode(accessToken); // 토큰에서 userId 가져오기
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
