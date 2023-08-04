@@ -8,11 +8,20 @@ import MyCalendar from "./MyCalendar";
 import MyReport from "./MyReport";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import useAccessToken from "../components/useAccessToken";
+import { useEffect } from "react";
+
 function UserMain() {
   const navigate = useNavigate();
+  const { accessToken } = useAccessToken();
   const reservation = () => {
     navigate("/reservation");
   };
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
   return (
     <>
       {/* <div className="App"> */}
