@@ -69,10 +69,14 @@ public class UserServiceImpl implements UserService {
 
         if(!updateUserDto.getName().equals("")){
             user.setName(updateUserDto.getName());
+        }else{
+            user.setName(user.getName();
         }
 
         if(!updateUserDto.getPassword().equals("")){
             user.setPassword(updateUserDto.getPassword());
+        }else{
+            user.setPassword(user.getPassword());
         }
     }
 
