@@ -11,29 +11,18 @@ import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
-const APPLICATION_SERVER_URL =
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000/";
-
-// const APPLICATION_SERVER_URL =
-// process.env.NODE_ENV === "production" ? "" : "http://70.12.247.66:5000/";
-
-// const APPLICATION_SERVER_URL = "https://i9a506.p.ssafy.io/";
+const APPLICATION_SERVER_URL = "https://jarviser.shop/";
 
 class VideoRoomComponent extends Component {
   constructor(props) {
-    // console.log("1232132131312321232132props", props);
     super(props);
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    console.log("this.props.sessionName ========= ", this.props.sessionName);
-    let sessionName = this.props.sessionName;
-    let userName = this.props.user;
-    // let sessionName = this.props.sessionName
-    //   ? this.props.sessionName
-    //   : "SessionA";
-    // let userName = this.props.user
-    //   ? this.props.user
-    //   : "OpenVidu_User" + Math.floor(Math.random() * 10000);
+    // let sessionName = "Session" + Math.floor(Math.random() * 2);
+    let sessionName = "Session114";
+    let userName = this.props.user
+      ? this.props.user
+      : "OpenVidu_User" + Math.floor(Math.random() * 100);
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -119,7 +108,6 @@ class VideoRoomComponent extends Component {
     } else {
       try {
         var token = await this.getToken();
-        console.log(token);
         this.connect(token);
       } catch (error) {
         console.error(
@@ -141,8 +129,9 @@ class VideoRoomComponent extends Component {
   }
 
   connect(token) {
+    console.log("connect token", token);
     this.state.session
-      .connect(token, {clientData: this.state.myUserName})
+      .connect(token.token, {clientData: this.state.myUserName})
       .then(() => {
         this.connectWebCam();
       })
@@ -171,7 +160,7 @@ class VideoRoomComponent extends Component {
     });
     var devices = await this.OV.getDevices();
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
-    console.log("camera 연결 시 localUser ==== ", localUser);
+
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: videoDevices[0].deviceId,
@@ -237,24 +226,25 @@ class VideoRoomComponent extends Component {
   }
 
   leaveSession() {
-    const mySession = this.state.session;
+    console.log("leave Session 실행됨유!!");
+    // const mySession = this.state.session;
 
-    if (mySession) {
-      mySession.disconnect();
-    }
+    // if (mySession) {
+    //   mySession.disconnect();
+    // }
 
-    // Empty all properties...
-    this.OV = null;
-    this.setState({
-      session: undefined,
-      subscribers: [],
-      mySessionId: "SessionA",
-      myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-      localUser: undefined,
-    });
-    if (this.props.leaveSession) {
-      this.props.leaveSession();
-    }
+    // // Empty all properties...
+    // this.OV = null;
+    // this.setState({
+    //   session: undefined,
+    //   subscribers: [],
+    //   mySessionId: "Session1010",
+    //   myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+    //   localUser: undefined,
+    // });
+    // if (this.props.leaveSession) {
+    //   this.props.leaveSession();
+    // }
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
@@ -274,7 +264,9 @@ class VideoRoomComponent extends Component {
     let localUser = this.state.localUser;
     localUser.setNickname(nickname);
     this.setState({localUser: localUser});
-    this.sendSignalUserChanged({nickname: this.state.localUser.getNickname()});
+    this.sendSignalUserChanged({
+      nickname: this.state.localUser.getNickname(),
+    });
   }
 
   deleteSubscriber(stream) {
@@ -634,16 +626,43 @@ class VideoRoomComponent extends Component {
    * more about the integration of OpenVidu in your application server.
    */
   async getToken() {
-    const sessionId = await this.createSession(this.state.mySessionId);
-    return await this.createToken(sessionId);
+    let result = await this.checkSessionId(this.state.mySessionId);
+    if (result) {
+      return await this.createToken(this.state.mySessionId);
+    } else {
+      const session = await this.createSession(this.state.mySessionId);
+      return await this.createToken(session.id);
+    }
+  }
+
+  async checkSessionId(sessionId) {
+    const response = await axios.get(
+      APPLICATION_SERVER_URL + "openvidu/api/sessions",
+      {
+        headers: {
+          Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    let result = false;
+    response.data.content.forEach((con) => {
+      if (con.id === sessionId) result = true;
+    });
+
+    return result;
   }
 
   async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions",
+      APPLICATION_SERVER_URL + "openvidu/api/sessions",
       {customSessionId: sessionId},
       {
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The sessionId
@@ -651,10 +670,16 @@ class VideoRoomComponent extends Component {
 
   async createToken(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
+      APPLICATION_SERVER_URL +
+        "openvidu/api/sessions/" +
+        sessionId +
+        "/connection",
       {},
       {
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data; // The token
