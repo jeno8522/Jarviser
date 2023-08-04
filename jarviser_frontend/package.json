@@ -10,10 +10,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
-<<<<<<< HEAD
-=======
-    "jquery": "3.5.0",
->>>>>>> 7e34641e7c0735297e787d241e6f52110ad4d91b
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "jquery": "3.5.0",
