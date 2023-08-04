@@ -62,28 +62,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void update(long id, RequestUpdateUserDto updateUserDto) throws Exception {
-
-        //기존 회원정보로 세팅
+    public void updateUser(long id, RequestUpdateUserDto updateUserDto) throws Exception {
         User user = userRepository.findById(id).orElse(null);
 
-        assert user != null;
-        String updatedPassword = user.getPassword();
-        String updatedName = user.getName();
+        assert user!=null;
 
-        //패스워드 바뀌면 반환객체
-        if(!(updatedPassword == null || updatedPassword.equals(""))) {
-            user.setPassword(updatedPassword);
-        }
-
-        //이름 바뀐게 없으면 아이디 유지
-        if (!(updatedName == null || updatedName.equals(""))) {
-            user.setName(updatedName);
-        }
-
-        userRepository.updateUserById(id, updatedPassword, updatedName);
-
-        return;
+        user.setName(updateUserDto.getName());
+        user.setPassword(updateUserDto.getPassword());
     }
 
     @Override

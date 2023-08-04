@@ -82,7 +82,7 @@ public class UserController {
         token = token.split(" ")[1];
         try{
             Long userId = jwtService.extractUserId(token);
-            userService.update(userId,requestUpdateUserDto);
+            userService.updateUser(userId,requestUpdateUserDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -109,11 +109,14 @@ public class UserController {
     }
 
     //회원탈퇴
-    @DeleteMapping("/{userid}")
-    public ResponseEntity<Map<String,Object>> delete(@PathVariable long userid){
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String,Object>> delete(
+            @RequestHeader("Authorization") String token
+    ){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
+        token = token.split(" ")[1];
+        Long userid = jwtService.extractUserId(token);
         try{
             userService.withdrawal(userid);
             status = HttpStatus.ACCEPTED;
