@@ -16,7 +16,7 @@ import VideoRoomComponent from "../components/openvidu/VideoRoomComponent"; // ê
 
 const CreateMeeting = () => {
   const [userName, setUserName] = useState("1234");
-  const [roomName, setRoomName] = useState("My Room");
+  const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
 
   const handleSubmit = (event) => {
@@ -36,18 +36,18 @@ const CreateMeeting = () => {
           />
         </label>
         <label>
-          Room Name:
+          Session Name:
           <input
             type="text"
-            value={roomName}
-            onChange={(event) => setRoomName(event.target.value)}
+            value={sessionName}
+            onChange={(event) => setSessionName(event.target.value)}
           />
         </label>
         <input type="submit" value="Submit" />
       </form>
       {showVideoRoom && (
-        // <VideoRoomComponent userName={userName} sessionName={roomName} />
-        <VideoRoomComponent />
+        <VideoRoomComponent userName={userName} sessionName={sessionName} />
+        // <VideoRoomComponent />
       )}
     </div>
   );

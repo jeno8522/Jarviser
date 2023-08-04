@@ -19,10 +19,13 @@ class VideoRoomComponent extends Component {
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     // let sessionName = "Session" + Math.floor(Math.random() * 2);
-    let sessionName = "Session114";
-    let userName = this.props.user
-      ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100);
+    // let sessionName = "Session1111";
+    // let userName = this.props.user
+    //   ? this.props.user
+    //   : "OpenVidu_User" + Math.floor(Math.random() * 100);
+
+    let sessionName = props.sessionName;
+    let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -227,24 +230,27 @@ class VideoRoomComponent extends Component {
 
   leaveSession() {
     console.log("leave Session 실행됨유!!");
-    // const mySession = this.state.session;
+    const mySession = this.state.session;
+    // let endSessionId = this.props.sessionName;
+    let endUserName = this.props.userName;
+    if (mySession) {
+      mySession.disconnect();
+    }
 
-    // if (mySession) {
-    //   mySession.disconnect();
-    // }
-
-    // // Empty all properties...
-    // this.OV = null;
-    // this.setState({
-    //   session: undefined,
-    //   subscribers: [],
-    //   mySessionId: "Session1010",
-    //   myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
-    //   localUser: undefined,
-    // });
-    // if (this.props.leaveSession) {
-    //   this.props.leaveSession();
-    // }
+    // Empty all properties...
+    this.OV = null;
+    this.setState({
+      session: undefined,
+      subscribers: [],
+      mySessionId: "Session End", //세션 종료시 세션에 표기할 text
+      myUserName: endUserName,
+      // mySessionId: "Session1010",
+      // myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
+      localUser: undefined,
+    });
+    if (this.props.leaveSession) {
+      this.props.leaveSession();
+    }
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
