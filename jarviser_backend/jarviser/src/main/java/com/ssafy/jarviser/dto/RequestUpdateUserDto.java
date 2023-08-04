@@ -6,12 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@JsonProperty("USERINFO")
 public class RequestUpdateUserDto {
-    private long id;
-
     private String password;
-
     private String name;
 
 }

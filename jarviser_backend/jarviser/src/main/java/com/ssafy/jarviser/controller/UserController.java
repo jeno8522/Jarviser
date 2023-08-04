@@ -82,8 +82,8 @@ public class UserController {
         token = token.split(" ")[1];
         try{
             Long userId = jwtService.extractUserId(token);
-            ResponseUpdatedDto responseUpdatedDto = userService.update(userId,requestUpdateUserDto);
-            resultMap.put("response",responseUpdatedDto);
+            userService.update(userId,requestUpdateUserDto);
+            resultMap.put("response",SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
