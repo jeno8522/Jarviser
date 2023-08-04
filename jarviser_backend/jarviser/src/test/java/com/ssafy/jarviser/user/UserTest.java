@@ -66,12 +66,12 @@ public class UserTest {
         Long userId = us.regist(requestUserDto);
 
         //when
-       RequestUpdateUserDto requestUpdateUserDto = new RequestUpdateUserDto("changedWooseok", "4321");
+       RequestUpdateUserDto requestUpdateUserDto = new RequestUpdateUserDto("", "4321");
 
         //then
        us.updateUser(userId, requestUpdateUserDto);
 
-       Assertions.assertThat(us.findUserById(userId).getName()).isEqualTo("changedWooseok");
+       Assertions.assertThat(us.findUserById(userId).getName()).isEqualTo("wooseok");
        Assertions.assertThat(us.findUserById(userId).getPassword()).isEqualTo("4321");
     }
 

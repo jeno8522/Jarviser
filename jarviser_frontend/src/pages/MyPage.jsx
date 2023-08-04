@@ -67,6 +67,7 @@ function MyPage() {
         }
       );
       console.log(response.data);
+      window.location.href = "/usermain";
     } catch (error) {
       console.log(error);
     }
