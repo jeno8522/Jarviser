@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useAccessToken from "../components/useAccessToken";
 function Login() {
   const navigate = useNavigate();
+  const { accessToken } = useAccessToken();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/usermain");
+    }
+  }, [accessToken, navigate]);
   const onSubmit = async (data) => {
     try {
       await new Promise((r) => setTimeout(r, 1000));

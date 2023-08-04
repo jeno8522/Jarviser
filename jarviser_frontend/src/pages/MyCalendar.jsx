@@ -3,7 +3,19 @@ import Calendar from "react-calendar";
 import calendarCss from "../components/CSS/calendarCSS.css";
 import moment from "moment";
 import MeetingInfo from "../components/meetingInfo"; // MeetingInfo 컴포넌트를 import합니다.
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useAccessToken from "../components/useAccessToken";
+
 function MyCalendar() {
+  const navigate = useNavigate();
+  const { accessToken } = useAccessToken();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
   const [date, setDate] = useState(new Date());
   const marks = [
     "15-08-2023",
