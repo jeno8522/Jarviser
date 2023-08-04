@@ -83,7 +83,6 @@ public class UserController {
         try{
             Long userId = jwtService.extractUserId(token);
             userService.update(userId,requestUpdateUserDto);
-            resultMap.put("response",SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -114,7 +113,6 @@ public class UserController {
     public ResponseEntity<Map<String,Object>> delete(@PathVariable long userid){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-        ResponseUpdatedDto responseDto = new ResponseUpdatedDto();
 
         try{
             userService.withdrawal(userid);
