@@ -1,3 +1,4 @@
+ 
 {
   "name": "jarviser_frontend",
   "version": "0.1.0",
@@ -9,7 +10,14 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+<<<<<<< HEAD
+=======
     "jquery": "3.5.0",
+>>>>>>> 7e34641e7c0735297e787d241e6f52110ad4d91b
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "jquery": "3.5.0",
+    "jsonwebtoken": "^9.0.1",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "openvidu-browser": "2.27.0",
@@ -19,6 +27,8 @@
     "react-hook-form": "^7.45.2",
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
