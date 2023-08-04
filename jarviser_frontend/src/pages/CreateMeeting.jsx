@@ -11,7 +11,7 @@
 
 // export default CreateMeeting;
 
-import { useState } from "react";
+import {useState} from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent"; // 경로는 실제 파일 위치에 따라 수정하세요.
 import axios from "axios";
 import { useEffect } from "react";
@@ -28,28 +28,11 @@ const CreateMeeting = () => {
     }
   }, [accessToken, navigate]);
   const [userName, setUserName] = useState("1234");
-  const [roomName, setRoomName] = useState("My Room");
+  const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
-  const headers = {
-    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-  };
-  const sendData = {
-    meetingName: roomName,
-  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      axios.post("http://localhost:8081/meeting/create/meetingtest", sendData, {
-        headers,
-      });
-      console.log(headers);
-      console.log(sendData);
-      alert(JSON.stringify(sendData));
-
-      reset();
-    } catch (error) {
-      console.error("There was an error!", error);
-    }
     setShowVideoRoom(true); // 폼이 제출되었으므로 VideoRoomComponent를 보여줍니다.
   };
 
@@ -65,17 +48,18 @@ const CreateMeeting = () => {
           />
         </label>
         <label>
-          Room Name:
+          Session Name:
           <input
             type="text"
-            value={roomName}
-            onChange={(event) => setRoomName(event.target.value)}
+            value={sessionName}
+            onChange={(event) => setSessionName(event.target.value)}
           />
         </label>
         <input type="submit" value="Submit" />
       </form>
       {showVideoRoom && (
-        <VideoRoomComponent userName={userName} sessionName={roomName} />
+        <VideoRoomComponent userName={userName} sessionName={sessionName} />
+        // <VideoRoomComponent />
       )}
     </div>
   );
