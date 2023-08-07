@@ -1,56 +1,66 @@
-// import {useState} from "react";
-// import VideoRoomComponent from "../components/openvidu/VideoRoomComponentid";
-// // import registerServiceWorker from "../registerServiceWorker";
-// import ReactDOM from "react-dom/client";
-// console.log("방 생성하기 호출!");
-
-// function CreateMeeting() {
-//   return <VideoRoomComponent />;
-// }
-// // registerServiceWorker();
-
-// export default CreateMeeting;
-
-import { useState } from "react";
+import {useState, useEffect} from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent"; // 경로는 실제 파일 위치에 따라 수정하세요.
 import axios from "axios";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+
+const generateInitialSessionName = () => {
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  const randomValue = array[0];
+  const encoder = new TextEncoder();
+  const data = encoder.encode(randomValue.toString());
+
+  return window.crypto.subtle.digest("SHA-256", data).then((hashBuffer) => {
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return hashHex;
+  });
+};
 
 const CreateMeeting = () => {
   const navigate = useNavigate();
-  const { accessToken } = useAccessToken();
+  const {accessToken} = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/login");
     }
   }, [accessToken, navigate]);
+
   const [userName, setUserName] = useState("1234");
-  const [roomName, setRoomName] = useState("My Room");
+  const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
-  const headers = {
-    Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-  };
-  const sendData = {
-    meetingName: roomName,
-  };
+
+  useEffect(() => {
+    async function initializeSessionName() {
+      const generatedName = await generateInitialSessionName();
+      setSessionName(generatedName);
+    }
+
+    initializeSessionName();
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      axios.post("http://localhost:8081/meeting/create/meetingtest", sendData, {
-        headers,
-      });
-      console.log(headers);
-      console.log(sendData);
-      alert(JSON.stringify(sendData));
+    setShowVideoRoom(true);
+  };
 
-      reset();
-    } catch (error) {
-      console.error("There was an error!", error);
-    }
-    setShowVideoRoom(true); // 폼이 제출되었으므로 VideoRoomComponent를 보여줍니다.
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(sessionName)
+      .then(() => {
+        alert("Session Name copied to clipboard!");
+      })
+      .catch((err) => {
+        alert("Failed to copy!");
+      });
+  };
+
+  const handleSessionNameChange = (event) => {
+    setSessionName(event.target.value);
   };
 
   return (
@@ -65,17 +75,20 @@ const CreateMeeting = () => {
           />
         </label>
         <label>
-          Room Name:
+          Session Name:
           <input
             type="text"
-            value={roomName}
-            onChange={(event) => setRoomName(event.target.value)}
+            value={sessionName}
+            onChange={handleSessionNameChange}
           />
+          <button type="button" onClick={handleCopy}>
+            Copy
+          </button>
         </label>
         <input type="submit" value="Submit" />
       </form>
       {showVideoRoom && (
-        <VideoRoomComponent userName={userName} sessionName={roomName} />
+        <VideoRoomComponent userName={userName} sessionName={sessionName} />
       )}
     </div>
   );

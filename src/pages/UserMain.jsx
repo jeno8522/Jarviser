@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { BrowserRouter, Route } from "react-router-dom";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {BrowserRouter, Route} from "react-router-dom";
 import Signup from "./Signup";
 import Sidebar from "../components/molecules/Sidebar";
 import MyPage from "./MyPage";
