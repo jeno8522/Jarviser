@@ -10,7 +10,7 @@ import MyCalendar from "./pages/MyCalendar";
 import MyReport from "./pages/MyReport";
 import Reservation from "./pages/Reservation";
 import CreateMeeting from "./pages/CreateMeeting";
-
+import JoinMeeting from "./pages/JoinMeeting";
 function App() {
   return (
     <>
@@ -26,6 +26,7 @@ function App() {
           <Route path="/myreport" element={<MyReport />} />
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/createmeeting" element={<CreateMeeting />} />
+          <Route path="/joinmeeting" element={<JoinMeeting />} />
         </Routes>
       </Router>
       <Footer></Footer>
