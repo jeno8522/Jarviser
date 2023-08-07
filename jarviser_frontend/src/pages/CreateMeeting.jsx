@@ -1,5 +1,9 @@
 import {useState, useEffect} from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent"; // 경로는 실제 파일 위치에 따라 수정하세요.
+import axios from "axios";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import useAccessToken from "../components/useAccessToken";
 
 const generateInitialSessionName = () => {
   const array = new Uint32Array(1);
@@ -18,6 +22,15 @@ const generateInitialSessionName = () => {
 };
 
 const CreateMeeting = () => {
+  const navigate = useNavigate();
+  const {accessToken} = useAccessToken();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
+
   const [userName, setUserName] = useState("1234");
   const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
