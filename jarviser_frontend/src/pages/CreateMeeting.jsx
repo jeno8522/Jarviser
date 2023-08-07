@@ -1,7 +1,6 @@
 import {useState, useEffect} from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent"; // 경로는 실제 파일 위치에 따라 수정하세요.
 import axios from "axios";
-import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 
