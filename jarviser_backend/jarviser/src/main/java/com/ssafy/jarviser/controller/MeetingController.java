@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
@@ -19,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("meeting")
@@ -27,14 +27,16 @@ public class MeetingController {
     private final JwtService jwtService;
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> transcript(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file, Long meetingId) throws IOException {
+        Map<String, String> resultMap = new HashMap<>();
         HttpStatus status = null;
         String filePath = "audio/" + file.getOriginalFilename();
         log.debug(filePath);
-        String textResponse = "failed";
 
+        //TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
         try (
                 FileOutputStream fos = new FileOutputStream(filePath);
                 // 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
@@ -45,7 +47,6 @@ public class MeetingController {
 
             while ((readCount = is.read(buffer)) != -1) {
                 //  파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-
                 fos.write(buffer, 0, readCount);
                 // 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
             }
@@ -53,13 +54,16 @@ public class MeetingController {
             throw new RuntimeException("file Save Error");
         }
         try {
-            textResponse = openAIService.whisperAPICall(filePath).block();
-            log.debug("textResponse : {}", textResponse);
+            String textResponse = openAIService.whisperAPICall(filePath).block();
+            assert textResponse != null;
+            messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, textResponse);
+            resultMap.put("text", textResponse);
         } catch (Exception e) {
             log.error("텍스트 보내기 실패 : {}", e);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<>(textResponse, status.OK);
+        return new ResponseEntity<>(resultMap, status.OK);
     }
 
 
