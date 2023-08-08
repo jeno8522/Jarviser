@@ -29,11 +29,11 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file) throws IOException {
-        Map<String, String> resultMap = new HashMap<>();
+    public ResponseEntity<String> transcript(@RequestParam("file") MultipartFile file) throws IOException {
         HttpStatus status = null;
         String filePath = "audio/" + file.getOriginalFilename();
         log.debug(filePath);
+        String textResponse = "failed";
 
         try (
                 FileOutputStream fos = new FileOutputStream(filePath);
@@ -53,13 +53,13 @@ public class MeetingController {
             throw new RuntimeException("file Save Error");
         }
         try {
-            String textResponse = openAIService.whisperAPICall(filePath).block();
-            resultMap.put("text", textResponse);
+            textResponse = openAIService.whisperAPICall(filePath).block();
+            log.debug("textResponse : {}", textResponse);
         } catch (Exception e) {
             log.error("텍스트 보내기 실패 : {}", e);
         }
 
-        return new ResponseEntity<>(resultMap, status.OK);
+        return new ResponseEntity<>(textResponse, status.OK);
     }
 
 
