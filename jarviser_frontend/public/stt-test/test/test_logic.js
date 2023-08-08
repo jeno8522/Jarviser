@@ -73,8 +73,6 @@ document.getElementById("vad_start").addEventListener("click", () => {
     .catch((err) => console.log("getUserMedia() failed: ", err));
 });
 // document.getElementById("vad_stop").addEventListener("click", stopVAD);
-document.getElementById("start").addEventListener("click", startAudio);
-document.getElementById("stop").addEventListener("click", stopAudio);
 
 async function sendAudio(blob) {
   try {
@@ -83,14 +81,14 @@ async function sendAudio(blob) {
     formData.append("file", blob, "audio" + index + ".wav");
     const response = await fetch(url, {
       method: "POST",
-      body: formData,
+      body: [formData, "testID"],
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data.text);
+    console.log(data.text.text);
   } catch (error) {
     console.error("Error sending audio", error);
   }
