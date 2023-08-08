@@ -27,12 +27,12 @@ function UserMain() {
       {/* <div className="App"> */}
       <Sidebar />
       {/* </div> */}
-      <Link to="/createmeeting" target="_blank">
+      <Link to="/createmeeting">
         <button type="button" id="create_meeting_button">
           생성하기
         </button>
       </Link>
-      <Link to="/joinmeeting" target="_blank">
+      <Link to="/joinmeeting">
         <button type="button" id="join_meeting_button">
           입장하기
         </button>
