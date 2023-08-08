@@ -71,7 +71,8 @@ public class OpenAIService {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(BodyInserters.fromValue(requestBody))
                         .retrieve()
-                        .bodyToMono(String.class) // Assuming the result is of type String. Modify this part as appropriate based on the actual response type.
+                        .bodyToMono(String.class)
+                        // Assuming the result is of type String. Modify this part as appropriate based on the actual response type.
                         .doOnError(e -> {
                             // Log error or take action
                             System.out.println("Error occurred: " + e.getMessage());

@@ -22,8 +22,6 @@ public class MeetingServiceImp implements MeetingService{
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
 
-
-
     @Override
     public Meeting createMeeting(Long hostId, String meetingName) {
         //미팅 객체 생성

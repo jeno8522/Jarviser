@@ -2,9 +2,11 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.dto.RequestJoinMeetingDto;
+import com.ssafy.jarviser.dto.TempTranscriptRecordDto;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
+import com.ssafy.jarviser.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class MeetingController {
     private final JwtService jwtService;
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
+    private final StatisticsService statisticsService;
     private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -57,6 +60,7 @@ public class MeetingController {
             String textResponse = openAIService.whisperAPICall(filePath).block();
             assert textResponse != null;
             messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, textResponse);
+
             resultMap.put("text", textResponse);
         } catch (Exception e) {
             log.error("텍스트 보내기 실패 : {}", e);
@@ -104,6 +108,7 @@ public class MeetingController {
             Long joinUserId = jwtService.extractUserId(token);
             meetingService.joinMeeting(joinUserId, meeting);
             resultMap.put("meeting", meeting);
+
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             log.error("미팅 참여 실패 : {}", e);
