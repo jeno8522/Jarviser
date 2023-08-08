@@ -10,7 +10,7 @@ const WebSocketComponent = () => {
   // 컴포넌트 마운트 시 웹소켓 연결을 설정합니다.
   useEffect(() => {
     const topic = "testTopic";
-    const websocket = new WebSocket('ws://localhost:8080/'+topic);
+    const websocket = new WebSocket('ws://localhost:8081/ws/topic/meeting/testid');
     setWs(websocket);
 
     // 메시지 수신 시 처리
