@@ -1,17 +1,22 @@
 package com.ssafy.jarviser.controller;
 
+import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.*;
 import com.ssafy.jarviser.security.JwtService;
+import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,6 +28,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
+    private final MeetingService meetingService;
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
@@ -119,6 +125,31 @@ public class UserController {
         Long userid = jwtService.extractUserId(token);
         try{
             userService.withdrawal(userid);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    //유저 참여 미팅 내역
+    @GetMapping("/meetinglist")
+    public ResponseEntity<Map<String,Object>> meetingList(
+            @RequestHeader("Authorization") String token
+    ){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try{
+            token = token.split(" ")[1];
+            Long userid = jwtService.extractUserId(token);
+            List<Meeting> meetingList = meetingService.findMeetingListByUserId(userid);
+            List<ResponseMeetingDto> responseMeetingDtos = new ArrayList<>();
+            for(Meeting meeting : meetingList){
+                User host = userService.findUserById(meeting.getHostId());
+                responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime()));
+            }
+            resultMap.put("meetinglist",responseMeetingDtos);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);

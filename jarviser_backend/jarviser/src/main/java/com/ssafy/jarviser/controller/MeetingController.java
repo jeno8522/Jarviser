@@ -1,10 +1,10 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.Meeting;
-import com.ssafy.jarviser.dto.RequestJoinMeetingDto;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
+import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -64,39 +64,44 @@ public class MeetingController {
 
 
     //미팅생성
-    @PostMapping("/create/{meetingName}")
+    @PostMapping("/create")
     public ResponseEntity<Map<String ,Object>> createMeeting(
             @RequestHeader("Authorization") String token,
-            @RequestParam String meetingName){
+            @RequestBody String meetingName)
+    {
         log.debug("CreateMeeting............................create meetingName:" + meetingName);
 
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        Map<String, Object> responseMap = new HashMap<>();
+        HttpStatus httpStatus = null;
         token = token.split(" ")[1];
         try {
             Long hostId = jwtService.extractUserId(token);
-            meetingService.createMeeting(hostId,meetingName);
-            status = HttpStatus.ACCEPTED;
+            Meeting meeting = meetingService.createMeeting(hostId,meetingName);
+            String encryptedKey = meeting.getEncryptedKey();
+            httpStatus = HttpStatus.ACCEPTED;
+            responseMap.put("encryptedKey",encryptedKey);
+
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<>(resultMap, status);
+        return new ResponseEntity<>(responseMap, httpStatus);
     }
+
     //미팅 참여
-    @PostMapping("/joinMeeting/{meetingId}")
+    @PostMapping("/joinMeeting")
     public ResponseEntity<Map<String,Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
-            @PathVariable Long meetingId) {
-
-        Meeting meeting = meetingService.findMeetingById(meetingId);
-        log.debug("JoinMeeting............................Join meetingName:" + meeting.getMeetingName());
+            @RequestBody String encryptedKey){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try {
+            long meetingId = Long.parseLong(AESEncryptionUtil.decrypt(encryptedKey));
+            Meeting meeting = meetingService.findMeetingById(meetingId);
+            log.debug("JoinMeeting............................Join meetingName:" + meeting.getMeetingName());
             Long joinUserId = jwtService.extractUserId(token);
             meetingService.joinMeeting(joinUserId, meeting);
             resultMap.put("meeting", meeting);
@@ -111,6 +116,5 @@ public class MeetingController {
     //미팅 조회
     //미팅 참여자 조회
     //미팅 통계 상세보기
-    //사용자 미팅 참여내역 보기
     //리포트 열람
 }
