@@ -15,7 +15,6 @@ public class MeetingRepositoryImp implements MeetingRepository{
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     public void saveMeeting(Meeting meeting) {
         em.persist(meeting);
