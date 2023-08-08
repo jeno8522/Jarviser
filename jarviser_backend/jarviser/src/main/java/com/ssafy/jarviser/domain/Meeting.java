@@ -1,8 +1,11 @@
 package com.ssafy.jarviser.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"audioMessages", "chatMessages", "report", "participants"})
-public class Meeting {
+public class Meeting implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meeting_id")
@@ -32,6 +35,9 @@ public class Meeting {
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
+    @Column(name = "encryptedKey")
+    private String encryptedKey;
 
     @OneToMany(mappedBy = "meeting")
     private final List<AudioMessage> audioMessages = new ArrayList<>();
@@ -53,5 +59,5 @@ public class Meeting {
         this.meetingUrl = meetingUrl;
         this.startTime = startTime;
     }
-
 }
+

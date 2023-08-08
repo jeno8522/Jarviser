@@ -9,6 +9,7 @@ import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,12 +26,15 @@ public class InsertTestDummy implements CommandLineRunner {
     @Autowired
     private ReservatedMeetingRepository reservatedMeetingRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
         // 여기에 애플리케이션 시작 시에 실행할 쿼리를 작성하세요.
         User user1 = User.builder()
                 .email("taehyun0121@naver.com")
-                .password("password")
+                .password(passwordEncoder.encode("password"))
                 .name("User")
                 .role(Role.USER)
                 .build();
