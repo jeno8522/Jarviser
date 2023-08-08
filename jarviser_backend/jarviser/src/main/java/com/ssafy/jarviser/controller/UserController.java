@@ -145,8 +145,10 @@ public class UserController {
             Long userid = jwtService.extractUserId(token);
             List<Meeting> meetingList = meetingService.findMeetingListByUserId(userid);
             List<ResponseMeetingDto> responseMeetingDtos = new ArrayList<>();
+
             for(Meeting meeting : meetingList){
                 User host = userService.findUserById(meeting.getHostId());
+                System.out.println("호스트들의 이름 : " +host.getName());
                 responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime()));
             }
             resultMap.put("meetinglist",responseMeetingDtos);
