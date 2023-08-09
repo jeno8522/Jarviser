@@ -29,7 +29,7 @@ const CreateMeeting = () => {
       navigate("/login");
     }
   }, [accessToken, navigate]);
-
+  console.log("accessToken 입니다유 ===", accessToken);
   const [userName, setUserName] = useState("1234");
   const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
