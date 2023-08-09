@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <input type="file" id="audioFile" />
+    <button onclick="uploadAudio()">Upload Audio</button>
+    <div id="response"></div>
+
+    <script>
+        var meetingId = 3; // 회의 ID 설정
+        var socket = new SockJS('http://localhost:8081/ws');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            stompClient.subscribe('/topic/meeting/' + meetingId, function(messageOutput) {
+                //받았다. 그러면 바디를 열어서 확인하면
+                //바디 안에 누가 보냈는지 
+                //어떤 타입인지 stt냐 chating
+                //어떤 내용인지
+                document.getElementById('response').innerText = 'Received: ' + messageOutput.body;
+
+            });
+        });
+
+        function uploadAudio() {
+            var audioFile = document.getElementById('audioFile').files[0];
+            var serverUrl = 'http://localhost:8081/meeting/transcript'; // 서버의 URL
+            
+            var formData = new FormData();
+            formData.append('file', audioFile);
+            formData.append('meetingId', meetingId);
+
+            fetch(serverUrl, {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json()).then(data => {
+                console.log('File uploaded successfully');
+            });
+        }
+    </script>
+</body>
+</html>

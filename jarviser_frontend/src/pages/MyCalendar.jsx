@@ -6,6 +6,7 @@ import MeetingInfo from "../components/meetingInfo"; // MeetingInfo 컴포넌트
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+import Sidebar from "../components/molecules/Sidebar";
 
 function MyCalendar() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function MyCalendar() {
 
   return (
     <>
+    <Sidebar />
       <Calendar
         onChange={handleDateChange} // 수정된 핸들러를 사용합니다.
         value={date} // 'date' 대신 'value' prop을 사용합니다.

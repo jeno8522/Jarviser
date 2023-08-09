@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { BrowserRouter, Route } from "react-router-dom";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {BrowserRouter, Route} from "react-router-dom";
 import Signup from "./Signup";
 import Sidebar from "../components/molecules/Sidebar";
 import MyPage from "./MyPage";
 import MyCalendar from "./MyCalendar";
 import MyReport from "./MyReport";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import { useEffect } from "react";
+import {useEffect} from "react";
 
 function UserMain() {
   const navigate = useNavigate();
-  const { accessToken } = useAccessToken();
+  const {accessToken} = useAccessToken();
   const reservation = () => {
     navigate("/reservation");
   };
@@ -27,14 +27,16 @@ function UserMain() {
       {/* <div className="App"> */}
       <Sidebar />
       {/* </div> */}
-      <Link to="/createmeeting" target="_blank">
+      <Link to="/createmeeting">
         <button type="button" id="create_meeting_button">
           생성하기
         </button>
       </Link>
-      <button type="button" id="join_meeting_button">
-        입장하기
-      </button>
+      <Link to="/joinmeeting">
+        <button type="button" id="join_meeting_button">
+          입장하기
+        </button>
+      </Link>
       <button type="button" id="reserve_meeting_button" onClick={reservation}>
         예약하기
       </button>

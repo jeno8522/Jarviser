@@ -17,6 +17,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
     User findByEmail(String email);
+    User findUserByName(String name);
+    User findUserById(Long id);
+    User findUserByNameAndEmail(String name,String email);
 
 //    @Modifying
 //    @Query("UPDATE User u SET u.password = :password, u.name = :name WHERE u.id = :id")
