@@ -68,6 +68,9 @@ function Main() {
       <div>
         <a href="/stt-test/test/test_code.html">STT 테스트</a>
       </div>
+      <div>
+        <a href="/stt-test/test/test-page.html">웹소켓 테스트</a>
+      </div>
       <WebSocketComponent/>
     </>
   );

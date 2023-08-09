@@ -16,7 +16,12 @@
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
             stompClient.subscribe('/topic/meeting/' + meetingId, function(messageOutput) {
+                //받았다. 그러면 바디를 열어서 확인하면
+                //바디 안에 누가 보냈는지 
+                //어떤 타입인지 stt냐 chating
+                //어떤 내용인지
                 document.getElementById('response').innerText = 'Received: ' + messageOutput.body;
+
             });
         });
 

@@ -30,19 +30,16 @@ function startVAD(stream) {
 function startAudio(stream) {
   if (!mediaRecorder) {
     mediaRecorder = new MediaRecorder(stream); // Use the 'stream' parameter here
-    
-    mediaRecorder.addEventListener("start", function () {
-      
-    });
+
+    mediaRecorder.addEventListener("start", function () {});
     mediaRecorder.addEventListener("dataavailable", function (e) {
       if (e.data.size > 0) {
         recordedChunks.push(e.data);
         console.log("pushing..");
       }
     });
-    
-    mediaRecorder.addEventListener("pause", function () {
-      mediaRecorder.dataavailable();
+
+    mediaRecorder.addEventListener("stop", function () {
       let blob = new Blob(recordedChunks, { type: "audio/wav" });
       recordedChunks = [];
       sendAudio(blob);
@@ -50,13 +47,13 @@ function startAudio(stream) {
     });
     mediaRecorder.start();
   } else {
-    mediaRecorder.resume();
+    mediaRecorder.start();
   }
 }
 
 function stopAudio() {
   if (mediaRecorder) {
-    mediaRecorder.pause();
+    mediaRecorder.stop();
   }
 }
 
@@ -71,9 +68,9 @@ async function sendAudio(blob) {
   try {
     const url = "http://localhost:8081/meeting/transcript"; //backend api url 넣기
     const formData = new FormData();
-    const testID = 12345; //임시로 넣은 testID
+    const testID = 3; //임시로 넣은 testID
     formData.append("file", blob, "audio" + index + ".wav");
-    formData.append("testID", testID);
+    formData.append("meetingId", testID);
     const response = await fetch(url, {
       method: "POST",
       body: formData,
