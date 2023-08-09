@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+import Sidebar from "../components/molecules/Sidebar";
 
 function MyReport() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function MyReport() {
 
   return (
     <>
+    <Sidebar />
       <div>
         <h1>회의록</h1>
       </div>
@@ -42,7 +44,7 @@ function MyReport() {
               <h2>{report.meetingName}</h2>
               <p>Host: {report.hostName}</p>
               <p>Date: {report.date}</p>
-              <Link to={`/report/${report.id}`}>{report.meetingName} 상세보기</Link>
+              <Link to={"/reportdetail"}>{report.meetingName} 상세보기</Link>
             </li>
           ))}
         </ul>
