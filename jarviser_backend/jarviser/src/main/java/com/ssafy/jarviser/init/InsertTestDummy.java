@@ -6,12 +6,21 @@ import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
 import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.UserRepository;
 import com.ssafy.jarviser.service.MeetingService;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class InsertTestDummy implements CommandLineRunner {
@@ -71,7 +80,7 @@ public class InsertTestDummy implements CommandLineRunner {
         User test = User.builder()
                 .email("test@gmail.com")
                 .password(passwordEncoder.encode("test"))
-                .name("test")
+                .name("testtesttest")
                 .role(Role.USER)
                 .build();
 
@@ -147,5 +156,38 @@ public class InsertTestDummy implements CommandLineRunner {
 
         //홍웅 미팅에 테스트 참여
         meetingService.joinMeeting(test.getId(),hongWoongMeeting);
+
+        //테스트 미팅에서 발화
+
+
+        try (InputStream file = getClass().getResourceAsStream("/MeetingDummyFile/meeting_notes.xlsx");) {
+            Workbook workbook = new XSSFWorkbook(file);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                Cell speakerCell = row.getCell(0);
+                Cell contentCell = row.getCell(1);
+
+                String speaker = speakerCell != null ? speakerCell.getStringCellValue().trim() : "";
+                String content = contentCell != null ? contentCell.getStringCellValue().trim() : "";
+                if(content.equals("내용"))continue;
+
+                AudioMessage audioMessage = AudioMessage.builder()
+                                                .userName(speaker)
+                                                        .content(content)
+                                                                .speechLength(content.length())
+                                                                        .meeting(testMeeting)
+                                                                                .build();
+
+                meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
+                System.out.println("발화자: " + speaker);
+                System.out.println("내용: " + content);
+                System.out.println("=======================");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

@@ -32,6 +32,8 @@ dependencies {
 	// -- QueryDSL ---
 	// AES 암호화 라이브러리 추가
 	implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
+	//excel 파일 읽기 위한 라이브러리 추가
+	implementation 'org.apache.poi:poi-ooxml:5.1.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'

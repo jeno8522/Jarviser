@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.repository;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.domain.User;
@@ -34,6 +35,18 @@ public class MeetingRepositoryImp implements MeetingRepository{
         )
                 .setParameter("meetingId",meetingId)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId) {
+        return em.createQuery(
+                "SELECT AudioMessage " +
+                        "FROM AudioMessage am "+
+                        "WHERE am.meeting.id = :meetingId"
+        , AudioMessage.class)
+                .setParameter("meetingId",meetingId)
+                .getResultList()
+                ;
     }
 
     @Override

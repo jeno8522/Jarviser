@@ -1,6 +1,7 @@
 package com.ssafy.jarviser.service;
 
 import com.ssafy.jarviser.domain.*;
+import com.ssafy.jarviser.repository.AudioMessageRepository;
 import com.ssafy.jarviser.repository.MeetingRepository;
 import com.ssafy.jarviser.repository.ParticipantRepository;
 import com.ssafy.jarviser.repository.UserRepository;
@@ -22,6 +23,7 @@ public class MeetingServiceImp implements MeetingService{
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final AudioMessageRepository audioMessageRepository;
 
     @Override
     public Meeting createMeeting(Long hostId, String meetingName){
@@ -93,6 +95,18 @@ public class MeetingServiceImp implements MeetingService{
     public Report meetingReport(long meetingId) {
 
         return meetingRepository.findMeetingReportByMeetingId(meetingId);
+    }
+
+    @Override
+    public List<AudioMessage> findAudioMessageByMeetingIdAndUserId(long meetingId) {
+        return meetingRepository.findAllAudioMessageByMeetingId(meetingId);
+    }
+
+    @Override
+    public void addAudioMessageToMeeting(long meetingId, AudioMessage audioMessage) {
+        Meeting meeting = meetingRepository.findMeetingById(meetingId);
+        meeting.addAudioMessage(audioMessage);
+        audioMessageRepository.save(audioMessage);
     }
 
 
