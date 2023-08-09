@@ -108,7 +108,7 @@ function Reservation() {
             isSubmitted ? (errors.date ? "true" : "false") : undefined
           }
           {...register("date", {
-            required: "날짜는 필수 입력입니다.",
+            required: "날짜는 필수 입력입니다.", 
           })}
         />
         {errors.date && <small role="alert">{errors.date.message}</small>}
