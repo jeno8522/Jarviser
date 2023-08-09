@@ -40,10 +40,8 @@ public class MeetingRepositoryImp implements MeetingRepository{
     public List<Meeting> findAllMeetingByUserId(long userid) {
 
         return em.createQuery(
-                        "SELECT m FROM Meeting m " +
-                                "JOIN m.participants p " +
-                                "JOIN p.user u " +
-                                "WHERE u.id = :userid", Meeting.class)
+                        "SELECT meeting FROM Participant p " +
+                                "WHERE p.user.id = :userid ", Meeting.class)
                 .setParameter("userid", userid)
                 .getResultList();
     }
