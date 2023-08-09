@@ -22,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = {"*"})
 @RequestMapping("meeting")
 public class MeetingController {
     private final JwtService jwtService;
