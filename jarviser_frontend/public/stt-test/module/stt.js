@@ -1,10 +1,16 @@
-//vad 적용 코드
+document.getElementById("vad_start").addEventListener("click", () => {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => startVAD(stream)) // Pass the 'stream' to the startVAD function
+    .catch((err) => console.log("getUserMedia() failed: ", err));
+});
+
+document.getElementById("vad_stop").addEventListener("click", stopVAD);
 
 let mediaRecorder;
 let recordedChunks = [];
 let index = 0;
 let vad;
-let stream;
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = new AudioContext();
@@ -25,6 +31,19 @@ function startVAD(stream) {
   vad = new window.VAD(options); // Initialize VAD with the correct options
   vad.start = true; // Start VAD
   console.log("startVAD");
+}
+
+function stopVAD() {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then(function (stream) {
+      var audioTrack = stream.getAudioTracks()[0];
+      audioTrack.enabled = false;
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  console.log("stopVAD");
 }
 
 function startAudio(stream) {
@@ -56,13 +75,6 @@ function stopAudio() {
     mediaRecorder.stop();
   }
 }
-
-document.getElementById("vad_start").addEventListener("click", () => {
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then((stream) => startVAD(stream)) // Pass the 'stream' to the startVAD function
-    .catch((err) => console.log("getUserMedia() failed: ", err));
-});
 
 async function sendAudio(blob) {
   try {

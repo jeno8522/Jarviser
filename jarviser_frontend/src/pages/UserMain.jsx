@@ -40,6 +40,9 @@ function UserMain() {
       <button type="button" id="reserve_meeting_button" onClick={reservation}>
         예약하기
       </button>
+      <div>
+        <a href="/stt-test/test/test-main-page.html">STT + 웹소켓 테스트</a>
+      </div>
     </>
   );
 }

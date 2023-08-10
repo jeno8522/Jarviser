@@ -67,7 +67,14 @@ public class MeetingController {
         try {
             String textResponse = openAIService.whisperAPICall(filePath).block();
             assert textResponse != null;
-            messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, textResponse);
+
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("userId", "임시 유저 이름");
+            responseMap.put("type", "stt");
+            responseMap.put("content", (String) gson.fromJson(textResponse, HashMap.class).get("text"));
+
+            String response = gson.toJson(responseMap).toString();
+            messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, response);
             resultMap.put("text", textResponse);
         } catch (Exception e) {
             log.error("텍스트 보내기 실패 : {}", e);
@@ -151,10 +158,9 @@ public class MeetingController {
         responseMap.put("userId", userName.toString());
         responseMap.put("type", "chat");
         responseMap.put("content", content);
+        String response = gson.toJson(responseMap).toString();
 
-        String responseJson = gson.toJson(responseMap);
-
-        messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, responseJson.toString());
-        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+        messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
