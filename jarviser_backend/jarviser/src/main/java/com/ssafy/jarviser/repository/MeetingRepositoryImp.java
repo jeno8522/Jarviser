@@ -40,7 +40,7 @@ public class MeetingRepositoryImp implements MeetingRepository{
     @Override
     public List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId) {
         return em.createQuery(
-                "SELECT AudioMessage " +
+                "SELECT am " +
                         "FROM AudioMessage am "+
                         "WHERE am.meeting.id = :meetingId"
         , AudioMessage.class)

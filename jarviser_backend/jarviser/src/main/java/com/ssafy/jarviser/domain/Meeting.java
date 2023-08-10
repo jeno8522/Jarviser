@@ -57,10 +57,9 @@ public class Meeting implements Serializable {
         this.startTime = startTime;
     }
 
-    //양방향 맵핑 설정
-    public void addAudioMessage(AudioMessage audioMessage) {
+    public void addAudioMessage(AudioMessage audioMessage){
         this.audioMessages.add(audioMessage);
-        audioMessage.setMeeting(this); // 연관 관계의 주인이 AudioMessage이므로 이 부분이 중요
+        audioMessage.setMeeting(this);
     }
 }
 

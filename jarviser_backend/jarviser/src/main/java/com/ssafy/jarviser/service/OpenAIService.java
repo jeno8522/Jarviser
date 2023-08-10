@@ -77,4 +77,6 @@ public class OpenAIService {
                             System.out.println("Error occurred: " + e.getMessage());
                         });
     }
+
+
 }

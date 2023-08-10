@@ -160,23 +160,5 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    //유저 미팅 오디오 메시지 api
-    @GetMapping("/meetingdetail")
-    public ResponseEntity<Map<String,Object>> meetingDetail(
-            @RequestHeader("Authorization") String token,
-            @RequestBody Long meetingId
-    ){
-        Map<String,Object> response = new HashMap<>();
-        HttpStatus httpStatus = null;
-        try{
-            token = token.split(" ")[1];
-            List<AudioMessage> audioMessages = meetingService.findAudioMessageByMeetingIdAndUserId(meetingId);
-            response.put("audioMessages",audioMessages);
-            httpStatus = HttpStatus.OK;
 
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity<>(response,httpStatus);
-    }
 }
