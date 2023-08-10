@@ -1,8 +1,6 @@
-import { VAD } from "./vad.js";
-
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
-    .getUserMedia({ audio: true })
+    .getUserMedia({audio: true})
     .then((stream) => startVAD(stream)) // Pass the 'stream' to the startVAD function
     .catch((err) => console.log("getUserMedia() failed: ", err));
 });
@@ -30,14 +28,15 @@ function startVAD(stream) {
       console.log("voice_start");
     },
   };
-  vad = new VAD(options); // Initialize VAD with the correct options
+  vad = new window.VAD(options); // Initialize VAD with the correct options
+  console.log("vad.start는 여기요여기 == ", vad.start);
   vad.start = true; // Start VAD
   console.log("startVAD");
 }
 
 function stopVAD() {
   navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
+    .getUserMedia({audio: true, video: false})
     .then(function (stream) {
       var audioTrack = stream.getAudioTracks()[0];
       audioTrack.enabled = false;
@@ -61,7 +60,7 @@ function startAudio(stream) {
     });
 
     mediaRecorder.addEventListener("stop", function () {
-      let blob = new Blob(recordedChunks, { type: "audio/wav" });
+      let blob = new Blob(recordedChunks, {type: "audio/wav"});
       recordedChunks = [];
       sendAudio(blob);
       index++;
@@ -80,7 +79,7 @@ function stopAudio() {
 
 async function sendAudio(blob) {
   try {
-    const url = "http://localhost:8081/meeting/transcript"; //backend api url 넣기
+    const url = "http://localhost:8081/meeting/transcript";
     const formData = new FormData();
     const testID = 3; //임시로 넣은 testID
     formData.append("file", blob, "audio" + index + ".wav");
@@ -95,6 +94,13 @@ async function sendAudio(blob) {
     }
     const data = await response.json();
     console.log(data.text);
+
+    // STT 결과를 <div id="stt-chatting"></div>에 추가하는 부분
+    const chatDiv = document.getElementById("stt-chatting");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "stt-message"; // CSS 클래스 추가 (필요시 스타일링을 위해)
+    messageDiv.textContent = data.text;
+    chatDiv.appendChild(messageDiv);
   } catch (error) {
     console.error("Error sending audio", error);
   }
