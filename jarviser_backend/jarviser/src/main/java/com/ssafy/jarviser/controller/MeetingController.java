@@ -1,18 +1,27 @@
 package com.ssafy.jarviser.controller;
 
+import com.nimbusds.jose.shaded.gson.Gson;
 import com.ssafy.jarviser.domain.Meeting;
+import com.ssafy.jarviser.dto.ResponseMessage;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +38,7 @@ public class MeetingController {
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final Gson gson = new Gson();
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file, Long meetingId) throws IOException {
@@ -122,4 +132,29 @@ public class MeetingController {
     //미팅 참여자 조회
     //미팅 통계 상세보기
     //리포트 열람
+    //메시지 보내기
+    @PostMapping(value = "/message", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> getMessage(
+            @RequestHeader("Authorization") String token,
+            Long meetingId, String content) throws InterruptedException {
+
+        token = token.split(" ")[1];
+        String userName = "";
+        try {
+            Long userId = jwtService.extractUserId(token);
+            userName = jwtService.extractUserName(token);
+        } catch (Exception e) {
+            log.error("아이디 뽑아내기 실패", e);
+        }
+
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("userId", userName.toString());
+        responseMap.put("type", "chat");
+        responseMap.put("content", content);
+
+        String responseJson = gson.toJson(responseMap);
+
+        messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, responseJson.toString());
+        return new ResponseEntity<>(responseJson, HttpStatus.OK);
+    }
 }
