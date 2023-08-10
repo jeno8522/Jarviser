@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.meeting;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.RequestUserDto;
@@ -228,5 +229,16 @@ public class MeetingTest {
             String targetName = targetWooseokAttendanceMeeting[i];
             Assertions.assertThat(name).isEqualTo(targetName);
         }
+    }
+
+    @Test
+    @DisplayName("Meeting Auidio Message Test")
+    @Transactional
+    void testMeetingAudioMessages() throws Exception{
+        //given
+        List<AudioMessage> audioMessageByMeetingId = ms.findAudioMessageByMeetingId(1);
+        //when
+        System.out.println(audioMessageByMeetingId);
+        //then
     }
 }

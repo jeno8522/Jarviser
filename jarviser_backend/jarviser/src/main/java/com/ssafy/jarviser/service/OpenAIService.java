@@ -1,5 +1,7 @@
 package com.ssafy.jarviser.service;
 
+import com.ssafy.jarviser.domain.AudioMessage;
+import com.ssafy.jarviser.dto.ResponseChatGPTKeywordsDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
@@ -13,15 +15,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
 public class OpenAIService {
 
     private static final String token = "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";
+
     public Mono<String> whisperAPICall(String filePath) throws URISyntaxException, IOException {
 
         WebClient webClient = WebClient.create("https://api.openai.com/v1/audio/transcriptions");
@@ -34,18 +35,18 @@ public class OpenAIService {
         builder.part("model", model);
 
         return
-        webClient.post()
-                .header("Authorization", "Bearer " + token) // "YOUR_OPENAI_API_KEY"를 실제 OpenAI API 키로 대체하세요.
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .retrieve()
-                .bodyToMono(String.class) // 결과가 String 타입이라고 가정합니다. 실제 응답 유형에 따라 이 부분을 적절히 수정하세요.
-                .doOnError(e -> {
-                    // Log error or take action
-                    System.out.println("Error occurred: " + e.getMessage());
-                });
+                webClient.post()
+                        .header("Authorization", "Bearer " + token) // "YOUR_OPENAI_API_KEY"를 실제 OpenAI API 키로 대체하세요.
+                        .body(BodyInserters.fromMultipartData(builder.build()))
+                        .retrieve()
+                        .bodyToMono(String.class) // 결과가 String 타입이라고 가정합니다. 실제 응답 유형에 따라 이 부분을 적절히 수정하세요.
+                        .doOnError(e -> {
+                            // Log error or take action
+                            System.out.println("Error occurred: " + e.getMessage());
+                        });
     }
 
-    public Mono<String> chatGPTPartSummary(String filePath){
+    public Mono<String> chatGPTPartSummary(String filePath) {
         WebClient webClient = WebClient.create("https://api.openai.com/v1/chat/completions");
         String model = "gpt-3.5-turbo";
 
@@ -61,7 +62,10 @@ public class OpenAIService {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", model);
         requestBody.put("messages", Arrays.asList(
-                new HashMap<String, String>() {{ put("role", "user"); put("content", fileContent + "이거 짧게 한글로 요약해줘"); }}
+                new HashMap<String, String>() {{
+                    put("role", "user");
+                    put("content", fileContent + "이거 짧게 한글로 요약해줘");
+                }}
         ));
 
         System.out.println(fileContent);
@@ -76,5 +80,44 @@ public class OpenAIService {
                             // Log error or take action
                             System.out.println("Error occurred: " + e.getMessage());
                         });
+    }
+
+    public List<String> chatGTPKeywords(List<AudioMessage> audioMessages) {
+        WebClient webClient = WebClient.create("https://api.openai.com/v1/chat/completions");
+        String model = "gpt-3.5-turbo";
+        StringBuilder content = new StringBuilder();
+
+        for (AudioMessage audioMessage : audioMessages) {
+            content.append(audioMessage.getContent()).append(' ');
+        }
+        String contentString = content.toString();
+
+        // Create the request body
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", model);
+        requestBody.put("messages", Arrays.asList(
+                new HashMap<String, String>() {{
+                    put("role", "user");
+                    put("content", contentString + " 위 내용의 키워드를 문자열로 반환해줘");
+                }}
+        ));
+
+        String resultString = webClient.post()
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(requestBody))
+                .retrieve()
+                .bodyToMono(ResponseChatGPTKeywordsDTO.class)
+                .map(response -> response.getChoices().get(0).getMessage().getContent())
+                .doOnError(e -> {
+                    // Log error or take action
+                    System.out.println("Error occurred: " + e.getMessage());
+                })
+                .block();
+
+        assert resultString != null;
+        String[] split = resultString.split(", ");
+        return Arrays.asList(split);
+
     }
 }

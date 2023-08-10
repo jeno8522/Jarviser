@@ -1,6 +1,7 @@
 package com.ssafy.jarviser.service;
 
 import com.ssafy.jarviser.domain.*;
+import com.ssafy.jarviser.dto.ResponseAudioMessage;
 import com.ssafy.jarviser.repository.AudioMessageRepository;
 import com.ssafy.jarviser.repository.MeetingRepository;
 import com.ssafy.jarviser.repository.ParticipantRepository;
@@ -24,6 +25,7 @@ public class MeetingServiceImp implements MeetingService{
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
     private final AudioMessageRepository audioMessageRepository;
+    private final AESEncryptionUtil aesEncryptionUtil;
 
     @Override
     public Meeting createMeeting(Long hostId, String meetingName){
@@ -41,7 +43,7 @@ public class MeetingServiceImp implements MeetingService{
 
 
         try {
-            meeting.setEncryptedKey(AESEncryptionUtil.encrypt(Long.toString(meeting.getId())));
+            meeting.setEncryptedKey(aesEncryptionUtil.encrypt(Long.toString(meeting.getId())));
         }catch (Exception ignored){
 
         }
@@ -98,7 +100,7 @@ public class MeetingServiceImp implements MeetingService{
     }
 
     @Override
-    public List<AudioMessage> findAudioMessageByMeetingIdAndUserId(long meetingId) {
+    public List<AudioMessage> findAudioMessageByMeetingId(long meetingId) {
         return meetingRepository.findAllAudioMessageByMeetingId(meetingId);
     }
 
