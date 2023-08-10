@@ -1,6 +1,6 @@
+//FIXME : 추후 import로 대체 현재 html에서 불러오고 있음.
 // import SockJS from "sockjs-client";
 // import Stomp from "stompjs";
-
 document.getElementById("text-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const userText = document.getElementById("text-input").value;
