@@ -42,9 +42,6 @@ public class Meeting implements Serializable {
     @OneToMany(mappedBy = "meeting")
     private final List<AudioMessage> audioMessages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting")
-    private final List<ChatMessage> chatMessages = new ArrayList<>();
-
     @OneToOne(mappedBy = "meeting")
     private Report report;
 
@@ -58,6 +55,11 @@ public class Meeting implements Serializable {
         this.hostId = hostId;
         this.meetingUrl = meetingUrl;
         this.startTime = startTime;
+    }
+
+    public void addAudioMessage(AudioMessage audioMessage){
+        this.audioMessages.add(audioMessage);
+        audioMessage.setMeeting(this);
     }
 }
 

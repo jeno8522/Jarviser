@@ -1,5 +1,6 @@
 package com.ssafy.jarviser.repository;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.domain.User;
@@ -22,5 +23,5 @@ public interface MeetingRepository {
     //미팅의 리포트 겨저오기
     Report findMeetingReportByMeetingId(long meetingId);
 
-
+    List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId);
 }
