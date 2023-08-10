@@ -30,7 +30,7 @@ const CreateMeeting = () => {
     }
   }, [accessToken, navigate]);
 
-  const [userName, setUserName] = useState("1234");
+  const [userName, setUserName] = useState();
   const [sessionName, setSessionName] = useState("My Room");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
 
@@ -42,6 +42,29 @@ const CreateMeeting = () => {
 
     initializeSessionName();
   }, []);
+
+  function base64UrlDecode(str) {
+    // Base64Url로 인코딩된 문자열을 일반 Base64로 변환
+    str = str.replace(/-/g, "+").replace(/_/g, "/");
+
+    // 패딩 추가
+    const pad = str.length % 4;
+    if (pad) {
+      if (pad === 1) {
+        throw new Error("Invalid length while decoding base64url");
+      }
+      str += new Array(5 - pad).join("=");
+    }
+
+    return atob(str);
+  }
+
+  const token = accessToken;
+  const segments = token.split(".");
+  const payload = JSON.parse(base64UrlDecode(segments[1]));
+  const payloadUserName = payload["username"];
+
+  console.log("페이로드 정보!!! === ", payloadUserName); // 이렇게 하면 payload의 내용을 볼 수 있습니다.
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -62,6 +85,9 @@ const CreateMeeting = () => {
   const handleSessionNameChange = (event) => {
     setSessionName(event.target.value);
   };
+  const handleUserNameChange = (event) => {
+    setUserName(payloadUserName);
+  };
 
   return (
     <div>
@@ -70,8 +96,8 @@ const CreateMeeting = () => {
           User Name:
           <input
             type="text"
-            value={userName}
-            onChange={(event) => setUserName(event.target.value)}
+            value={payloadUserName}
+            onChange={handleUserNameChange}
           />
         </label>
         <label>
@@ -88,7 +114,10 @@ const CreateMeeting = () => {
         <input type="submit" value="Submit" />
       </form>
       {showVideoRoom && (
-        <VideoRoomComponent userName={userName} sessionName={sessionName} />
+        <VideoRoomComponent
+          userName={payloadUserName}
+          sessionName={sessionName}
+        />
       )}
     </div>
   );
