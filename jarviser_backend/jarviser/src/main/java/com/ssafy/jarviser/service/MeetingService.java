@@ -4,6 +4,7 @@ import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.domain.User;
+import com.ssafy.jarviser.dto.ResponseAudioMessage;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface MeetingService{
     Report meetingReport(long meetingId);
 
     //발화 내용 보기
-    List<AudioMessage> findAudioMessageByMeetingIdAndUserId(long meetingId);
+    List<AudioMessage> findAudioMessageByMeetingId(long meetingId);
 
     //오디오 메시지 미텡 저장
     void addAudioMessageToMeeting(long meetingId, AudioMessage audioMessage);

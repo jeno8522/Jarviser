@@ -1,10 +1,13 @@
 package com.ssafy.jarviser.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseAudioMessage {
     private String name;
     private String content;
-    private String length;
+    private int length;
 }
