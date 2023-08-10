@@ -31,7 +31,8 @@ public interface MeetingService{
     //발화 내용 보기
     List<AudioMessage> findAudioMessageByMeetingId(long meetingId);
 
-    //오디오 메시지 미텡 저장
+    //오디오 메시지 미팅 저장
     void addAudioMessageToMeeting(long meetingId, AudioMessage audioMessage);
+
 
 }
