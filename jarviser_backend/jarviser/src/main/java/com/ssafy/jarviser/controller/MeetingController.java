@@ -1,8 +1,6 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.Meeting;
-import com.ssafy.jarviser.dto.RequestJoinMeetingDto;
-import com.ssafy.jarviser.dto.TempTranscriptRecordDto;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
