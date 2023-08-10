@@ -17,7 +17,7 @@ const Received = {
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
 stompClient.connect({}, function (frame) {
-  stompClient.subscribe("/topic/meeting/" + meetingId, function (messageOutput) {
+  stompClient.subscribe("/meeting/" + meetingId, function (messageOutput) {
     let message = JSON.parse(messageOutput.body);
     let type = message.type;
     Received[type](message);

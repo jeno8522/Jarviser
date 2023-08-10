@@ -1,3 +1,5 @@
+import { VAD } from "./vad.js";
+
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
@@ -28,7 +30,7 @@ function startVAD(stream) {
       console.log("voice_start");
     },
   };
-  vad = new window.VAD(options); // Initialize VAD with the correct options
+  vad = new VAD(options); // Initialize VAD with the correct options
   vad.start = true; // Start VAD
   console.log("startVAD");
 }

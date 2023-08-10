@@ -1,33 +1,20 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.AudioMessage;
-import com.nimbusds.jose.shaded.gson.Gson;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.dto.RequestMeetingIdDto;
 import com.ssafy.jarviser.dto.ResponseAudioMessage;
-import com.ssafy.jarviser.dto.ResponseMessage;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
-import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.HtmlUtils;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,52 +31,6 @@ public class MeetingController {
     private final MeetingService meetingService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
-    private final Gson gson = new Gson();
-
-    @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file, Long meetingId) throws IOException {
-        Map<String, String> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        String filePath = "audio/" + file.getOriginalFilename();
-        log.debug(filePath);
-
-        //TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
-        try (
-                FileOutputStream fos = new FileOutputStream(filePath);
-                // 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
-                InputStream is = file.getInputStream();) {
-
-            int readCount = 0;
-            byte[] buffer = new byte[1024];
-
-            while ((readCount = is.read(buffer)) != -1) {
-                //  파일에서 가져온 fileInputStream을 설정한 크기 (1024byte) 만큼 읽고
-                fos.write(buffer, 0, readCount);
-                // 위에서 생성한 fileOutputStream 객체에 출력하기를 반복한다
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException("file Save Error");
-        }
-        try {
-            String textResponse = openAIService.whisperAPICall(filePath).block();
-            assert textResponse != null;
-
-            Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("userId", "임시 유저 이름");
-            responseMap.put("type", "stt");
-            responseMap.put("content", (String) gson.fromJson(textResponse, HashMap.class).get("text"));
-
-            String response = gson.toJson(responseMap).toString();
-            messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, response);
-            resultMap.put("text", textResponse);
-        } catch (Exception e) {
-            log.error("텍스트 보내기 실패 : {}", e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<>(resultMap, status.OK);
-    }
-
 
     //미팅생성
     @PostMapping("/create")
@@ -213,89 +154,5 @@ public class MeetingController {
     //미팅 통계 상세보기
     //리포트 열람
     //메시지 보내기
-    @PostMapping(value = "/message", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> getMessage(
-            @RequestHeader("Authorization") String token,
-            Long meetingId, String content) throws InterruptedException {
 
-        token = token.split(" ")[1];
-        String userName = "";
-        try {
-            Long userId = jwtService.extractUserId(token);
-            userName = jwtService.extractUserName(token);
-        } catch (Exception e) {
-            log.error("아이디 뽑아내기 실패", e);
-        }
-
-        Map<String, String> responseMap = new HashMap<>();
-        responseMap.put("userId", userName.toString());
-        responseMap.put("type", "chat");
-        responseMap.put("content", content);
-        String response = gson.toJson(responseMap).toString();
-
-        messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, response);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    // 사용자가 회의에 연결할 때
-    @PostMapping("/connect")
-    public ResponseEntity<Map<String, String>> connectMeeting(@RequestHeader("Authorization") String token,
-                                                              @RequestBody Map<String, Long> request) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, String> responseMessage = new HashMap<>();
-        Long meetingId = request.get("meetingId");
-        token = token.split(" ")[1];
-        String userName = jwtService.extractUserName(token);
-
-        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결되었습니다.");
-        try {
-            // 회의 연결 로직
-            // 예: 데이터베이스에 연결 정보를 저장하거나 필요한 작업 수행
-        } catch (Exception e) {
-            log.error("회의 연결 실패: {}", e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseMessage.put("message", "회의에 연결하지 못했습니다.");
-        }
-
-        return new ResponseEntity<>(responseMessage, status);
-    }
-
-
-    // 사용자가 회의에서 연결을 끊을 때
-    @PostMapping("/disconnect")
-    public ResponseEntity<Map<String, String>> disconnectMeeting(@RequestHeader("Authorization") String token,
-                                                    @RequestBody Map<String, Long> request) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, String> responseMessage = new HashMap<>();
-        Long meetingId = request.get("meetingId");
-        token = token.split(" ")[1];
-        String userName = jwtService.extractUserName(token);
-
-        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결되었습니다.");
-        try {
-            // 회의 연결 해제 로직
-            // 예: 데이터베이스에서 연결 정보를 제거하거나 필요한 작업 수행
-        } catch (Exception e) {
-            log.error("회의 연결 끊기 실패: {}", e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            responseMessage.put("message", "회의에 연결을 끊지 못했습니다.");
-        }
-        log.info("나간다 !!!!");
-        return new ResponseEntity<>(responseMessage, status);
-    }
-
-    @PostMapping("/check-connection")
-    public ResponseEntity<Map<String, String>> checkConnection(@RequestHeader("Authorization") String token,
-                                                  @RequestBody Map<String, Long> request) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, String> responseMessage = new HashMap<>();
-        Long meetingId = request.get("meetingId");
-        token = token.split(" ")[1];
-        String userName = jwtService.extractUserName(token);
-        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결 중입니다.");
-        // 접속 확인 로직
-        // 예: 데이터베이스에서 해당 회의 ID와 사용자의 접속 정보 확인
-        log.info("연결 확인.");
-        return new ResponseEntity<>(responseMessage, status);
-    }
 }
