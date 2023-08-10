@@ -11,20 +11,43 @@
     <div id="response"></div>
 
     <script>
-        var meetingId = 3; // 회의 ID 설정
+        var meetingId = 3; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다.
+        const Received = {
+            'chat':receivedChatting,
+            'stt':receivedStt,
+            'comeinsession':receivedCome,
+            'leavesession':receivedLeave,
+        };
         var socket = new SockJS('http://localhost:8081/ws');
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
             stompClient.subscribe('/topic/meeting/' + meetingId, function(messageOutput) {
-                //받았다. 그러면 바디를 열어서 확인하면
-                //바디 안에 누가 보냈는지 
-                //어떤 타입인지 stt냐 chating
-                //어떤 내용인지
-                document.getElementById('response').innerText = 'Received: ' + messageOutput.body;
-
+                let message = JSON.parse(messageOutput);
+                let type = message.type;
+                Received[type](message);
+                console.log(stt);
+                console.log(chat);
+                console.log(participants);
             });
         });
+        
+        const stt = [];
+        const chat = [];
+        const participants = [];
+        function receivedChatting(data){
+            chat.append([data.id, data.content]);
 
+        }
+        function receivedStt(data){
+            stt.append([data.id, data.content]);
+        }
+        function receivedComeIn(data){
+            participants.append(data.id);
+        }
+        function receivedLeave(data){
+            participants.delete(data.id);
+        }
+        
         function uploadAudio() {
             var audioFile = document.getElementById('audioFile').files[0];
             var serverUrl = 'http://localhost:8081/meeting/transcript'; // 서버의 URL
@@ -40,8 +63,7 @@
                 console.log('File uploaded successfully');
             });
         }
-
-        function uploadText(userText) {
+                function uploadText(userText) {
             var token = localStorage.getItem("access-token");
             var serverUrl = "http://localhost:8081/meeting/message"; // 서버의 URL
     
@@ -61,7 +83,6 @@
                 console.log(data);
               });
           }
-
     </script>
 </body>
 </html>
