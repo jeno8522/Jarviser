@@ -7,6 +7,7 @@ document.getElementById("text-form").addEventListener("submit", function (e) {
   uploadText(userText);
 });
 
+var token = localStorage.getItem("access-token");
 var meetingId = 3; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다.
 const Received = {
   chat: receivedChat,
@@ -16,8 +17,8 @@ const Received = {
 };
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
-stompClient.connect({}, function (frame) {
-  stompClient.subscribe("/meeting/" + meetingId, function (messageOutput) {
+stompClient.connect({"Authorization":"Bearer "+token}, function (frame) {
+  stompClient.subscribe("/topic/" + meetingId, function (messageOutput) {
     let message = JSON.parse(messageOutput.body);
     let type = message.type;
     Received[type](message);
@@ -49,7 +50,7 @@ function receivedLeave(data) {
 
 function uploadText(userText) {
   var token = localStorage.getItem("access-token");
-  var serverUrl = "http://localhost:8081/meeting/message"; // 서버의 URL
+  var serverUrl = "http://localhost:8081/app/message"; // 서버의 URL
 
   var formData = new FormData();
   formData.append("meetingId", meetingId);
