@@ -39,6 +39,7 @@ public class UserController {
             userService.regist(requestUserDto);
             resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
+            //TODO: ExceptionHandler
         } catch (Exception e) {
             //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
             log.error("회원가입 실패 : {}", e);

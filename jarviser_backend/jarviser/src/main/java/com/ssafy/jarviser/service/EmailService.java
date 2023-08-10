@@ -53,9 +53,7 @@ public class EmailService {
         List<ReservatedMeeting> reservatedMeetings =
                 reservatedMeetingRepository.findByStartTimeIsBetween(curTime, curTime.plusMinutes(10));
 
-        if(reservatedMeetings.size() > 0){
-            reservatedMeetings.forEach(this::handleReservationMail);
-        }
+        reservatedMeetings.forEach(this::handleReservationMail);
     }
 
     // CONSIDER: 굳이 transactional을 걸어야할까?

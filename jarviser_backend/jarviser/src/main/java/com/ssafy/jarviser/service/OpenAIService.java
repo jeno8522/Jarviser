@@ -21,7 +21,6 @@ import java.util.Map;
 @Slf4j
 public class OpenAIService {
 
-    private static final String token = "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";
     public Mono<String> whisperAPICall(String filePath) throws URISyntaxException, IOException {
 
         WebClient webClient = WebClient.create("https://api.openai.com/v1/audio/transcriptions");
@@ -34,16 +33,17 @@ public class OpenAIService {
         builder.part("model", model);
 
         return
-        webClient.post()
-                .header("Authorization", "Bearer " + token) // "YOUR_OPENAI_API_KEY"를 실제 OpenAI API 키로 대체하세요.
-                .body(BodyInserters.fromMultipartData(builder.build()))
-                .retrieve()
-                .bodyToMono(String.class) // 결과가 String 타입이라고 가정합니다. 실제 응답 유형에 따라 이 부분을 적절히 수정하세요.
-                .doOnError(e -> {
-                    // Log error or take action
-                    System.out.println("Error occurred: " + e.getMessage());
-                });
+                webClient.post()
+                        .header("Authorization", "Bearer " + token) // "YOUR_OPENAI_API_KEY"를 실제 OpenAI API 키로 대체하세요.
+                        .body(BodyInserters.fromMultipartData(builder.build()))
+                        .retrieve()
+                        .bodyToMono(String.class) // 결과가 String 타입이라고 가정합니다. 실제 응답 유형에 따라 이 부분을 적절히 수정하세요.
+                        .doOnError(e -> {
+                            // Log error or take action
+                            System.out.println("Error occurred: " + e.getMessage());
+                        });
     }
+    private static final String token = "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";
 
     public Mono<String> chatGPTPartSummary(String filePath){
         WebClient webClient = WebClient.create("https://api.openai.com/v1/chat/completions");

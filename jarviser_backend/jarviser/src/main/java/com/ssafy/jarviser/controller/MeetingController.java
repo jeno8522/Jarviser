@@ -39,7 +39,11 @@ public class MeetingController {
         String filePath = "audio/" + file.getOriginalFilename();
         log.debug(filePath);
 
-        //TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
+        /*
+        TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
+               비동기처리를 하고 싶을 때 파일 저장부분을 따로 분리해서 해당 함수 위에 @Async
+               그리고 테스트를 해보고싶으면 해당 함수 내에서 Thread.sleep
+         */
         try (
                 FileOutputStream fos = new FileOutputStream(filePath);
                 // 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
