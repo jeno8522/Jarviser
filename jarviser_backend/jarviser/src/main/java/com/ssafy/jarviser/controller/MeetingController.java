@@ -157,4 +157,66 @@ public class MeetingController {
         messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, responseJson.toString());
         return new ResponseEntity<>(responseJson, HttpStatus.OK);
     }
+
+    // 사용자가 회의에 연결할 때
+    @PostMapping("/connect")
+    public ResponseEntity<Map<String, String>> connectMeeting(@RequestHeader("Authorization") String token,
+                                                              @RequestBody Map<String, Long> request) {
+        HttpStatus status = HttpStatus.OK;
+        Map<String, String> responseMessage = new HashMap<>();
+        Long meetingId = request.get("meetingId");
+        token = token.split(" ")[1];
+        String userName = jwtService.extractUserName(token);
+
+        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결되었습니다.");
+        try {
+            // 회의 연결 로직
+            // 예: 데이터베이스에 연결 정보를 저장하거나 필요한 작업 수행
+        } catch (Exception e) {
+            log.error("회의 연결 실패: {}", e);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseMessage.put("message", "회의에 연결하지 못했습니다.");
+        }
+
+        return new ResponseEntity<>(responseMessage, status);
+    }
+
+
+    // 사용자가 회의에서 연결을 끊을 때
+    @PostMapping("/disconnect")
+    public ResponseEntity<Map<String, String>> disconnectMeeting(@RequestHeader("Authorization") String token,
+                                                    @RequestBody Map<String, Long> request) {
+        HttpStatus status = HttpStatus.OK;
+        Map<String, String> responseMessage = new HashMap<>();
+        Long meetingId = request.get("meetingId");
+        token = token.split(" ")[1];
+        String userName = jwtService.extractUserName(token);
+
+        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결되었습니다.");
+        try {
+            // 회의 연결 해제 로직
+            // 예: 데이터베이스에서 연결 정보를 제거하거나 필요한 작업 수행
+        } catch (Exception e) {
+            log.error("회의 연결 끊기 실패: {}", e);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseMessage.put("message", "회의에 연결을 끊지 못했습니다.");
+        }
+        log.info("나간다 !!!!");
+        return new ResponseEntity<>(responseMessage, status);
+    }
+
+    @PostMapping("/check-connection")
+    public ResponseEntity<Map<String, String>> checkConnection(@RequestHeader("Authorization") String token,
+                                                  @RequestBody Map<String, Long> request) {
+        HttpStatus status = HttpStatus.OK;
+        Map<String, String> responseMessage = new HashMap<>();
+        Long meetingId = request.get("meetingId");
+        token = token.split(" ")[1];
+        String userName = jwtService.extractUserName(token);
+        responseMessage.put("message",  userName + "님께서" + meetingId  + "회의에 성공적으로 연결 중입니다.");
+        // 접속 확인 로직
+        // 예: 데이터베이스에서 해당 회의 ID와 사용자의 접속 정보 확인
+        log.info("연결 확인.");
+        return new ResponseEntity<>(responseMessage, status);
+    }
 }
