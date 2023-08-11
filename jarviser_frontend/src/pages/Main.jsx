@@ -6,6 +6,7 @@ import Navigation from "../components/molecules/Navigation";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+import WebSocketComponent from "../components/web-socket/WebSocketComponent";
 
 function Main() {
   const navigate = useNavigate();
@@ -63,6 +64,14 @@ function Main() {
       <div>
         <a href="/">처음으로</a>
       </div>
+
+      <div>
+        <a href="/stt-test/test/test_code.html">STT 테스트</a>
+      </div>
+      <div>
+        <a href="/stt-test/test/test-page.html">웹소켓 테스트</a>
+      </div>
+      <WebSocketComponent/>
     </>
   );
 }

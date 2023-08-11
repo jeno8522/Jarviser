@@ -1,9 +1,12 @@
 package com.ssafy.jarviser.service;
 
 import com.ssafy.jarviser.domain.*;
+import com.ssafy.jarviser.dto.ResponseAudioMessage;
+import com.ssafy.jarviser.repository.AudioMessageRepository;
 import com.ssafy.jarviser.repository.MeetingRepository;
 import com.ssafy.jarviser.repository.ParticipantRepository;
 import com.ssafy.jarviser.repository.UserRepository;
+import com.ssafy.jarviser.util.AESEncryptionUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,20 +24,29 @@ public class MeetingServiceImp implements MeetingService{
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
     private final ParticipantRepository participantRepository;
+    private final AudioMessageRepository audioMessageRepository;
+    private final AESEncryptionUtil aesEncryptionUtil;
 
     @Override
-    public Meeting createMeeting(Long hostId, String meetingName) {
+    public Meeting createMeeting(Long hostId, String meetingName){
         //미팅 객체 생성
         Meeting meeting = Meeting.builder()
                 .meetingName(meetingName)
                 .hostId(hostId)
                 .startTime(LocalDateTime.now())
-                //추후 url은 생성할지 몰라서 아직 안넣음
-                .meetingUrl("www.jarviser.com" + "/" + meetingName)
                 .build();
 
         //이시점에서 미팅이 생성되므로 DB에 미팅저장
         meetingRepository.saveMeeting(meeting);
+
+        //미팅의 pk 를 토대로 encrypt설정
+
+
+        try {
+            meeting.setEncryptedKey(aesEncryptionUtil.encrypt(Long.toString(meeting.getId())));
+        }catch (Exception ignored){
+
+        }
         //미팅 - 참여자(호스트) 생성
         User host = userRepository.findById(hostId).orElse(null);
         Participant participant = Participant.participate(host, meeting);
@@ -44,7 +56,7 @@ public class MeetingServiceImp implements MeetingService{
         participantRepository.joinParticipant(participant);
 
         return meeting;
-    }
+}
 
     //미팅 참여하기
     @Override
@@ -85,6 +97,18 @@ public class MeetingServiceImp implements MeetingService{
     public Report meetingReport(long meetingId) {
 
         return meetingRepository.findMeetingReportByMeetingId(meetingId);
+    }
+
+    @Override
+    public List<AudioMessage> findAudioMessageByMeetingId(long meetingId) {
+        return meetingRepository.findAllAudioMessageByMeetingId(meetingId);
+    }
+
+    @Override
+    public void addAudioMessageToMeeting(long meetingId, AudioMessage audioMessage) {
+        Meeting meeting = meetingRepository.findMeetingById(meetingId);
+        meeting.addAudioMessage(audioMessage);
+        audioMessageRepository.save(audioMessage);
     }
 
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 // import jwt_decode from "jwt-decode"; // jwt-decode 라이브러리를 사용합니다.
+import Sidebar from "../components/molecules/Sidebar";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -98,6 +99,8 @@ function MyPage() {
   };
 
   return (
+    <>
+    <Sidebar />
     <div>
       <p>이메일 : {userEmail}</p>
       <form onSubmit={handleSubmit}>
@@ -132,6 +135,7 @@ function MyPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

@@ -1,12 +1,14 @@
 package com.ssafy.jarviser.repository;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MeetingRepository{
+public interface MeetingRepository {
     //미팅 등록
     void saveMeeting(Meeting meeting);
     //미팅 조회
@@ -21,5 +23,5 @@ public interface MeetingRepository{
     //미팅의 리포트 겨저오기
     Report findMeetingReportByMeetingId(long meetingId);
 
-
+    List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId);
 }
