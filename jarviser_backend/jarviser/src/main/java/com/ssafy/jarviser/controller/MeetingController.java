@@ -131,16 +131,16 @@ public class MeetingController {
     }
 
     //미팅 오디오 메시지 불러오는 api
-    @GetMapping("/audiomessage")
+    @GetMapping("/audiomessage/{meetingId}")
     public ResponseEntity<Map<String, Object>> meetingDetail(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestMeetingIdDto requestMeetingIdDto
+            @PathVariable long meetingId
     ) {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
         try {
 
-            Meeting meeting = meetingService.findMeetingById(requestMeetingIdDto.getMeetingId());
+            Meeting meeting = meetingService.findMeetingById(meetingId);
             List<AudioMessage> audioMessages = meeting.getAudioMessages();
             List<ResponseAudioMessage> responseAudioMessages = new ArrayList<>();
 
@@ -158,15 +158,15 @@ public class MeetingController {
     }
 
     //미팅 발화자들 마다 발화 비율 api
-    @GetMapping("/speech")
+    @GetMapping("/speech/{meetingId}")
     public ResponseEntity<Map<String, Object>> meetingSpeech(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestMeetingIdDto requestMeetingIdDto
+            @PathVariable long meetingId
     ) {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            List<AudioMessage> audioMessages = meetingService.findAudioMessageByMeetingId(requestMeetingIdDto.getMeetingId());
+            List<AudioMessage> audioMessages = meetingService.findAudioMessageByMeetingId(meetingId);
             Map<String, Double> speechPercentage = audioService.staticsOfAudioMessages(audioMessages);
             response.put("speechPercentage", speechPercentage);
         } catch (Exception e) {
@@ -193,4 +193,6 @@ public class MeetingController {
         }
         return new ResponseEntity<>(response, httpStatus);
     }
+
+
 }
