@@ -79,7 +79,7 @@ public class InsertTestDummy implements CommandLineRunner {
         //회원 가입
         User test = User.builder()
                 .email("test@gmail.com")
-                .password(passwordEncoder.encode("test"))
+                .password(passwordEncoder.encode("testtesttest"))
                 .name("testtesttest")
                 .role(Role.USER)
                 .build();

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Calendar from "react-calendar";
 import calendarCss from "../components/CSS/calendarCSS.css";
 import moment from "moment";
-import MeetingInfo from "../components/meetingInfo"; // MeetingInfo 컴포넌트를 import합니다.
-import { useEffect } from "react";
+import MeetingInfo from "../components/meetingInfo";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import Sidebar from "../components/molecules/Sidebar";
@@ -11,33 +11,48 @@ import Sidebar from "../components/molecules/Sidebar";
 function MyCalendar() {
   const navigate = useNavigate();
   const { accessToken } = useAccessToken();
+  const [date, setDate] = useState(new Date());
+  const [marks, setMarks] = useState([]); // marks 상태를 추가
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/login");
     }
   }, [accessToken, navigate]);
-  const [date, setDate] = useState(new Date());
-  const marks = [
-    "15-08-2023",
-    "03-01-2022",
-    "07-01-2022",
-    "12-01-2022",
-    "13-01-2022",
-    "15-01-2022",
-  ];
+
+  // meetinglist에서 날짜 데이터를 가져와 marks를 업데이트
+  useEffect(() => {
+    if (accessToken) {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+      axios
+        .get("http://localhost:8081/user/meetinglist", { headers })
+        .then((response) => {
+          const meetingDates = response.data.meetinglist.map((meeting) =>
+            moment(meeting.startTime).format("DD-MM-YYYY")
+          );
+          setMarks(meetingDates);
+        })
+        .catch((error) => {
+          console.error(
+            "An error occurred while fetching the meeting data:",
+            error
+          );
+        });
+    }
+  }, [accessToken]);
 
   const handleDateChange = (date) => {
-    // UTC 시간을 로컬 시간으로 변환합니다.
     setDate(moment(date).toDate());
   };
 
   return (
     <>
-    <Sidebar />
+      <Sidebar />
       <Calendar
-        onChange={handleDateChange} // 수정된 핸들러를 사용합니다.
-        value={date} // 'date' 대신 'value' prop을 사용합니다.
+        onChange={handleDateChange}
+        value={date}
         locale="en-EN"
         tileClassName={({ date, view }) => {
           if (marks.find((x) => x === moment(date).format("DD-MM-YYYY"))) {
@@ -45,7 +60,6 @@ function MyCalendar() {
           }
         }}
       />
-      {/* 선택한 날짜에 해당하는 회의 정보를 출력하는 MeetingInfo 컴포넌트를 추가합니다. */}
       <MeetingInfo date={date} />
     </>
   );
