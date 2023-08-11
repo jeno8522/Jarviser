@@ -37,9 +37,6 @@ public class AudioMessage {
     @Column(name = "user_id")
     private long userId; //FIXME: 추후 many to one으로 FK 처리 필요
 
-    @Column(name = "user_name") //FIXME: 추후 many to one FK 처리 후 join을 통해 가져오기
-    private String userName;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Meeting meeting;

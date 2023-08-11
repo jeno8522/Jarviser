@@ -11,11 +11,13 @@ import java.util.List;
 public interface AudioService {
     public Long getTimeOfAudio(MultipartFile audioFile) throws ClientException;
 
-    public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) throws ServerException;
+    public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile)
+            throws ServerException;
 
     public String getStt(String filePath) throws ServerException;
 
-    public Long createAudioMessage(Long userId, String mId, Long StartTime, String filePath, String stt) throws ServerException;
+    public Long createAudioMessage(Long userId, String mId, Long StartTime, String filePath, String stt)
+            throws ServerException;
 
-    public Map<String, Double> staticsOfAudioMessages(List<AudioMessage> audioMessages);
+    public Map<String, Double> staticsOfAudioMessages(List<AudioMessage> audioMessages) throws Exception;
 }
