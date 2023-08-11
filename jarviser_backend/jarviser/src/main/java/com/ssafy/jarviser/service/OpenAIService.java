@@ -30,6 +30,30 @@ public class OpenAIService {
     @Value("${key}")
     private String token;
 
+    public Mono<String> whisperAPICall(String filePath) throws URISyntaxException, IOException {
+
+        WebClient webClient = WebClient.create("https://api.openai.com/v1/audio/transcriptions");
+
+        // 요청에 필요한 데이터 및 파일 경로 설정
+        String model = "whisper-1";
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("file", new FileSystemResource(filePath), MediaType.APPLICATION_OCTET_STREAM);
+        builder.part("model", model);
+
+        return
+                webClient.post()
+                        .header("Authorization", "Bearer " + token) // "YOUR_OPENAI_API_KEY"를 실제 OpenAI API 키로 대체하세요.
+                        .body(BodyInserters.fromMultipartData(builder.build()))
+                        .retrieve()
+                        .bodyToMono(String.class) // 결과가 String 타입이라고 가정합니다. 실제 응답 유형에 따라 이 부분을 적절히 수정하세요.
+                        .doOnError(e -> {
+                            // Log error or take action
+                            System.out.println("Error occurred: " + e.getMessage());
+                        });
+    }
+
+
     // @Async를 해주지 않아도 WebClient를 사용하고 Mono를 반환하는 것 만으로 비동기
     public Mono<String> chatGPTSummary(String textContent, String query){
         HttpClient httpClient = HttpClient.create()

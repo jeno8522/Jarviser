@@ -3,16 +3,19 @@ package com.ssafy.jarviser.service;
 import com.ssafy.jarviser.domain.ReservatedMeeting;
 import com.ssafy.jarviser.domain.Reservation;
 import com.ssafy.jarviser.domain.User;
+import com.ssafy.jarviser.dto.ResponseReservatedMeetingDto;
 import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
 import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.ReservationRepositoryCustom;
 import com.ssafy.jarviser.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +49,19 @@ public class ReservationService {
     public List<ReservatedMeeting> getReservatedMeetings(Long userId) {
         List<ReservatedMeeting> reservatedMeetings = reservationRepositoryCustom.getMeetingsFromUser(userId);
         return reservatedMeetings;
+    }
+
+    @Transactional
+    public ResponseReservatedMeetingDto getReservatedMeetingDetail(Long reservatedMeetingId){
+        Optional<ReservatedMeeting> optionalReservatedMeeting = reservatedMeetingRepository.findById(reservatedMeetingId);
+        ReservatedMeeting reservatedMeeting =
+                optionalReservatedMeeting.orElseThrow(() -> new EntityNotFoundException("해당 ID로 예약된 미팅을 찾을 수 없습니다."));
+
+        List<User> users = reservationRepositoryCustom.getUsersFromMeetingRoom(reservatedMeetingId);
+
+        ResponseReservatedMeetingDto reservatedMeetingDto = new ResponseReservatedMeetingDto(reservatedMeeting);
+        reservatedMeetingDto.setUserEmailList(users);
+        return reservatedMeetingDto;
     }
 
     @Transactional
