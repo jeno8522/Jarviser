@@ -7,10 +7,10 @@ import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
 import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.ReservationRepositoryCustom;
 import com.ssafy.jarviser.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ReservationService {
 
     @Transactional
     public void createReservation(ReservatedMeeting reservatedMeeting, List<String> userEmails) {
-        log.debug(reservatedMeeting.toString());
+        log.debug(reservatedMeeting.toString()); // 얘 읽는데 10초
         reservatedMeetingRepository.save(reservatedMeeting);
 
         for (String userEmail : userEmails) {
@@ -54,7 +54,7 @@ public class ReservationService {
         reservatedMeetingRepository.save(reservatedMeeting); //save시 이미 있으면 update
 
         List<Reservation> reservations = reservationRepository.findAllByReservatedMeetingId(reservatedMeeting.getId());
-        reservationRepository.deleteAllInBatch(reservations); //select하는 과정은 없고 해오지 않고 오로직 delete만 한다.
+        reservationRepository.deleteAllInBatch(reservations); //delete문이 하나씩 실행되는게 아니라 delete하나에 모두 제거
 
         for (String email : userEmails) {
             User user = userRepository.findByEmail(email);
