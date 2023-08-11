@@ -3,6 +3,8 @@ package com.ssafy.jarviser.controller;
 import com.ssafy.jarviser.domain.ReservatedMeeting;
 import com.ssafy.jarviser.dto.ReservatedMeetingDto;
 import com.ssafy.jarviser.dto.ReserveWrapperDto;
+import com.ssafy.jarviser.dto.ResponseMypageDto;
+import com.ssafy.jarviser.dto.ResponseReservatedMeetingDto;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.ReservationService;
 import com.ssafy.jarviser.service.UserService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -59,6 +62,44 @@ public class ReservationController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Map<String, Object>> reservationList(
+            @RequestHeader("Authorization") String token) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        token = token.split(" ")[1];
+        try {
+            Long userId = jwtService.extractUserId(token);
+            List<ReservatedMeeting> meetings = reservationService.getReservatedMeetings(userId);
+            List<ResponseReservatedMeetingDto> response = meetings.stream()
+                                        .map(ResponseReservatedMeetingDto::new)
+                                        .collect(Collectors.toList());
+            resultMap.put("reservatedMeetings", response);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    //회원탈퇴
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String, Object>> delete(
+            @RequestHeader("Authorization") String token
+    ) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        token = token.split(" ")[1];
+        Long userid = jwtService.extractUserId(token);
+        try {
+            userService.withdrawal(userid);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>(resultMap, status);
     }
 }
