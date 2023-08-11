@@ -37,6 +37,7 @@ public class MeetingController {
     private final JwtService jwtService;
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
+    private final StatisticsService statisticsService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final AudioService audioService;
@@ -49,7 +50,11 @@ public class MeetingController {
         String filePath = "audio/" + file.getOriginalFilename();
         log.debug(filePath);
 
-        //TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
+        /*
+        TODO: 추후 MultiPartFile을 File로 즉각 변환해본 후 성능 테스트해보기
+               비동기처리를 하고 싶을 때 파일 저장부분을 따로 분리해서 해당 함수 위에 @Async
+               그리고 테스트를 해보고싶으면 해당 함수 내에서 Thread.sleep
+         */
         try (
                 FileOutputStream fos = new FileOutputStream(filePath);
                 // 파일 저장할 경로 + 파일명을 파라미터로 넣고 fileOutputStream 객체 생성하고
@@ -70,6 +75,7 @@ public class MeetingController {
             String textResponse = openAIService.whisperAPICall(filePath).block();
             assert textResponse != null;
             messagingTemplate.convertAndSend("/topic/meeting/" + meetingId, textResponse);
+
             resultMap.put("text", textResponse);
         } catch (Exception e) {
             log.error("텍스트 보내기 실패 : {}", e);
@@ -121,6 +127,7 @@ public class MeetingController {
             Long joinUserId = jwtService.extractUserId(token);
             meetingService.joinMeeting(joinUserId, meeting);
             resultMap.put("meeting", meeting);
+
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             log.error("미팅 참여 실패 : {}", e);
