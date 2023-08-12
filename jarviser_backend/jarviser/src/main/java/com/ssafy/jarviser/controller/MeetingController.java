@@ -1,12 +1,11 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.AudioMessage;
+import com.ssafy.jarviser.domain.KeywordStatistics;
 import com.ssafy.jarviser.domain.Meeting;
-import com.ssafy.jarviser.dto.RequestMeetingIdDto;
-import com.ssafy.jarviser.dto.ResponseAudioMessage;
+import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
+import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
 import com.ssafy.jarviser.security.JwtService;
-import com.ssafy.jarviser.service.AudioService;
-import com.ssafy.jarviser.service.KeywordService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
@@ -18,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,8 +37,6 @@ public class MeetingController {
     private final MeetingService meetingService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
-    private final AudioService audioService;
-    private final KeywordService keywordService;
 
     @PostMapping(value = "/transcript", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> transcript(@RequestParam("file") MultipartFile file, Long meetingId) throws IOException {
@@ -92,63 +88,68 @@ public class MeetingController {
         token = token.split(" ")[1];
         try {
             Long hostId = jwtService.extractUserId(token);
-            Meeting meeting = meetingService.createMeeting(hostId, meetingName);
-            String encryptedKey = meeting.getEncryptedKey();
+            String encryptedKey = meetingService.createMeeting(hostId, meetingName);
             httpStatus = HttpStatus.ACCEPTED;
             responseMap.put("encryptedKey", encryptedKey);
-
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-
         return new ResponseEntity<>(responseMap, httpStatus);
     }
 
     //미팅 참여
-    @PostMapping("/joinMeeting")
+    @PostMapping("/joinMeeting/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
-            @RequestBody String encryptedKey) {
+            @PathVariable String encryptedKey) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try {
+            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            //해당 미팅 id값을 통해 미팅 객체 찾기
             Meeting meeting = meetingService.findMeetingById(meetingId);
-            log.debug("JoinMeeting............................Join meetingName:" + meeting.getMeetingName());
+            //유저 id jwt토큰을 이용해서 획득
             Long joinUserId = jwtService.extractUserId(token);
-            meetingService.joinMeeting(joinUserId, meeting);
+            meetingService.joinMeeting(joinUserId, meetingId);
             resultMap.put("meeting", meeting);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            log.error("미팅 참여 실패 : {}", e);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-
         return new ResponseEntity<>(resultMap, status);
     }
 
+
     //미팅 오디오 메시지 불러오는 api
-    @GetMapping("/audiomessage")
-    public ResponseEntity<Map<String, Object>> meetingDetail(
+    @GetMapping("/audiomessage/{encryptedKey}")
+    public ResponseEntity<Map<String, Object>> meetingAudioMessages(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestMeetingIdDto requestMeetingIdDto
+            @PathVariable String encryptedKey
     ) {
-        Map<String, Object> response = new HashMap<>();
+        Map<String,Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
         try {
-
-            Meeting meeting = meetingService.findMeetingById(requestMeetingIdDto.getMeetingId());
-            List<AudioMessage> audioMessages = meeting.getAudioMessages();
-            List<ResponseAudioMessage> responseAudioMessages = new ArrayList<>();
-
-            for (AudioMessage audioMessage : audioMessages) {
-                responseAudioMessages.add(new ResponseAudioMessage(audioMessage.getUserName(), audioMessage.getContent(), audioMessage.getSpeechLength()));
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            List<AudioMessage> allAudioMessage = meetingService.findAllAudioMessage(meetingId);
+            //DTO로 변환
+            List<ResponseAudioMessageDTO> responseAudioMessageDTOList = new ArrayList<>();
+            for(AudioMessage audioMessage : allAudioMessage){
+                ResponseAudioMessageDTO responseAudioMessageDTO = ResponseAudioMessageDTO
+                        .builder()
+                        .length(audioMessage.getSpeechLength())
+                        .priority(audioMessage.getPriority())
+                        .content(audioMessage.getContent())
+                        .startTime(audioMessage.getStartTime())
+                        .name(audioMessage.getUser().getName())
+                        .filePath(audioMessage.getFilePath())
+                        .build();
+                responseAudioMessageDTOList.add(responseAudioMessageDTO);
             }
-            response.put("audioMessages", responseAudioMessages);
-            httpStatus = HttpStatus.OK;
+            response.put("audioMessages",responseAudioMessageDTOList);
 
         } catch (Exception e) {
             httpStatus = HttpStatus.NOT_ACCEPTABLE;
@@ -157,37 +158,39 @@ public class MeetingController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    //미팅 발화자들 마다 발화 비율 api
-    @GetMapping("/speech")
+    //미팅 발화자 통계 불러오는 api
+    @GetMapping("/speech/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> meetingSpeech(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestMeetingIdDto requestMeetingIdDto
+            @PathVariable String encryptedKey
     ) {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            List<AudioMessage> audioMessages = meetingService.findAudioMessageByMeetingId(requestMeetingIdDto.getMeetingId());
-            Map<String, Double> speechPercentage = audioService.staticsOfAudioMessages(audioMessages);
-            response.put("speechPercentage", speechPercentage);
+            //미팅 방 가져오고
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            List<ParticipantsStaticsDTO> participantStatistics = meetingService.caculateParticipantsStatics(meetingId);
+            response.put("statistics",participantStatistics);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>(response, httpStatus);
     }
 
-    //미팅 키워드 비율 추출
-    @GetMapping("/keywords")
+
+    //미팅 키워드 통계 불러오는 api
+    @GetMapping("/keywords/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> meetingKeywords(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestMeetingIdDto requestMeetingIdDto
+            @PathVariable String encryptedKey
     ) {
+
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            List<AudioMessage> audioMessages = meetingService.findAudioMessageByMeetingId(requestMeetingIdDto.getMeetingId());
-            List<String> keywords = openAIService.chatGTPKeywords(audioMessages);
-            Map<String, Double> staticsOfKeywords = keywordService.staticsOfKeywords(audioMessages, keywords);
-            response.put("staticsOfKeywords",staticsOfKeywords);
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            List<KeywordStatistics> allKeywordStatistics = meetingService.findAllKeywordStatistics(meetingId);
+            response.put("statistics",allKeywordStatistics);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

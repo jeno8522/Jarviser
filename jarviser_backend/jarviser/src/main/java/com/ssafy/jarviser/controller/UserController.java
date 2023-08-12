@@ -7,6 +7,7 @@ import com.ssafy.jarviser.dto.*;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.UserService;
+import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final MeetingService meetingService;
+    private final AESEncryptionUtil aesEncryptionUtil;
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
@@ -149,8 +152,7 @@ public class UserController {
 
             for (Meeting meeting : meetingList) {
                 User host = userService.findUserById(meeting.getHostId());
-                System.out.println("호스트들의 이름 : " + host.getName());
-                responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime()));
+                responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime(), aesEncryptionUtil.encrypt(String.valueOf(meeting.getId()))));
             }
             resultMap.put("meetinglist", responseMeetingDtos);
             status = HttpStatus.ACCEPTED;

@@ -1,5 +1,8 @@
 package com.ssafy.jarviser.domain;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,14 +20,24 @@ public class AudioMessage {
     @Column(name = "audio_message_id")
     private long id;
 
-    @Column(name = "user_name")
-    private String userName;
-
     @Column(name = "content")
     private String content;
 
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @Column(name = "file_path")
+    private String filePath;
+
     @Column(name = "speech_length")
     private int speechLength;
+
+    @Column(name = "priority")
+    private long priority;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user; //FIXME: 추후 many to one으로 FK 처리 필요
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
