@@ -7,12 +7,14 @@ document.getElementById("text-send").addEventListener("click", function (e) {
   sendChat(userText);
 });
 
-var meetingId = "3"; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다.
+var meetingId = "fRsFnxwhA7frdnfFMjNPKA=="; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다. 현재 id 1인 값임
 var token = localStorage.getItem("access-token");
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
 
+
 const stt = [];
+const sttMap = new Map();
 const chat = [];
 const participants = [];
 const message = [];
@@ -48,8 +50,12 @@ function receivedStt(data) {
   let userId = data.userId;
   let userName = data.userName;
   let time = data.time;
+  let sttId = data.sttId;
   let content = data.content;
-  stt.push([userId, userName, content, time]);
+
+  let sttObj = { userId, userName, time, sttId, content };
+  stt.push(sttObj);
+  sttMap.set(sttId, [sttObj, stt.length - 1]);
 }
 function receivedParticipants(data) {
   let content = data.content;

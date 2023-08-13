@@ -37,6 +37,7 @@ public class AudioServiceImp implements AudioService {
         try {
             // MultipartFile을 InputStream으로 변환
             InputStream inputStream = audioFile.getInputStream();
+            inputStream.skip(44); //표준 헤더만큼 넘기기
 
             // InputStream을 AudioInputStream으로 변환
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
@@ -64,7 +65,9 @@ public class AudioServiceImp implements AudioService {
 
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
-        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
+        //FIXME: 적절한 절대 경로로 변경해줘야함. 상대경로로 인한 문제 발생
+        String filePath = "S:/project/S09P12A506/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
+//        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
         try {
             File savedFile = new File(filePath);
             if (!savedFile.getParentFile().exists()) {
@@ -103,7 +106,7 @@ public class AudioServiceImp implements AudioService {
                     .filePath(filePath)
                     .content(stt)
                     .speechLength(stt.length())
-                    .index(getIndex(Long.parseLong(mId)))
+                    .priority(getIndex(Long.parseLong(mId)))
                     .build();
             audioMessageRepository.save(audioMessage);
             return audioMessage.getId();

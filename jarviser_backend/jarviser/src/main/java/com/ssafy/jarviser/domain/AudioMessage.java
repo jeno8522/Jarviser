@@ -1,9 +1,12 @@
 package com.ssafy.jarviser.domain;
 
+import java.text.DateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -22,6 +25,8 @@ public class AudioMessage {
     @Column(name = "content")
     private String content;
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
+    @CreationTimestamp
     @Column(name = "start_time")
     private Date startTime;
 
@@ -31,8 +36,8 @@ public class AudioMessage {
     @Column(name = "speech_length")
     private int speechLength;
 
-    @Column(name = "index")
-    private long index;
+    @Column(name = "priority")
+    private long priority;
 
     @Column(name = "user_id")
     private long userId; //FIXME: 추후 many to one으로 FK 처리 필요

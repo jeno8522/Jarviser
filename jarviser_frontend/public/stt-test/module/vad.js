@@ -10,7 +10,7 @@
       energy_offset: 1e-8, // The initial offset.
       energy_threshold_ratio_pos: 2, // Signal must be twice the offset
       energy_threshold_ratio_neg: 0.5, // Signal must be half the offset
-      energy_integration: 1, // Size of integration change compared to the signal per second.
+      energy_integration: 1, // Size of integration change compared to the signal per second. //5로 수정
       filter: [
         { f: 200, v: 0 }, // 0 -> 200 is 0
         { f: 2000, v: 1 }, // 200 -> 2k is 1
@@ -78,7 +78,7 @@
     this.voiceTrend = 0;
     this.voiceTrendMax = 10;
     this.voiceTrendMin = -10;
-    this.voiceTrendStart = 5;
+    this.voiceTrendStart = 5; //1로 수정
     this.voiceTrendEnd = -5;
 
     // Create analyser
@@ -163,7 +163,6 @@
     };
 
     this.stop = function () {
-      this.options.voice_stop();
       this.scriptProcessorNode.disconnect();
       this.analyser.disconnect();
       this.scriptProcessorNode = null;
