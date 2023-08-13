@@ -125,6 +125,7 @@ const RightColumn = styled.div`
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
+  margin-bottom: 100px;
 `;
 
 
