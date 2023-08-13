@@ -79,6 +79,13 @@ function receivedError(data) {
   let time = data.time;
   message.push([content, time]);
 }
+function getUserIdFromToken(token) {
+  const payload = token.split(".")[1];
+  const decodedPayload = atob(payload);
+  const jsonPayload = JSON.parse(decodedPayload);
+  console.log("jsonpayload == ", jsonPayload);
+  return jsonPayload.userId;
+}
 
 function sendChat(chatText) {
   const messageObject = {
