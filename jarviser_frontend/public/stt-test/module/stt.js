@@ -79,7 +79,7 @@ function stopAudio() {
 
 async function sendAudio(blob) {
   try {
-    const url = "http://localhost:8081/meeting/transcript";
+    const url = "http://localhost:8081/audio/transcript";
     const formData = new FormData();
     const testID = 3; //임시로 넣은 testID
     formData.append("file", blob, "audio" + index + ".wav");

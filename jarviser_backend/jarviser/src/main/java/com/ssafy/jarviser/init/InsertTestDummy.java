@@ -171,7 +171,8 @@ public class InsertTestDummy implements CommandLineRunner {
                 String speaker = speakerCell != null ? speakerCell.getStringCellValue().trim() : "";
                 String content = contentCell != null ? contentCell.getStringCellValue().trim() : "";
                 if(content.equals("내용"))continue;
-
+/*
+//FIXME: 오디오 메시지 DB 수정으로 인한 주석 처리
                 AudioMessage audioMessage = AudioMessage.builder()
                                                 .userName(speaker)
                                                         .content(content)
@@ -180,6 +181,8 @@ public class InsertTestDummy implements CommandLineRunner {
                                                                                 .build();
 
                 meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
+                
+ */
                 System.out.println("발화자: " + speaker);
                 System.out.println("내용: " + content);
                 System.out.println("=======================");
