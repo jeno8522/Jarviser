@@ -17,15 +17,19 @@ const Received = {
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
 stompClient.connect({}, function (frame) {
-  stompClient.subscribe("/topic/meeting/" + meetingId, function (messageOutput) {
-    let message = JSON.parse(messageOutput.body);
-    let type = message.type;
-    Received[type](message);
-    console.log(stt);
-    console.log(chat);
-    console.log(participants);
-    document.getElementById("response").innerText = "Received: " + messageOutput.body;
-  });
+  stompClient.subscribe(
+    "/topic/meeting/" + meetingId,
+    function (messageOutput) {
+      let message = JSON.parse(messageOutput.body);
+      let type = message.type;
+      Received[type](message);
+      console.log(stt);
+      console.log(chat);
+      console.log(participants);
+      document.getElementById("response").innerText =
+        "Received: " + messageOutput.body;
+    }
+  );
 });
 
 const stt = [];
@@ -46,13 +50,21 @@ function receivedLeave(data) {
     participants.splice(index, 1);
   }
 }
+function getUserIdFromToken(token) {
+  const payload = token.split(".")[1];
+  const decodedPayload = atob(payload);
+  const jsonPayload = JSON.parse(decodedPayload);
+  console.log("jsonpayload == ", jsonPayload);
+  return jsonPayload.userId;
+}
 
 function uploadText(userText) {
   var token = localStorage.getItem("access-token");
   var serverUrl = "http://localhost:8081/meeting/message"; // 서버의 URL
-
+  var userId = getUserIdFromToken(token); // 여기서 userId를 추출
   var formData = new FormData();
   formData.append("meetingId", meetingId);
+  formData.append("userId", userId);
   formData.append("content", userText);
 
   fetch(serverUrl, {

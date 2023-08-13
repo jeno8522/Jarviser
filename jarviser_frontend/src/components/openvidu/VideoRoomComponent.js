@@ -10,7 +10,7 @@ import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 import SttChatComponent from "./chat/SttChatComponent";
-
+import WebSocketComponent from "./chat/WebSocketComponent";
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = "https://jarviser.shop/";
 
@@ -612,7 +612,9 @@ class VideoRoomComponent extends Component {
                 />
               </div>
             )}
-          <SttChatComponent />
+          {/* <SttChatComponent />
+           */}
+          <WebSocketComponent />
         </div>
       </div>
     );
