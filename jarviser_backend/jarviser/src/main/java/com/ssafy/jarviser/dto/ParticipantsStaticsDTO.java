@@ -6,6 +6,7 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ParticipantsStaticsDTO {
     long id;
     String name;

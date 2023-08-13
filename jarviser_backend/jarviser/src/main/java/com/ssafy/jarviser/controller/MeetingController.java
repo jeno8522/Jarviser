@@ -3,6 +3,7 @@ package com.ssafy.jarviser.controller;
 import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.KeywordStatistics;
 import com.ssafy.jarviser.domain.Meeting;
+import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
 import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
 import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
 import com.ssafy.jarviser.security.JwtService;
@@ -190,7 +191,18 @@ public class MeetingController {
         try {
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             List<KeywordStatistics> allKeywordStatistics = meetingService.findAllKeywordStatistics(meetingId);
-            response.put("statistics",allKeywordStatistics);
+            List<KeywordStatisticsDTO> allKeywordStatisticsDTO = new ArrayList<>();
+
+            for(int i = 0 ;i<allKeywordStatistics.size();i++){
+                KeywordStatistics keywordStatistics = allKeywordStatistics.get(i);
+                KeywordStatisticsDTO keywordStatisticsDTO = KeywordStatisticsDTO
+                        .builder()
+                        .keyword(keywordStatistics.getKeyword())
+                        .percent(keywordStatistics.getPercent())
+                        .build();
+                allKeywordStatisticsDTO.add(keywordStatisticsDTO);
+            }
+            response.put("statistics",allKeywordStatisticsDTO);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

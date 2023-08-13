@@ -93,10 +93,12 @@ public class MeetingServiceImp implements MeetingService{
     }
 
     @Override
-    public void addKeywordStatisticsToMeeting(long meetingId, KeywordStatistics keyword) {
+    public void addKeywordStatisticsToMeeting(long meetingId, List<KeywordStatistics> keyword) {
         Meeting meeting = meetingRepository.findMeetingById(meetingId);
-        meeting.addKeywordStatistics(keyword);
-        keywordStatisticsRepository.save(keyword);
+        for(KeywordStatistics keywordStatistics : keyword){
+            meeting.addKeywordStatistics(keywordStatistics);
+            keywordStatisticsRepository.save(keywordStatistics);
+        }
     }
 
     @Override
@@ -111,9 +113,9 @@ public class MeetingServiceImp implements MeetingService{
 
     //미팅 아이디 기준으로 계산
     @Override
-    public List<KeywordStatisticsDTO> caculateKeywordsStatics(long meetingId) {
+    public List<KeywordStatistics> caculateKeywordsStatics(long meetingId) {
         Map<String,Integer> keywordCount = new HashMap<>();
-        List<KeywordStatisticsDTO> keywordStatisticsDTOList = new ArrayList<>();
+        List<KeywordStatistics> keywordStatisticsList = new ArrayList<>();
 
         List<AudioMessage> audioMessages = audioMessageRepository.findAllByMeetingId(meetingId);
         //openAI서비스로 오디오 메시들에 대해서 키워드들 추출
@@ -136,14 +138,14 @@ public class MeetingServiceImp implements MeetingService{
         for(String keyword : keywords){
             int hitCount = keywordCount.get(keyword);
 
-            KeywordStatisticsDTO keywordStatisticsDTO = KeywordStatisticsDTO.builder()
+            KeywordStatistics keywordStatistics = KeywordStatistics.builder()
                     .keyword(keyword)
-                    .percent(100.0 * hitCount / total)
+                    .percent(1000.0 * hitCount / total)
                     .build();
 
-            keywordStatisticsDTOList.add(keywordStatisticsDTO);
+            keywordStatisticsList.add(keywordStatistics);
         }
-        return keywordStatisticsDTOList;
+        return keywordStatisticsList;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.ssafy.jarviser.init;
 
 import com.ssafy.jarviser.domain.*;
+import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
+import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
 import com.ssafy.jarviser.repository.*;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
@@ -9,6 +11,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -168,11 +172,9 @@ public class InsertTestDummy implements CommandLineRunner {
         //홍웅 미팅에 테스트 참여
         meetingService.joinMeeting(test.getId(),hongWoongMeetingId);
 
-        //dummy file path
-        String dummyFilePath = "C:\\Users\\SSAFY\\Desktop\\S09P12A506\\jarviser_backend\\jarviser\\src\\main\\resources\\MeetingDummyFile\\meeting_notes.xlsx";
-        //테스트 미팅에서 발화저장하기(DB에 실시간으로 저장하는 로직 필요)
         try  {
-            FileInputStream file = new FileInputStream(new File(dummyFilePath));
+            Resource dummyResource = new ClassPathResource("meeting_notes.xlsx");
+            File file = dummyResource.getFile();
             Workbook workbook = new XSSFWorkbook(file);
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -180,32 +182,49 @@ public class InsertTestDummy implements CommandLineRunner {
                 Cell speakerCell = row.getCell(0);
                 Cell contentCell = row.getCell(1);
 
-                String speakerId = speakerCell != null ? speakerCell.getStringCellValue().trim() : "";
+                long userId = (long) speakerCell.getNumericCellValue();
                 String content = contentCell != null ? contentCell.getStringCellValue().trim() : "";
-                if(content.equals("내용"))continue;
 
-                long userId = Long.parseLong(speakerId);
                 User user = userRepository.findUserById(userId);
 
                 AudioMessage audioMessage = AudioMessage.builder()
                         .user(user)
-                                .content(content)
-                                        .speechLength(content.length())
-                                                .meeting(testMeeting)
-                                                        .startTime(LocalDateTime.now())
-                                                                .filePath("filePath...")
-                                                                        .priority(1)
-                                                                                .build();
-
+                        .content(content)
+                        .speechLength(content.length())
+                        .meeting(testMeeting)
+                        .startTime(LocalDateTime.now())
+                        .filePath("filePath...")
+                        .priority(1)
+                        .build();
+//
                 meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // 오디오 메시지들을 기반으로 키워드 List결과값 가져오기
-        List<KeywordStatistics> testMeetingKeywordStatisticsList = meetingService.findAllKeywordStatistics(testMeetingId);
+        //회의 종료했다고 가정하기
 
+        //종료버튼 누르면 다음 로직 시작
+        //1. 발화자 통계
 
+        List<ParticipantsStaticsDTO> participantsStatics = meetingService.caculateParticipantsStatics(testMeetingId);
+
+        System.out.println(participantsStatics);
+        //2. 키워드 통계 (GPT 를 이용하기때문에 DB에 저장)
+
+        List<KeywordStatistics> keywordStatistics = meetingService.caculateKeywordsStatics(testMeetingId);
+
+        meetingService.addKeywordStatisticsToMeeting(testMeetingId,keywordStatistics);
+
+        for(ParticipantsStaticsDTO p : participantsStatics){
+            System.out.println(p);
+        }
+        System.out.println("--------------------------------------");
+
+        for(KeywordStatistics p : keywordStatistics){
+            System.out.println(p.getKeyword() + " " + p.getPercent());
+        }
+        System.out.println("--------------------------------------");
     }
 }

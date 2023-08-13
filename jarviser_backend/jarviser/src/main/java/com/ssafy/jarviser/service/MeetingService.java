@@ -27,7 +27,10 @@ public interface MeetingService{
     void addAudioMessageToMeeting(long meetingId, AudioMessage audioMessage);
 
     //미팅 - 키워드 저장
-    void addKeywordStatisticsToMeeting(long meetingId, KeywordStatistics keywordStatistics);
+    void addKeywordStatisticsToMeeting(long meetingId, List<KeywordStatistics> keywordStatistics);
+
+    //미팅 - 발화자 통계 저장
+    //void addParticipantsStatisticsToMeeting(long meetingId,)
 
     //미팅 아이디로 오디오 메시지 불러오기
     List<AudioMessage> findAllAudioMessage(long meetingId);
@@ -36,7 +39,7 @@ public interface MeetingService{
     List<KeywordStatistics> findAllKeywordStatistics(long meetingId);
 
     //미팅 - 키워드  이용하여 키워드별 통계 계산
-    List<KeywordStatisticsDTO> caculateKeywordsStatics(long meetingId);
+    List<KeywordStatistics> caculateKeywordsStatics(long meetingId);
 
     //미팅 - 참여자  이용하여 발화자 통계 계산
     List<ParticipantsStaticsDTO> caculateParticipantsStatics(long meetingId);
