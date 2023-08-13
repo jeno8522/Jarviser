@@ -37,7 +37,6 @@ public class MeetingController {
     private final JwtService jwtService;
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
-    private final StatisticsService statisticsService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final AudioService audioService;
@@ -152,7 +151,8 @@ public class MeetingController {
             List<ResponseAudioMessage> responseAudioMessages = new ArrayList<>();
 
             for (AudioMessage audioMessage : audioMessages) {
-                responseAudioMessages.add(new ResponseAudioMessage(audioMessage.getUserName(), audioMessage.getContent(), audioMessage.getSpeechLength()));
+                //FIXME: 오류 처리를 위해 audioMessage에서 NAME이 들어있던 곳에 ID를 바꿔서 넣어놨음. 로직 변경이기에 수정이 필요함.
+                responseAudioMessages.add(new ResponseAudioMessage(Long.toString(audioMessage.getId()), audioMessage.getContent(), audioMessage.getSpeechLength()));
             }
             response.put("audioMessages", responseAudioMessages);
             httpStatus = HttpStatus.OK;

@@ -1,3 +1,5 @@
+import VAD from "./vad.js";
+
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
@@ -9,14 +11,15 @@ document.getElementById("vad_stop").addEventListener("click", stopVAD);
 
 let mediaRecorder;
 let recordedChunks = [];
+let index = 0;
 let vad;
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = new AudioContext();
 
 function startVAD(stream) {
-  var source = audioContext.createMediaStreamSource(stream);
-  var options = {
+  let source = audioContext.createMediaStreamSource(stream);
+  let options = {
     source: source,
     voice_stop: function () {
       stopAudio();
@@ -27,7 +30,7 @@ function startVAD(stream) {
       console.log("voice_start");
     },
   };
-  vad = new window.VAD(options); // Initialize VAD with the correct options
+  vad = VAD(options); // Initialize VAD with the correct options
   console.log("vad.start는 여기요여기 == ", vad.start);
   vad.start = true; // Start VAD
   console.log("startVAD");
@@ -54,6 +57,7 @@ function startAudio(stream) {
       let blob = new Blob(recordedChunks, { type: "audio/wav" });
       recordedChunks = [];
       sendAudio(blob);
+      index++;
     });
     mediaRecorder.start();
   } else {
@@ -72,12 +76,12 @@ async function sendAudio(blob) {
     const url = "http://localhost:8081/audio/transcript";
     const formData = new FormData();
     const testID = 3; //임시로 넣은 testID
-    formData.append("file", blob, "audio.wav");
+    formData.append("file", blob, "audio" + index + ".wav");
     formData.append("meetingId", testID);
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      headers: { Authorization: "Bearer " + token },
+      headers: {},
     });
 
     if (!response.ok) {

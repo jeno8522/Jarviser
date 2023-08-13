@@ -1,13 +1,12 @@
-//FIXME : 추후 import로 대체 현재 html에서 불러오고 있음.
-// import SockJS from "sockjs-client";
-// import Stomp from "stompjs";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 document.getElementById("text-send").addEventListener("click", function (e) {
   e.preventDefault();
   const userText = document.getElementById("text-input").value;
   sendChat(userText);
 });
 
-var meetingId = "3"; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다.
+var meetingId = 3; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다.
 var token = localStorage.getItem("access-token");
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
@@ -16,8 +15,8 @@ const stt = [];
 const chat = [];
 const participants = [];
 const message = [];
-stompClient.connect({ Authorization: "Bearer " + token, meetingId: meetingId }, function (frame) {
-  stompClient.subscribe("/topic/" + meetingId, function (messageOutput) {
+stompClient.connect({}, function (frame) {
+  stompClient.subscribe("/meeting/" + meetingId, function (messageOutput) {
     let message = JSON.parse(messageOutput.body);
     let type = message.type;
     Received[type](message);
@@ -83,7 +82,6 @@ function receivedError(data) {
 function sendChat(chatText) {
   const messageObject = {
     content: chatText,
-    meetingId: meetingId,
     Authorization: token,
   };
   stompClient.send("/app/chat", {}, JSON.stringify(messageObject));

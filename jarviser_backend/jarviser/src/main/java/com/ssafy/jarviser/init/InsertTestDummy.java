@@ -6,6 +6,7 @@ import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
 import com.ssafy.jarviser.repository.ReservationRepository;
 import com.ssafy.jarviser.repository.UserRepository;
 import com.ssafy.jarviser.service.MeetingService;
+import com.ssafy.jarviser.util.AESEncryptionUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
