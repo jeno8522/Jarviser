@@ -47,6 +47,13 @@ function receivedLeave(data) {
     participants.splice(index, 1);
   }
 }
+function getUserIdFromToken(token) {
+  const payload = token.split(".")[1];
+  const decodedPayload = atob(payload);
+  const jsonPayload = JSON.parse(decodedPayload);
+  console.log("jsonpayload == ", jsonPayload);
+  return jsonPayload.userId;
+}
 
 function uploadText(userText) {
   var token = localStorage.getItem("access-token");
@@ -54,6 +61,7 @@ function uploadText(userText) {
 
   var formData = new FormData();
   formData.append("meetingId", meetingId);
+  formData.append("userId", userId);
   formData.append("content", userText);
 
   fetch(serverUrl, {
