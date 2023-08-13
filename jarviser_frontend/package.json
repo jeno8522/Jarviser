@@ -33,6 +33,7 @@
     "stomp": "^0.1.1",
     "stompjs": "^2.3.3",
     "stream-browserify": "^3.0.0",
+    "styled-components": "^6.0.7",
     "util": "^0.12.5",
     "web-vitals": "^2.1.4"
   },
