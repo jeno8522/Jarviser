@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import {useEffect} from "react";
+import WebSocketComponent from "../components/web-socket/WebSocketComponent";
 
 function UserMain() {
   const navigate = useNavigate();
