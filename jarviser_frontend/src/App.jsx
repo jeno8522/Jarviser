@@ -15,7 +15,6 @@ import ReportDetail from "./pages/ReportDetail";
 function App() {
   return (
     <>
-      <Header></Header>
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />

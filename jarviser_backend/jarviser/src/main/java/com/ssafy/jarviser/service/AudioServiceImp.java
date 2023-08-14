@@ -158,4 +158,25 @@ public class AudioServiceImp implements AudioService {
         return staticOfAudioMessages;
     }
 
+    @Override
+    public AudioMessage findByAudioMessageId(long audioMessageId) {
+        return audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+    }
+
+    @Override
+    public Long updateByAudioMessageId(long audioMessageId, String changedContext) {
+        //기존 메시지 찾기
+        AudioMessage existingAudioMessage = audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+
+        // 오디오 메시지 업데이트
+        existingAudioMessage.setContent(changedContext);
+
+        // 변경 사항을 저장하고 반환
+        audioMessageRepository.save(existingAudioMessage);
+        return audioMessageId;
+    }
+
+
 }
