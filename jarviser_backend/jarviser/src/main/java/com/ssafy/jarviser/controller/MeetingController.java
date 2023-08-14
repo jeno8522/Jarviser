@@ -53,6 +53,7 @@ public class MeetingController {
             Long hostId = jwtService.extractUserId(token);
             String encryptedKey = meetingService.createMeeting(hostId, meetingName);
             httpStatus = HttpStatus.ACCEPTED;
+            encryptedKey = encryptedKey.substring(0,encryptedKey.length() - 2);
             responseMap.put("encryptedKey", encryptedKey);
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
@@ -71,6 +72,8 @@ public class MeetingController {
         HttpStatus status = null;
 
         try {
+            //encryptedKey 뒤에 == 붙여야함
+            encryptedKey += "==";
             //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             //해당 미팅 id값을 통해 미팅 객체 찾기
