@@ -4,8 +4,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+import styled from "styled-components";
 
-function Reservation() {
+function Reservation({ closeModal }) {
   const navigate = useNavigate();
   const { accessToken } = useAccessToken();
 
@@ -78,14 +79,20 @@ function Reservation() {
   } = useForm();
 
   return (
-    <>
-      <div>
-        <h1>미팅 예약하기</h1>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="title">제목</label>
-        <input
+    <ModalBackdrop onClick={closeModal}>
+    <ModalContent onClick={e => e.stopPropagation()}> 
+    <CloseButton onClick={closeModal}>X</CloseButton>
+      <ModalHeader>
+      <h1>미팅 예약하기</h1>
+    </ModalHeader>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <ModalBody>
+        
+      
+      <LeftContainer>
+        <ContentLabel htmlFor="title">제목</ContentLabel>
+        <TitleField>
+        <TitleText
           id="title"
           type="text"
           placeholder="제목을 입력해주세요."
@@ -97,10 +104,12 @@ function Reservation() {
             pattern: {},
           })}
         />
+        </TitleField>
         {errors.title && <small role="alert">{errors.title.message}</small>}
         <br />
-        <label htmlFor="date">날짜</label>
-        <input
+        <ContentLabel htmlFor="date">날짜</ContentLabel>
+        <TimeField>
+        <TimeText
           id="date"
           type="date"
           placeholder="날짜를 선택해주세요."
@@ -111,10 +120,12 @@ function Reservation() {
             required: "날짜는 필수 입력입니다.", 
           })}
         />
+        </TimeField>
         {errors.date && <small role="alert">{errors.date.message}</small>}
         <br />
-        <label htmlFor="time">시간</label>
-        <input
+        <ContentLabel htmlFor="time">시간</ContentLabel>
+        <TimeField>
+        <TimeText
           id="time"
           type="time"
           placeholder="시간을 선택해주세요."
@@ -125,10 +136,12 @@ function Reservation() {
             required: "시간은 필수 입력입니다.",
           })}
         />
+        </TimeField>
         {errors.time && <small role="alert">{errors.time.message}</small>}
         <br />
-        <label htmlFor="content">내용</label>
-        <input
+        <ContentLabel htmlFor="content">내용</ContentLabel>
+        <DescField>
+        <DescText
           id="content"
           type="textarea"
           placeholder="내용을 입력해주세요."
@@ -138,43 +151,230 @@ function Reservation() {
           {...register("content", {
             required: "내용은 필수 입력입니다.",
           })}
+          
         />
+        
+        </DescField>
+        
         {errors.content && <small role="alert">{errors.content.message}</small>}
         <br />
-        <label htmlFor="userEmail">초대 이메일</label>
-        <input
-          id="userEmail"
-          type="email"
-          placeholder="이메일을 입력해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
-          }
-          {...register("userEmail", {})}
-        />
-
-        <button
-          type="button" // Add this line to prevent the button from submitting the form
-          disabled={isSubmitting}
-          onClick={() =>
-            addUserEmail(document.getElementById("userEmail").value)
-          }
-        >
-          추가
-        </button>
-        <br />
-        {userEmail.map((email, index) => (
-          <div key={index}>
-            {email}
-            <button type="button" onClick={() => deleteUser(index)}>
-              삭제
-            </button>
-          </div>
-        ))}
-        <button type="submit" disabled={isSubmitting || userEmail.length === 0}>
-          예약하기
-        </button>
-      </form>
-    </>
+        </LeftContainer>
+        <RightContainer>
+    <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
+    <EmailContainer>
+      <EmailText
+        id="userEmail"
+        type="email"
+        placeholder="이메일을 입력해주세요."
+        aria-invalid={
+          isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
+        }
+        {...register("userEmail", {})}
+      />
+      <Button
+        type="button"
+        disabled={isSubmitting}
+        onClick={() => addUserEmail(document.getElementById("userEmail").value)}
+      >
+        추가
+      </Button>
+    </EmailContainer>
+    {userEmail.map((email, index) => (
+      <div key={index}>
+        {email}
+        <Button type="button" onClick={() => deleteUser(index)}>
+          삭제
+        </Button>
+      </div>
+    ))}
+  </RightContainer>
+  <SubmitButton type="submit" disabled={isSubmitting || userEmail.length === 0}>
+    예약 완료
+  </SubmitButton>
+      
+      </ModalBody>
+      </Form>
+    </ModalContent>
+    </ModalBackdrop>
   );
 }
+
+const ReservationHeader = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TitleField = styled.div`
+  margin-bottom: 15px;
+`;
+
+const ContentLabel = styled.label`
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+`;
+
+const TitleText = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+`;
+
+const TimeField = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+`;
+
+const TimeText = styled.input`
+  width: 48%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+`;
+
+const DescField = styled.div`
+  margin-bottom: 15px;
+`;
+
+const DescText = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  min-height: 100px;
+`;
+
+const EmailField = styled.div`
+  margin-bottom: 15px;
+`;
+
+const EmailText = styled.input`
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-bottom: 10px;
+`;
+
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const ModalContent = styled.div`
+background-color: #ffffff;
+padding: 20px;
+border-radius: 10px; // 모서리를 둥글게 만듭니다.
+position: relative;
+max-width: 100%; // 모달의 최대 너비를 설정합니다.
+max-height: 80%; // 모달의 최대 높이를 설정합니다.
+overflow: auto; // 내용이 너무 길면 스크롤이 생깁니다.
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과를 추가합니다.
+width: 800px; // 원하는 너비로 설정합니다.
+min-height: 300px; // 원하는 최소 높이로 설정합니다.
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+const ModalHeader = styled.div`
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const Button = styled.button`
+  padding: 10px 15px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #0056b3;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  justify-content: space-between; // 필요에 따라 조정
+  max-width: 500px;
+  margin: 0 auto;
+`;
+
+const ModalBody = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LeftContainer = styled.div`
+  flex: 1; // 왼쪽 컨테이너가 더 넓게 설정
+  padding-right: 20px; // 오른쪽 컨테이너와 간격을 조정
+`;
+
+const RightContainer = styled.div`
+  flex: 1; // 오른쪽 컨테이너가 더 좁게 설정
+`;
+
+const EmailContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const SubmitButton = styled.button`
+  padding: 15px 30px;
+  background: #28a745; // 녹색 배경
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; // 큰 글씨
+  transition: background 0.3s;
+  position: absolute;
+  right: 20px; // 우측 하단에 배치
+  bottom: 20px;
+
+  &:hover {
+    background: #218838;
+  }
+`;
+
+
 export default Reservation;
