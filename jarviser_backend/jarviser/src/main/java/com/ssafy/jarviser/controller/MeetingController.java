@@ -39,6 +39,8 @@ public class MeetingController {
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
 
+    private final Map<String,Integer> encryptedTable = new HashMap<>();
+
     //미팅생성
     @PostMapping("/create/{meetingName}")
     public ResponseEntity<Map<String, Object>> createMeeting(
@@ -52,9 +54,11 @@ public class MeetingController {
         try {
             Long hostId = jwtService.extractUserId(token);
             String encryptedKey = meetingService.createMeeting(hostId, meetingName);
+            int hashKey = encryptedKey.hashCode();
+            encryptedTable.put(encryptedKey,hashKey);
             httpStatus = HttpStatus.ACCEPTED;
-            encryptedKey = encryptedKey.substring(0,encryptedKey.length() - 2);
-            responseMap.put("encryptedKey", encryptedKey);
+            responseMap.put("encryptedKey", hashKey);
+
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -66,16 +70,16 @@ public class MeetingController {
     @GetMapping("/joinMeeting/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
-            @PathVariable String encryptedKey) {
+            @PathVariable int encryptedKey) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try {
-            //encryptedKey 뒤에 == 붙여야함
-            encryptedKey += "==";
+            //int 값 기준으로 복호화 작업 진행
+            String encryptedString = String.valueOf(encryptedTable.get(encryptedKey));
             //미팅 복호화를 통해 미팅 id값 획득
-            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedString));
             //해당 미팅 id값을 통해 미팅 객체 찾기
             Meeting meeting = meetingService.findMeetingById(meetingId);
             //유저 id jwt토큰을 이용해서 획득
