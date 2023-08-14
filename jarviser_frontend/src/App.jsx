@@ -30,7 +30,6 @@ function App() {
           <Route path="/joinmeeting" element={<JoinMeeting />} />
         </Routes>
       </Router>
-      <Footer></Footer>
     </>
   );
 }
