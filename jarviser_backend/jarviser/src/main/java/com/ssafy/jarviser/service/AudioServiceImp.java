@@ -67,7 +67,7 @@ public class AudioServiceImp implements AudioService {
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
         //FIXME: 적절한 절대 경로로 변경해줘야함. 상대경로로 인한 문제 발생
-        String filePath = "S:/project/S09P12A506/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
+        String filePath = "C:/ssafy/S09P12A506/jarviser_backend/jarviser/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
 //        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
         try {
             File savedFile = new File(filePath);
