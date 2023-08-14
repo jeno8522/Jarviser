@@ -1,4 +1,4 @@
-import { MediaRecorder } from "extendable-media-recorder";
+import VAD from "./vad.js";
 
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
@@ -11,50 +11,41 @@ document.getElementById("vad_stop").addEventListener("click", stopVAD);
 
 let mediaRecorder;
 let recordedChunks = [];
+let index = 0;
 let vad;
-let audioContext;
-let time = 0;
-let sampleRate;
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext = new AudioContext();
 
 function startVAD(stream) {
-  if (vad) return;
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  audioContext = new AudioContext();
   let source = audioContext.createMediaStreamSource(stream);
-  let startTime = 0;
-  
-  startRecording(stream);
   let options = {
     source: source,
-    voice_start: function () {
-      // Pass the 'stream' to the startAudio function
-      console.log("voice_start");
-      startTime = new Date().getTime();
-    },
     voice_stop: function () {
-      time = new Date().getTime() - startTime;
-      mediaRecorder.stop();
-      mediaRecorder.start();
+      stopAudio();
       console.log("voice_stop");
     },
+    voice_start: function () {
+      startAudio(stream); // Pass the 'stream' to the startAudio function
+      console.log("voice_start");
+    },
   };
-  vad = new window.VAD(options); // Initialize VAD with the correct options
-  sampleRate = vad.options.context.sampleRate;
+  vad = VAD(options); // Initialize VAD with the correct options
+  console.log("vad.start는 여기요여기 == ", vad.start);
+  vad.start = true; // Start VAD
   console.log("startVAD");
 }
 
 function stopVAD() {
   vad.stop();
-  mediaRecorder = null;
-  audioContext.close();
-  vad = null;
   console.log("stopVAD");
 }
 
-function startRecording(stream) {
+function startAudio(stream) {
   if (!mediaRecorder) {
-    mediaRecorder = new MediaRecorder(stream, {mimeType:"audio/wav"}); // Use the 'stream' parameter here
+    mediaRecorder = new MediaRecorder(stream); // Use the 'stream' parameter here
 
+    mediaRecorder.addEventListener("start", function () {});
     mediaRecorder.addEventListener("dataavailable", function (e) {
       if (e.data.size > 0) {
         recordedChunks.push(e.data);
@@ -66,8 +57,8 @@ function startRecording(stream) {
       let blob = new Blob(recordedChunks, { type: "audio/wav" });
       recordedChunks = [];
       sendAudio(blob);
+      index++;
     });
-
     mediaRecorder.start();
   } else {
     mediaRecorder.start();
@@ -77,7 +68,6 @@ function startRecording(stream) {
 function stopAudio() {
   if (mediaRecorder) {
     mediaRecorder.stop();
-    mediaRecorder.start();
   }
 }
 
@@ -85,13 +75,13 @@ async function sendAudio(blob) {
   try {
     const url = "http://localhost:8081/audio/transcript";
     const formData = new FormData();
-    const testID = "fRsFnxwhA7frdnfFMjNPKA=="; //임시로 넣은 testID
-    formData.append("file", blob);
+    const testID = 3; //임시로 넣은 testID
+    formData.append("file", blob, "audio" + index + ".wav");
     formData.append("meetingId", testID);
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      headers: { Authorization: "Bearer " + token },
+      headers: {},
     });
 
     if (!response.ok) {

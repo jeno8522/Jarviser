@@ -37,7 +37,7 @@ public class AudioMessage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User user; //FIXME: 추후 many to one으로 FK 처리 필요
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))

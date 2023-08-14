@@ -14,9 +14,13 @@ public class Encrypto {
     @Test
     @DisplayName("EncryptoTest")
     void testEncrypt() throws Exception {
+        System.out.println("EncryptoTest");
         long id = 1;
         String encrypt = aesEncryptionUtil.encrypt(Long.toString(id));
         System.out.println(encrypt);
+
+        String decrypt = aesEncryptionUtil.decrypt("fRsFnxwhA7frdnfFMjNPKA==");
+        System.out.println(;
         String decrypt = aesEncryptionUtil.decrypt(encrypt);
 
         Assertions.assertEquals("1",decrypt);
