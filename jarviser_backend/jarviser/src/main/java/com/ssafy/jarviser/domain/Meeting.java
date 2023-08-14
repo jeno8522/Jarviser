@@ -48,6 +48,9 @@ public class Meeting implements Serializable {
     @OneToMany(mappedBy = "meeting")
     private final List<Participant> participants = new ArrayList<>();
 
+    @OneToMany(mappedBy = "meeting")
+    private final List<KeywordStatistics> keywordStatistics = new ArrayList<>();
+
     @Builder
     public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
         this.id = id;
@@ -60,6 +63,11 @@ public class Meeting implements Serializable {
     public void addAudioMessage(AudioMessage audioMessage){
         this.audioMessages.add(audioMessage);
         audioMessage.setMeeting(this);
+    }
+
+    public void addKeywordStatistics(KeywordStatistics keywordStatistics){
+        this.keywordStatistics.add(keywordStatistics);
+        keywordStatistics.setMeeting(this);
     }
 }
 

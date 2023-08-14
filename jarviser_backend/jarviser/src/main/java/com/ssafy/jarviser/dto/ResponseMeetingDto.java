@@ -11,4 +11,5 @@ public class ResponseMeetingDto {
     String meetingName;
     String hostName;
     LocalDateTime date;
+    String encryptedKey;
 }
