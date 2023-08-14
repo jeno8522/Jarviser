@@ -69,7 +69,10 @@ const ReportDetail = () => {
         {/* 조건부 렌더링 */}
         {!isLoading && (
           <>
-            <AudioMessage audioMessages={audioMessages} />
+            <AudioMessage
+              audioMessages={audioMessages}
+              setAudioMessages={setAudioMessages}
+            />
             <Speech speechPercentage={speechPercentage} />
             <Keyword staticsOfKeywords={staticsOfKeywords} />
           </>

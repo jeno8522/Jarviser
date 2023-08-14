@@ -9,18 +9,25 @@ const Speech = ({ speechPercentage }) => {
   const data = newData.map(({ name, percentage }) => ({
     title: name,
     value: percentage,
-    color: getRandomColor(), // 랜덤 컬러 생성 함수 호출
+    color: getRandomColor(),
   }));
 
   return (
     <div>
-      <h2>Speech Percentage</h2>
-      <PieChart data={data} />
+      <h2>발화자 통계</h2>
+      <PieChart
+        data={data}
+        reveal={100} // 그래프 레이블을 항상 표시하도록 설정
+        lineWidth={100} // 그래프 두께 설정 (선택사항)
+        label={({ dataEntry }) => `${dataEntry.title}: ${dataEntry.value.toFixed(1)}%`} // 그래프 레이블 내용 설정 (소수점 1자리까지)
+        labelStyle={{
+          fontSize: "2px", // 그래프 레이블 폰트 크기 설정 (선택사항)
+        }}
+      />
     </div>
   );
 };
 
-// 랜덤 컬러 생성 함수
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
