@@ -18,6 +18,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.InputStream;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -100,9 +101,9 @@ public class AudioServiceImp implements AudioService {
     public Long createAudioMessage(Long userId, String mId, Long StartTime, String filePath, String stt) {
         try {
             AudioMessage audioMessage = AudioMessage.builder()
-                    .userId(userId)
+                    .user(userService.findUserById(userId))
                     .meeting(meetingService.findMeetingById(Long.parseLong(mId)))
-                    .startTime(new Date(StartTime))
+                    .startTime(new Date(StartTime).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                     .filePath(filePath)
                     .content(stt)
                     .speechLength(stt.length())
