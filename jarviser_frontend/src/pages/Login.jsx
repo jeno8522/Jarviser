@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import jarviserImg from "../assets/images/Jarviser_logo.jpg"; // 로고 이미지 경로
+import Header from "../components/molecules/Navigation"
 
 function Login() {
   const navigate = useNavigate();
@@ -32,11 +33,13 @@ function Login() {
   } = useForm();
 
   return (
+    <>
+    <Header />
     <Whole>
       <ImageLogo src={jarviserImg} alt="Jarviser Logo" />
       <RightColumn>
         <LoginHeadLine>
-          <h1>Sign in</h1>
+          <h1>login</h1>
         </LoginHeadLine>
         <LoginForm onSubmit={handleSubmit(onSubmit)}>
           <LoginLabel htmlFor="email">이메일</LoginLabel>
@@ -75,7 +78,9 @@ function Login() {
         </LoginForm>
       </RightColumn>
     </Whole>
+    </>
   );
+  
 }
 
 // Styled Components (스타일 부분)
@@ -87,6 +92,8 @@ const Whole = styled.div`
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
+  margin-bottom: 100px;
 `;
 
 const ImageLogo = styled.img`

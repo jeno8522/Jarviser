@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import jarviserImg from "../assets/images/Jarviser_logo.jpg";
+import Navigation from "../components/molecules/Navigation"
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -23,7 +25,10 @@ function Signup() {
   };
 
   return (
+    <>
+    <Navigation />
     <Whole>
+      
       <ImageLogo src={jarviserImg} alt="Jarviser Logo" />
       <RightColumn>
         <SignupHeadLine>
@@ -95,6 +100,7 @@ function Signup() {
         </SignupForm>
       </RightColumn>
     </Whole>
+    </>
   );
 }
 const Whole = styled.div`
@@ -104,6 +110,8 @@ const Whole = styled.div`
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
+  margin-bottom: 100px;
 `;
 
 const ImageLogo = styled.img`
