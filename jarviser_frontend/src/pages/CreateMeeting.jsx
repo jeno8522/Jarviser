@@ -5,20 +5,12 @@ import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
 
-const generateInitialSessionName = () => {
-  const array = new Uint32Array(1);
-  window.crypto.getRandomValues(array);
-  const randomValue = array[0];
-  const encoder = new TextEncoder();
-  const data = encoder.encode(randomValue.toString());
-
-  return window.crypto.subtle.digest("SHA-256", data).then((hashBuffer) => {
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-    return hashHex;
-  });
+const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
 };
 
 const CreateMeeting = () => {
@@ -32,18 +24,9 @@ const CreateMeeting = () => {
   }, [accessToken, navigate]);
 
   const [userName, setUserName] = useState();
-  const [sessionName, setSessionName] = useState("My Room");
+  const [sessionName, setSessionName] = useState("gsdfswerweqrwerwerer");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
-
-  useEffect(() => {
-    async function initializeSessionName() {
-      const generatedName = await generateInitialSessionName();
-      setSessionName(generatedName);
-    }
-
-    initializeSessionName();
-  }, []);
-
+  const [encryptedKey, setEncryptedKey] = useState("");
   function base64UrlDecode(str) {
     // Base64Url로 인코딩된 문자열을 일반 Base64로 변환
     str = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -65,13 +48,44 @@ const CreateMeeting = () => {
   const payload = JSON.parse(base64UrlDecode(segments[1]));
   const payloadUserName = payload["username"];
 
-  console.log("페이로드 정보!!! === ", payloadUserName); // 이렇게 하면 payload의 내용을 볼 수 있습니다.
+  console.log("페이로드 정보!!! === ", payload); // 이렇게 하면 payload의 내용을 볼 수 있습니다.
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setShowVideoRoom(true);
-  };
+    console.log("sessionName === ", sessionName);
+    console.log("accessToken === ", accessToken);
+    const endpoint = `http://localhost:8081/meeting/create/${sessionName}`;
+    // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
+    try {
+      const response = await axios.post(
+        endpoint,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
+      console.log("response === ", response);
+      if (response.status === 202) {
+        console.log(
+          "Meeting created successfully!",
+          response.data.encryptedKey
+        );
+
+        // 미팅 생성에 성공했을 때만 VideoRoomComponent를 보여줍니다.
+        setEncryptedKey(response.data.encryptedKey);
+        setShowVideoRoom(true);
+      } else {
+        console.error("Error creating meeting:", response.data);
+        alert("Error creating meeting. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while creating the meeting. Please try again.");
+    }
+  };
   const handleCopy = () => {
     navigator.clipboard
       .writeText(sessionName)
@@ -118,6 +132,7 @@ const CreateMeeting = () => {
         <VideoRoomComponent
           userName={payloadUserName}
           sessionName={sessionName}
+          meetingId={encryptedKey}
         />
       )}
     </div>
