@@ -35,6 +35,7 @@ function Login() {
   return (
     <>
     <Header />
+ 
     <Whole>
       <ImageLogo src={jarviserImg} alt="Jarviser Logo" />
       <RightColumn>
@@ -78,6 +79,7 @@ function Login() {
         </LoginForm>
       </RightColumn>
     </Whole>
+  
     </>
   );
   
@@ -92,13 +94,25 @@ const Whole = styled.div`
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 6%;
   margin-bottom: 100px;
+`;
+
+const Wrapper = styled.div`
+  width: 88%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF; // 옅은 회색 배경
+  padding: 40px;
+  border-radius: 20px; // 둥근 모서리
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); // 그림자 효과
 `;
 
 const ImageLogo = styled.img`
   width: 30%;
-  height: 90%;
+  height: 80%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -170,7 +184,7 @@ const LoginButton = styled.button`
   padding: 12px;
   border: none;
   border-radius: 4px;
-  background: linear-gradient(45deg, #b3daff, #4da6ff);
+  background: linear-gradient(45deg, #2E2EFE, #4da6ff);
   color: white;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;

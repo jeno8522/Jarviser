@@ -12,6 +12,7 @@ import useAccessToken from "../components/useAccessToken";
 import {useEffect} from "react";
 import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation"
+import MainHeader from "../components/molecules/MainHeader"
 
 
 function UserMain() {
@@ -27,9 +28,9 @@ function UserMain() {
   }, [accessToken, navigate]);
   return (
     <>
-      <Navigation />
+      <MainHeader />
       <PageContent>
-        <Sidebar />
+      <Sidebar />
         <ButtonFrame>
         <Link to="/createmeeting">
         <ButtonWithImage>
@@ -74,8 +75,8 @@ function UserMain() {
 
 const PageContent = styled.div`
   display: flex;
-  width: 85%; // 너비를 100%로 설정
-  height: 85vh; // 높이를 화면 높이의 100%로 설정
+  width: 80%; // 너비를 100%로 설정
+  height: 85.5vh; // 높이를 화면 높이의 100%로 설정
   align-items: center;
   flex-shrink: 0;
 `;
