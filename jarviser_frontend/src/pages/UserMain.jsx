@@ -13,9 +13,20 @@ import {useEffect} from "react";
 import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation"
 import MainHeader from "../components/molecules/MainHeader"
+import Reservation from './Reservation'
 
 
 function UserMain() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const navigate = useNavigate();
   const {accessToken} = useAccessToken();
   const reservation = () => {
@@ -56,19 +67,19 @@ function UserMain() {
           </ButtonWithImage>
           </Link>
 
-          <Link to="/reservation">
           <ButtonWithImage>
-          <StyledSVGButton>
+          <StyledSVGButton onClick={openModal}> 
           <svg xmlns="http://www.w3.org/2000/svg" width="108" height="140" viewBox="0 0 108 140" fill="none">
             <SVGPath d="M104.952 87.2194L97.9689 75.6274C96.5025 73.0436 95.1757 68.1554 95.1757 65.2924V47.625C95.1757 31.2146 85.539 17.0389 71.6425 10.4049C68.0113 3.98039 61.3075 0 53.626 0C46.0144 0 39.1712 4.12005 35.54 10.6144C21.9228 17.388 12.4956 31.4241 12.4956 47.625V65.2924C12.4956 68.1554 11.1688 73.0436 9.70234 75.5576L2.64937 87.2194C-0.143882 91.8981 -0.772363 97.0656 0.973422 101.814C2.64937 106.493 6.62976 110.124 11.7973 111.87C25.3446 116.479 39.5902 118.713 53.8355 118.713C68.0811 118.713 82.3267 116.479 95.874 111.94C100.762 110.334 104.533 106.633 106.349 101.814C108.164 96.9958 107.675 91.6886 104.952 87.2194Z" fill="#292D32"/>
             <SVGPath d="M73.4566 125.783C70.5237 133.884 62.7724 139.68 53.6943 139.68C48.1777 139.68 42.7308 137.445 38.89 133.465C36.6554 131.37 34.9795 128.576 34.0018 125.713C34.9096 125.853 35.8174 125.923 36.7951 126.063C38.4012 126.272 40.0772 126.482 41.7532 126.621C45.7336 126.97 49.7838 127.18 53.834 127.18C57.8144 127.18 61.7948 126.97 65.7053 126.621C67.1718 126.482 68.6383 126.412 70.0349 126.202C71.1522 126.063 72.2695 125.923 73.4566 125.783Z" fill="#292D32"/>
           </svg>
             </StyledSVGButton>
-            <Button type="button" id="reserve_meeting_button">예약하기</Button>
+            <Button type="button" id="reserve_meeting_button" onClick={openModal}>예약하기</Button>
           </ButtonWithImage>
-          </Link>
+
         </ButtonFrame>
       </PageContent>
+      {isModalOpen && <Reservation closeModal={closeModal} />}
     </>
   );
 }
