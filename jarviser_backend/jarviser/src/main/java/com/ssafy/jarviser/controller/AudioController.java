@@ -49,14 +49,13 @@ public class AudioController {
             Long userId = jwtService.extractUserId(token); //TODO:에러 처리 필요 여부 확인
             String userName = jwtService.extractUserName(token); //TODO: 에러 처리 필요 여부 확인
 
-            Long startTime = arriveDate.getTime() - audioService.getTimeOfAudio(audioFile); //TODO: 추후 정렬에 사용 예정, 현재 DB에만 저장
+            Long startTime = arriveDate.getTime() /*- audioService.getTimeOfAudio(audioFile)*/; //TODO: 추후 정렬에 사용 예정, 현재 DB에만 저장
             String filePath = audioService.saveAudioFile(mId, userId, startTime, audioFile);
             String stt = audioService.getStt(filePath);
             String audioMessageId = audioService.createAudioMessage(userId, mId, startTime, filePath, stt).toString();
 
             resultMap.put("type", "stt");
-            resultMap.put("id", audioMessageId);
-            resultMap.put("index", audioMessageId);
+            resultMap.put("sttId", audioMessageId);
             resultMap.put("userId", userId.toString());
             resultMap.put("userName", userName);
             resultMap.put("content", stt);
@@ -78,6 +77,7 @@ public class AudioController {
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
+    //TODO:구현 필요
     @GetMapping(value = "/download")
     public ResponseEntity<Map<String, String>> download(
             @RequestHeader("Authorization") String token,

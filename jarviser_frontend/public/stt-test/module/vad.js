@@ -10,10 +10,10 @@
       energy_offset: 1e-8, // The initial offset.
       energy_threshold_ratio_pos: 2, // Signal must be twice the offset
       energy_threshold_ratio_neg: 0.5, // Signal must be half the offset
-      energy_integration: 1, // Size of integration change compared to the signal per second.
+      energy_integration: 1, // Size of integration change compared to the signal per second. //5로 수정
       filter: [
-        {f: 200, v: 0}, // 0 -> 200 is 0
-        {f: 2000, v: 1}, // 200 -> 2k is 1
+        { f: 200, v: 0 }, // 0 -> 200 is 0
+        { f: 2000, v: 1 }, // 200 -> 2k is 1
       ],
       source: null,
       context: null,
@@ -35,8 +35,7 @@
 
     // Calculate time relationships
     this.hertzPerBin = this.options.context.sampleRate / this.options.fftSize;
-    this.iterationFrequency =
-      this.options.context.sampleRate / this.options.bufferLen;
+    this.iterationFrequency = this.options.context.sampleRate / this.options.bufferLen;
     this.iterationPeriod = 1 / this.iterationFrequency;
 
     var DEBUG = true;
@@ -73,15 +72,13 @@
 
     // Energy detector props
     this.energy_offset = this.options.energy_offset;
-    this.energy_threshold_pos =
-      this.energy_offset * this.options.energy_threshold_ratio_pos;
-    this.energy_threshold_neg =
-      this.energy_offset * this.options.energy_threshold_ratio_neg;
+    this.energy_threshold_pos = this.energy_offset * this.options.energy_threshold_ratio_pos;
+    this.energy_threshold_neg = this.energy_offset * this.options.energy_threshold_ratio_neg;
 
     this.voiceTrend = 0;
     this.voiceTrendMax = 10;
     this.voiceTrendMin = -10;
-    this.voiceTrendStart = 5;
+    this.voiceTrendStart = 5; //1로 수정
     this.voiceTrendEnd = -5;
 
     // Create analyser
@@ -92,9 +89,7 @@
     this.floatFrequencyData = new Float32Array(this.analyser.frequencyBinCount);
 
     // Setup local storage of the Linear FFT data
-    this.floatFrequencyDataLinear = new Float32Array(
-      this.floatFrequencyData.length
-    );
+    this.floatFrequencyDataLinear = new Float32Array(this.floatFrequencyData.length);
 
     // Connect this.analyser
     this.options.source.connect(this.analyser);
@@ -167,20 +162,23 @@
       return energy;
     };
 
+    this.stop = function () {
+      this.scriptProcessorNode.disconnect();
+      this.analyser.disconnect();
+      this.scriptProcessorNode = null;
+      this.analyser = null;
+    };
+
     this.monitor = function () {
       var energy = this.getEnergy();
       var signal = energy - this.energy_offset;
 
       if (signal > this.energy_threshold_pos) {
         this.voiceTrend =
-          this.voiceTrend + 1 > this.voiceTrendMax
-            ? this.voiceTrendMax
-            : this.voiceTrend + 1;
+          this.voiceTrend + 1 > this.voiceTrendMax ? this.voiceTrendMax : this.voiceTrend + 1;
       } else if (signal < -this.energy_threshold_neg) {
         this.voiceTrend =
-          this.voiceTrend - 1 < this.voiceTrendMin
-            ? this.voiceTrendMin
-            : this.voiceTrend - 1;
+          this.voiceTrend - 1 < this.voiceTrendMin ? this.voiceTrendMin : this.voiceTrend - 1;
       } else {
         // voiceTrend gets smaller
         if (this.voiceTrend > 0) {
@@ -201,8 +199,7 @@
       }
 
       // Integration brings in the real-time aspect through the relationship with the frequency this functions is called.
-      var integration =
-        signal * this.iterationPeriod * this.options.energy_integration;
+      var integration = signal * this.iterationPeriod * this.options.energy_integration;
 
       // Idea?: The integration is affected by the voiceTrend magnitude? - Not sure. Not doing atm.
 
@@ -213,10 +210,8 @@
         this.energy_offset += integration * 10;
       }
       this.energy_offset = this.energy_offset < 0 ? 0 : this.energy_offset;
-      this.energy_threshold_pos =
-        this.energy_offset * this.options.energy_threshold_ratio_pos;
-      this.energy_threshold_neg =
-        this.energy_offset * this.options.energy_threshold_ratio_neg;
+      this.energy_threshold_pos = this.energy_offset * this.options.energy_threshold_ratio_pos;
+      this.energy_threshold_neg = this.energy_offset * this.options.energy_threshold_ratio_neg;
 
       // Broadcast the messages
       if (start && !this.vadState) {

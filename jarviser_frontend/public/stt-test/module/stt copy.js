@@ -1,5 +1,3 @@
-import { MediaRecorder } from "extendable-media-recorder";
-
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
     .getUserMedia({ audio: true })
@@ -22,22 +20,23 @@ function startVAD(stream) {
   audioContext = new AudioContext();
   let source = audioContext.createMediaStreamSource(stream);
   let startTime = 0;
-  
-  startRecording(stream);
+
   let options = {
     source: source,
     voice_start: function () {
-      // Pass the 'stream' to the startAudio function
+      mediaRecorder.start(); // Pass the 'stream' to the startAudio function
       console.log("voice_start");
-      startTime = new Date().getTime();
+      startTime = new Date().getMilliseconds();
     },
     voice_stop: function () {
-      time = new Date().getTime() - startTime;
+      time = new Date().getMilliseconds() - startTime;
       mediaRecorder.stop();
       mediaRecorder.start();
+      time = 0;
       console.log("voice_stop");
     },
   };
+  startAudio(stream);
   vad = new window.VAD(options); // Initialize VAD with the correct options
   sampleRate = vad.options.context.sampleRate;
   console.log("startVAD");
@@ -45,7 +44,6 @@ function startVAD(stream) {
 
 function stopVAD() {
   vad.stop();
-  mediaRecorder = null;
   audioContext.close();
   vad = null;
   console.log("stopVAD");
@@ -53,21 +51,21 @@ function stopVAD() {
 
 function startRecording(stream) {
   if (!mediaRecorder) {
-    mediaRecorder = new MediaRecorder(stream, {mimeType:"audio/wav"}); // Use the 'stream' parameter here
+    mediaRecorder = new MediaRecorder(stream); // Use the 'stream' parameter here
 
+    mediaRecorder.addEventListener("start", function () {});
     mediaRecorder.addEventListener("dataavailable", function (e) {
       if (e.data.size > 0) {
-        recordedChunks.push(e.data);
+        recordedChunks.push(e.data.slice);
         console.log("pushing..");
       }
     });
 
-    mediaRecorder.addEventListener("stop", function () {
+    mediaRecorder.addEventListener("stop", function (time) {
       let blob = new Blob(recordedChunks, { type: "audio/wav" });
       recordedChunks = [];
       sendAudio(blob);
     });
-
     mediaRecorder.start();
   } else {
     mediaRecorder.start();

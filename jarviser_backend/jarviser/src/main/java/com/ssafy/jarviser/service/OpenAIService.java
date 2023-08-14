@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.*;
 
 @Service
@@ -47,7 +48,6 @@ public class OpenAIService {
                             System.out.println("Error occurred: " + e.getMessage());
                         });
     }
-    private static final String token = "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";
 
     // @Async를 해주지 않아도 WebClient를 사용하고 Mono를 반환하는 것 만으로 비동기
     public Mono<String> chatGPTSummary(String textContent, String query){

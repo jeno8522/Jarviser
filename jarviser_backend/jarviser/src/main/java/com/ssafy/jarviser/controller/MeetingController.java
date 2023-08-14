@@ -36,7 +36,6 @@ public class MeetingController {
     private final JwtService jwtService;
     private final OpenAIService openAIService;
     private final MeetingService meetingService;
-    private final StatisticsService statisticsService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
 
