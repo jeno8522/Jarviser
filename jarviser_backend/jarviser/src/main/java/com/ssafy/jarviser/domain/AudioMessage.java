@@ -1,12 +1,10 @@
 package com.ssafy.jarviser.domain;
 
-import java.text.DateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -25,10 +23,8 @@ public class AudioMessage {
     @Column(name = "content")
     private String content;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm", timezone="Asia/Seoul")
-    @CreationTimestamp
     @Column(name = "start_time")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "file_path")
     private String filePath;
@@ -39,8 +35,9 @@ public class AudioMessage {
     @Column(name = "priority")
     private long priority;
 
-    @Column(name = "user_id")
-    private long userId; //FIXME: 추후 many to one으로 FK 처리 필요
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id" , foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))

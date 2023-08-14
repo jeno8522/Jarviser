@@ -1,16 +1,18 @@
 package com.ssafy.jarviser.init;
 
 import com.ssafy.jarviser.domain.*;
-import com.ssafy.jarviser.repository.MeetingRepository;
-import com.ssafy.jarviser.repository.ReservatedMeetingRepository;
-import com.ssafy.jarviser.repository.ReservationRepository;
-import com.ssafy.jarviser.repository.UserRepository;
+import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
+import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
+import com.ssafy.jarviser.repository.*;
 import com.ssafy.jarviser.service.MeetingService;
+import com.ssafy.jarviser.service.OpenAIService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +21,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class InsertTestDummy implements CommandLineRunner {
+
 
     @Autowired
     UserRepository userRepository;
@@ -40,6 +41,12 @@ public class InsertTestDummy implements CommandLineRunner {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private OpenAIService openAIService;
+
+    @Autowired
+    private AESEncryptionUtil aesEncryptionUtil;
 
     @Override
     public void run(String... args) throws Exception {
@@ -80,7 +87,7 @@ public class InsertTestDummy implements CommandLineRunner {
         //회원 가입
         User test = User.builder()
                 .email("test@gmail.com")
-                .password(passwordEncoder.encode("test"))
+                .password(passwordEncoder.encode("testtesttest"))
                 .name("testtesttest")
                 .role(Role.USER)
                 .build();
@@ -122,46 +129,52 @@ public class InsertTestDummy implements CommandLineRunner {
 
         // 테스트 미팅 생성
         String testMeetingName = "test's Meeting";
-        Meeting testMeeting = meetingService.createMeeting(test.getId(),testMeetingName);
+        String testMeetingEncrypted = meetingService.createMeeting(test.getId(),testMeetingName);
+        long testMeetingId = Long.parseLong(aesEncryptionUtil.decrypt(testMeetingEncrypted));
+        Meeting testMeeting = meetingService.findMeetingById(testMeetingId);
 
         // 우석 미팅 생성
         String wooseokMeetingName = "wooseok's Meeting";
-        Meeting wooseokMeeting = meetingService.createMeeting(wooseok.getId(),wooseokMeetingName);
+        String wooseokMeetingEncrypted = meetingService.createMeeting(wooseok.getId(),wooseokMeetingName);
+        long wooseokMeetingId = Long.parseLong(aesEncryptionUtil.decrypt(wooseokMeetingEncrypted));
+        Meeting wooseokMeeting = meetingService.findMeetingById(wooseokMeetingId);
 
         // 민우 미팅 생성
         String minWooMeetingName = "minwoo's Meeting";
-        Meeting minwooMeeting = meetingService.createMeeting(minwoo.getId(),minWooMeetingName);
+        String minwooMeetingEncrypted = meetingService.createMeeting(minwoo.getId(),minWooMeetingName);
+        long minwooMeetingId = Long.parseLong(aesEncryptionUtil.decrypt(minwooMeetingEncrypted));
+        Meeting minwooMeeting = meetingService.findMeetingById(minwooMeetingId);
 
         // 홍웅 미팅 생성
         String hongWoongMeetingName = "hongwoong's Meeting";
-        Meeting hongWoongMeeting = meetingService.createMeeting(hongwoong.getId(),hongWoongMeetingName);
-
+        String hongWoongMeetingEncrypted = meetingService.createMeeting(hongwoong.getId(),hongWoongMeetingName);
+        long hongWoongMeetingId = Long.parseLong(aesEncryptionUtil.decrypt(hongWoongMeetingEncrypted));
+        Meeting hongWoongMeeting = meetingService.findMeetingById(hongWoongMeetingId);
 
         //테스트 미팅에 우석-민우-홍웅-태현-현웅 참여
-        meetingService.joinMeeting(wooseok.getId(),testMeeting);
-        meetingService.joinMeeting(minwoo.getId(),testMeeting);
-        meetingService.joinMeeting(hongwoong.getId(),testMeeting);
-        meetingService.joinMeeting(taehyun.getId(),testMeeting);
-        meetingService.joinMeeting(woong.getId(),testMeeting);
+        meetingService.joinMeeting(wooseok.getId(),testMeetingId);
+        meetingService.joinMeeting(minwoo.getId(),testMeetingId);
+        meetingService.joinMeeting(hongwoong.getId(),testMeetingId);
+        meetingService.joinMeeting(taehyun.getId(),testMeetingId);
+        meetingService.joinMeeting(woong.getId(),testMeetingId);
         //우석미팅에 현웅 - 창훈 - 테스트 참여
-        meetingService.joinMeeting(woong.getId(),wooseokMeeting);
-        meetingService.joinMeeting(changHoon.getId(), wooseokMeeting);
-        meetingService.joinMeeting(test.getId(),wooseokMeeting);
+        meetingService.joinMeeting(woong.getId(),wooseokMeetingId);
+        meetingService.joinMeeting(changHoon.getId(), wooseokMeetingId);
+        meetingService.joinMeeting(test.getId(),wooseokMeetingId);
 
         //민우 미팅에 우석 - 태현 - 홍웅 - 테스트 참여
-        meetingService.joinMeeting(wooseok.getId(),minwooMeeting);
-        meetingService.joinMeeting(taehyun.getId(), minwooMeeting);
-        meetingService.joinMeeting(hongwoong.getId(), minwooMeeting);
-        meetingService.joinMeeting(wooseok.getId(),minwooMeeting);
-        meetingService.joinMeeting(test.getId(),minwooMeeting);
+        meetingService.joinMeeting(wooseok.getId(),minwooMeetingId);
+        meetingService.joinMeeting(taehyun.getId(), minwooMeetingId);
+        meetingService.joinMeeting(hongwoong.getId(), minwooMeetingId);
+        meetingService.joinMeeting(wooseok.getId(),minwooMeetingId);
+        meetingService.joinMeeting(test.getId(),minwooMeetingId);
 
         //홍웅 미팅에 테스트 참여
-        meetingService.joinMeeting(test.getId(),hongWoongMeeting);
+        meetingService.joinMeeting(test.getId(),hongWoongMeetingId);
 
-        //테스트 미팅에서 발화
-
-
-        try (InputStream file = getClass().getResourceAsStream("/MeetingDummyFile/meeting_notes.xlsx");) {
+        try  {
+            Resource dummyResource = new ClassPathResource("meeting_notes.xlsx");
+            File file = dummyResource.getFile();
             Workbook workbook = new XSSFWorkbook(file);
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -169,29 +182,49 @@ public class InsertTestDummy implements CommandLineRunner {
                 Cell speakerCell = row.getCell(0);
                 Cell contentCell = row.getCell(1);
 
-                String speaker = speakerCell != null ? speakerCell.getStringCellValue().trim() : "";
+                long userId = (long) speakerCell.getNumericCellValue();
                 String content = contentCell != null ? contentCell.getStringCellValue().trim() : "";
-                if(content.equals("내용"))continue;
-/*
-//FIXME: 오디오 메시지 DB 수정으로 인한 주석 처리
-                AudioMessage audioMessage = AudioMessage.builder()
-                                                .userName(speaker)
-                                                        .content(content)
-                                                                .speechLength(content.length())
-                                                                        .meeting(testMeeting)
-                                                                                .build();
 
+                User user = userRepository.findUserById(userId);
+
+                AudioMessage audioMessage = AudioMessage.builder()
+                        .user(user)
+                        .content(content)
+                        .speechLength(content.length())
+                        .meeting(testMeeting)
+                        .startTime(LocalDateTime.now())
+                        .filePath("filePath...")
+                        .priority(1)
+                        .build();
+//
                 meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
-                
- */
-                System.out.println("발화자: " + speaker);
-                System.out.println("내용: " + content);
-                System.out.println("=======================");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        //회의 종료했다고 가정하기
 
+        //종료버튼 누르면 다음 로직 시작
+        //1. 발화자 통계
+
+        List<ParticipantsStaticsDTO> participantsStatics = meetingService.caculateParticipantsStatics(testMeetingId);
+
+        System.out.println(participantsStatics);
+        //2. 키워드 통계 (GPT 를 이용하기때문에 DB에 저장)
+
+        List<KeywordStatistics> keywordStatistics = meetingService.caculateKeywordsStatics(testMeetingId);
+
+        meetingService.addKeywordStatisticsToMeeting(testMeetingId,keywordStatistics);
+
+        for(ParticipantsStaticsDTO p : participantsStatics){
+            System.out.println(p);
+        }
+        System.out.println("--------------------------------------");
+
+        for(KeywordStatistics p : keywordStatistics){
+            System.out.println(p.getKeyword() + " " + p.getPercent());
+        }
+        System.out.println("--------------------------------------");
     }
 }
