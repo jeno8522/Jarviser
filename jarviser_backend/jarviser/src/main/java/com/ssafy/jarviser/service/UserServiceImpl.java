@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Slf4j
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
                 )
         );
         var user = userRepository.findByEmail(loginDto.getEmail());
-
+        //TODO Optional로 리팩토링
         var jwtToken = jwtService.generateToken(user);
         return ResponseAuthenticationDto.builder()
                 .token(jwtToken)

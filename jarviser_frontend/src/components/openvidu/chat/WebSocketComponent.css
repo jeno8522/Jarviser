@@ -1,0 +1,29 @@
+.chat-container {
+  background-color: #f0f0f0;
+  padding: 20px;
+  height: 500px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse; /* 새로운 메세지가 아래에서 위로 올라오게 함 */
+}
+
+.chat-message {
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 20px;
+  background-color: #fff;
+  max-width: 70%;
+  display: inline-block;
+  word-wrap: break-word;
+}
+
+.sent {
+  align-self: flex-end; /* 오른쪽 정렬 */
+  background-color: #ffeb3b;
+}
+
+.received {
+  align-self: flex-start; /* 왼쪽 정렬 */
+}

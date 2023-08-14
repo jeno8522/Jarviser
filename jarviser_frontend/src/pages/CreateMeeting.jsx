@@ -3,6 +3,7 @@ import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
+import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
 
 const generateInitialSessionName = () => {
   const array = new Uint32Array(1);
