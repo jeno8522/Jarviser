@@ -1,6 +1,6 @@
 //FIXME : 추후 import로 대체 현재 html에서 불러오고 있음.
-// import SockJS from "sockjs-client";
-// import Stomp from "stompjs";
+// import { SockJS } from "";
+// import { Stomp } from "stompjs";
 document.getElementById("text-send").addEventListener("click", function (e) {
   e.preventDefault();
   const userText = document.getElementById("text-input").value;
@@ -12,13 +12,13 @@ var token = localStorage.getItem("access-token");
 var socket = new SockJS("http://localhost:8081/ws");
 var stompClient = Stomp.over(socket);
 
-
 const stt = [];
 const sttMap = new Map();
 const chat = [];
 const participants = [];
 const message = [];
-stompClient.connect({ Authorization: "Bearer " + token, meetingId: meetingId }, function (frame) {
+
+stompClient.connect({}, function (frame) {
   stompClient.subscribe("/topic/" + meetingId, function (messageOutput) {
     let message = JSON.parse(messageOutput.body);
     let type = message.type;
@@ -28,6 +28,11 @@ stompClient.connect({ Authorization: "Bearer " + token, meetingId: meetingId }, 
     console.log(participants);
     document.getElementById("response").innerText = "Received: " + messageOutput.body;
   });
+  stompClient.send(
+    "/app/connect",
+    {},
+    JSON.stringify({ meetingId: meetingId, Authorization: "Bearer " + token })
+  );
 });
 
 const Received = {
