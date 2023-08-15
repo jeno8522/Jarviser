@@ -1,8 +1,6 @@
-import { MediaRecorder } from "extendable-media-recorder";
-
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
-    .getUserMedia({ audio: true })
+    .getUserMedia({audio: true})
     .then((stream) => startVAD(stream)) // Pass the 'stream' to the startVAD function
     .catch((err) => console.log("getUserMedia() failed: ", err));
 });
@@ -22,7 +20,7 @@ function startVAD(stream) {
   audioContext = new AudioContext();
   let source = audioContext.createMediaStreamSource(stream);
   let startTime = 0;
-  
+
   startRecording(stream);
   let options = {
     source: source,
@@ -53,7 +51,7 @@ function stopVAD() {
 
 function startRecording(stream) {
   if (!mediaRecorder) {
-    mediaRecorder = new MediaRecorder(stream, {mimeType:"audio/wav"}); // Use the 'stream' parameter here
+    mediaRecorder = new MediaRecorder(stream); // Use the 'stream' parameter here
 
     mediaRecorder.addEventListener("dataavailable", function (e) {
       if (e.data.size > 0) {
@@ -63,7 +61,7 @@ function startRecording(stream) {
     });
 
     mediaRecorder.addEventListener("stop", function () {
-      let blob = new Blob(recordedChunks, { type: "audio/wav" });
+      let blob = new Blob(recordedChunks, {type: "audio/webm;codecs=opus"});
       recordedChunks = [];
       sendAudio(blob);
     });
@@ -91,7 +89,7 @@ async function sendAudio(blob) {
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      headers: { Authorization: "Bearer " + token },
+      headers: {Authorization: "Bearer " + token},
     });
 
     if (!response.ok) {

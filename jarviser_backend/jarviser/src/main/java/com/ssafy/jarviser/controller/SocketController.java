@@ -30,7 +30,7 @@ public class SocketController {
 
     private final HashMap<Long, HashSet<SessionUserDto>> connectSessionMap = new HashMap<>(); // TODO: 추후 보완 필요
     private final HashMap<String, SessionUserDto> sessionUserMap = new HashMap<>();
-
+    private final HashMap<String, String> sessionMeetingMap = new HashMap<>();
     @MessageMapping(value = "/chat")
     public void getMessage(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         Map<String, String> resultMap = new HashMap<>();
@@ -63,30 +63,22 @@ public class SocketController {
         }
     }
 
-    @EventListener(SessionConnectedEvent.class)
-    public void handleWebsocketConnectListener(SessionConnectedEvent event) {
-        log.debug("Received a new web socket connection");
-        log.debug("{}", event.getMessage());
-
-        Map<String, Object> targetResultMap = new HashMap<>();
+    @MessageMapping(value = "/connect")
+    public void connectSession(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         Map<String, String> resultMap = new HashMap<>();
+        Map<String, Object> targetResultMap = new HashMap<>();
         Date arriveDate = new Date();
         String arriveTime = arriveDate.getHours() + ":" + arriveDate.getMinutes() + ":" + arriveDate.getSeconds();
 
-        try {
-            StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-            String sessionId = headerAccessor.getSessionId();
-//            String meetingId = destination.split("/")[2];
-            String token = ((String) Objects.requireNonNull(headerAccessor.getFirstNativeHeader("Authorization")))
-                    .split(" ")[1];
-            String meetingId = (String) Objects.requireNonNull(headerAccessor.getFirstNativeHeader("meetingId"));
-//            Long mId = Long.parseLong(aesEncryptionUtil.decrypt(meetingId));
-            //FIXME: 원래는 암호화 복호화가 필요하지만 테스트를 위해 하지 않음.
-            Long mId = Long.parseLong(meetingId);
-            String destination = "/topic/"+meetingId;
+        String token = ((String) payload.get("Authorization")).split(" ")[1];
+        String meetingId = (String) payload.get("meetingId");
+        String sessionId = headerAccessor.getSessionId();
 
+        try {
             Long userId = jwtService.extractUserId(token);
             String userName = jwtService.extractUserName(token);
+            Long mId = Long.parseLong(aesEncryptionUtil.decrypt(meetingId));
+            String destination = "/topic/"+meetingId;
 
             if (!connectSessionMap.containsKey(mId)) {
                 connectSessionMap.put(mId, new HashSet<>());
@@ -98,11 +90,12 @@ public class SocketController {
             targetResultMap.put("content", participants);
             messagingTemplate.convertAndSendToUser(sessionId, destination, targetResultMap);
 
-            // 새로운 참가자 입장 알림
             SessionUserDto user = new SessionUserDto(userId, userName);
             participants.add(user);
             sessionUserMap.put(sessionId, user);
+            sessionMeetingMap.put(sessionId, meetingId);
 
+            // 새로운 참가자 입장 알림
             resultMap.put("type", "connect");
             resultMap.put("userId", userId.toString());
             resultMap.put("userName", userName);
@@ -124,19 +117,20 @@ public class SocketController {
         try {
             StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
             String sessionId = headerAccessor.getSessionId();
-            String destination = headerAccessor.getDestination();
-            String meetingId = destination.split("/")[2];
-            Long mId = Long.parseLong(aesEncryptionUtil.decrypt(meetingId));
 
-            String token = ((String) Objects.requireNonNull(headerAccessor.getFirstNativeHeader("Authorization")))
-                    .split(" ")[1];
-            Long userId = jwtService.extractUserId(token);
-            String userName = jwtService.extractUserName(token);
+            String meetingId = sessionMeetingMap.get(sessionId);
+            Long mId = Long.parseLong(aesEncryptionUtil.decrypt(meetingId));
+            String destination = "/topic/"+meetingId;
+
+            SessionUserDto user = sessionUserMap.get(sessionId);
+            Long userId = user.getUserId();
+            String userName = user.getUserName();
 
             // 참가자 명단에서 제거
             HashSet<SessionUserDto> participants = connectSessionMap.get(mId);
-            participants.remove(sessionUserMap.get(sessionId));
+            participants.remove(user);
             sessionUserMap.remove(sessionId);
+            sessionMeetingMap.remove(sessionId);
             if (participants.size() == 0) {
                 connectSessionMap.remove(mId);
             }

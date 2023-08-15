@@ -102,7 +102,6 @@
           <div>
             <a href="/stt-test/test/test-page.html">웹소켓 테스트</a>
           </div>
-          <WebSocketComponent />
         </>
       );
     }

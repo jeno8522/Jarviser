@@ -36,6 +36,9 @@ public class Meeting implements Serializable {
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
+    
     @Column(name = "encryptedKey")
     private String encryptedKey;
 
