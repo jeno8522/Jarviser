@@ -4,6 +4,7 @@ import com.ssafy.jarviser.exception.ClientException;
 import com.ssafy.jarviser.exception.ServerException;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.AudioService;
+import com.ssafy.jarviser.service.StatisticsService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import java.util.Map;
 public class AudioController {
     private final JwtService jwtService;
     private final AudioService audioService;
+    private final StatisticsService statisticsService;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -52,7 +54,13 @@ public class AudioController {
             Long startTime = arriveDate.getTime() /*- audioService.getTimeOfAudio(audioFile)*/; //TODO: 추후 정렬에 사용 예정, 현재 DB에만 저장
             String filePath = audioService.saveAudioFile(mId, userId, startTime, audioFile);
             String stt = audioService.getStt(filePath);
+            if(stt.equals("")){
+                resultMap.put("message", "발화 내용이 없습니다");
+                audioService.removeAudioFile(filePath);
+                return new ResponseEntity<>(resultMap, HttpStatus.OK);
+            }
             String audioMessageId = audioService.createAudioMessage(userId, mId, startTime, filePath, stt).toString();
+            statisticsService.accumulateTranscript(Long.parseLong(mId),userName+stt);
 
             resultMap.put("type", "stt");
             resultMap.put("sttId", audioMessageId);

@@ -551,6 +551,15 @@ class VideoRoomComponent extends Component {
       this.hasBeenUpdated = false;
     }
   }
+  copyMeetingIdToClipboard() {
+    const el = document.createElement("textarea");
+    el.value = `http://localhost:3000/joinMeeting/${this.state.meetingId}`;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    alert("MeetingId copied to clipboard!");
+  }
 
   render() {
     const mySessionName = this.state.mySessionName;
@@ -573,7 +582,12 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
-
+        <button
+          id="meetingIdCopyBtn"
+          onClick={this.copyMeetingIdToClipboard.bind(this)}
+        >
+          Copy MeetingId
+        </button>
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}

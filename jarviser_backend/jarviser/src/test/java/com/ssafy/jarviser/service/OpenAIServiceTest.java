@@ -25,8 +25,8 @@ class OpenAIServiceTest {
     @Test
     @DisplayName("회원 가입 테스팅")
     void testChatGPT() throws URISyntaxException, IOException {
-        String text = openAIService.chatGPTPartSummary("C:\\Users\\SSAFY\\IdeaProjects\\S09P12A506\\text\\hi.txt").block();
-        System.out.println(text);
+//        String text = openAIService.chatGPTPartSummary("C:\\Users\\SSAFY\\IdeaProjects\\S09P12A506\\text\\hi.txt").block();
+//        System.out.println(text);
     }
 
 

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import jarviserImg from "../assets/images/Jarviser_logo.jpg"; // 로고 이미지 경로
+import jarviserImg from "../assets/images/내 프로젝트.png"; // 로고 이미지 경로
 import Header from "../components/molecules/Navigation"
 
 function Login() {
@@ -35,6 +35,7 @@ function Login() {
   return (
     <>
     <Header />
+ 
     <Whole>
       <ImageLogo src={jarviserImg} alt="Jarviser Logo" />
       <RightColumn>
@@ -78,6 +79,7 @@ function Login() {
         </LoginForm>
       </RightColumn>
     </Whole>
+  
     </>
   );
   
@@ -92,32 +94,50 @@ const Whole = styled.div`
   flex-shrink: 0;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 6%;
   margin-bottom: 100px;
 `;
 
+const Wrapper = styled.div`
+  width: 88%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF; // 옅은 회색 배경
+  padding: 40px;
+  border-radius: 20px; // 둥근 모서리
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); // 그림자 효과
+`;
+
 const ImageLogo = styled.img`
-  width: 50%;
-  height: 90%;
+  width: 30%;
+  height: 80%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  margin-left: 20px;
-  margin-right: -20px;
+  margin-left: 0px;
+  margin-right: 50px;
 `;
 
 const RightColumn = styled.div`
+  margin-left = 100px;
   display: flex;
-  width: 50%;
-  height: 80%;
+  width: 40%;
+  height: 90%;
   padding: 40px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
+  background: linear-gradient(45deg, #b3daff, #4da6ff);
+  color: white; // 텍스트 색상 변경
+  border-radius: 20px; // 모서리 둥글게
+  left-margin:100%;
 `;
 
 const LoginForm = styled.form`
+  margin-top = 0px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -129,11 +149,12 @@ const LoginLabel = styled.label`
   align-self: stretch;
   color: var(--cool-gray-70, #4d5358);
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 18px; // 크기 조정
+  font-weight: 600; // 굵기 조정
   margin-bottom: 4px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  
 `;
 
 const LoginField = styled.input`
@@ -158,21 +179,30 @@ const LoginField = styled.input`
 `;
 
 const LoginButton = styled.button`
-  width: 100%;
+  width: 200px; // 너비 조정
   height: 48px;
   padding: 12px;
   border: none;
   border-radius: 4px;
-  background: var(--primary-60, #0F62FE);
+  background: linear-gradient(45deg, #2E2EFE, #4da6ff);
   color: white;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease;
-
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); // 그림자 효과 추가
+  margin-top: 100px;
+  margin-left: 70%;
+  border-radius: 999px;
   &:hover {
     background: var(--primary-50, #0043CE);
+    transform: translateY(-2px); // 호버 시 약간 위로 이동
+  }
+
+  &:active {
+    transform: translateY(0); // 클릭 시 원래 위치로
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); // 클릭 시 그림자 크기 조정
   }
 
   &:disabled {
@@ -183,12 +213,15 @@ const LoginButton = styled.button`
 
 const LoginHeadLine = styled.h1`
   font-family: 'Roboto', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--primary-60, #0F62FE);
+  font-size: 32px; // 크기 조정
+  font-weight: 700; // 굵기 조정
+  color: white; // 색상 변경
   text-align: left;
   letter-spacing: -1px;
-  margin-bottom: 16px;
+  margin-top: 50px;
+  margin-bottom: 0px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); // 텍스트 그림자 추가
 `;
+
 
 export default Login;

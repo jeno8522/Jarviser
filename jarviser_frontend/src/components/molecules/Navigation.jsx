@@ -31,8 +31,8 @@
     
     const LoginButton = styled.button`
       display: flex;
-      width: 92px;
-      height: 44px;
+      width: 100px;
+      height: 60px;
       padding: 16px 12px;
       justify-content: center;
       align-items: center;
@@ -47,8 +47,8 @@
     
     const SignupButton = styled.button`
       display: flex;
-      width: 92px;
-      height: 44px;
+      width: 100px;
+      height: 60px;
       padding: 16px 12px;
       justify-content: center;
       align-items: center;
@@ -69,7 +69,7 @@
     const HeaderContainer = styled.div`
       display: flex;
       width: 1800;
-      height: 64px;
+      height: 94px;
       flex-shrink: 0;
       background-color: #cae1fd;
       justify-content: space-between;

@@ -9,6 +9,7 @@ import com.ssafy.jarviser.repository.AudioMessageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,9 @@ public class AudioServiceImp implements AudioService {
     private final UserService userService;
     private final HashMap<Long, Long> indexMap = new HashMap<>();
     private final Gson gson = new Gson();
+    private final String projectPath = System.getProperty("user.dir");
+    private final String beforeAudioPath = projectPath + "/audio/preprocess/beforeAudio.webm";
+    private final String afterAudioPath = projectPath + "/audio/preprocess/afterAudio.webm";
 
     @Override
     public Long getTimeOfAudio(MultipartFile audioFile) {
@@ -66,9 +70,7 @@ public class AudioServiceImp implements AudioService {
 
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
-        //FIXME: 적절한 절대 경로로 변경해줘야함. 상대경로로 인한 문제 발생
-        String filePath = "C:/ssafy/S09P12A506/jarviser_backend/jarviser/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
-//        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
+        String filePath = projectPath +"/" + "audio/" + mId + "/" + userId + "/" + startTime + ".webm";
         try {
             File savedFile = new File(filePath);
             if (!savedFile.getParentFile().exists()) {
@@ -82,18 +84,68 @@ public class AudioServiceImp implements AudioService {
         }
     }
 
+
+
+    private String createPreprocessAudioFile(String filePath) {
+        String tempFilePath = projectPath + "/audio/temp/" + System.currentTimeMillis() + ".webm";
+
+        String command = String.format(
+                "ffmpeg -i %s -i %s -i %s -filter_complex [0:a][1:a][2:a]concat=n=3:v=0:a=1[aout] -map [aout] %s",
+                beforeAudioPath, filePath, afterAudioPath, tempFilePath);
+
+        try {
+            Process process = Runtime.getRuntime().exec(command);
+            process.waitFor();
+            return tempFilePath;
+        } catch (Exception e) {
+            log.error("save audio error", e);
+            throw new ServerException("save audio error");
+        }
+    }
+
+    @Override
+    public void removeAudioFile(String filePath) {
+        try{
+            File tempFile = new File(filePath);
+            tempFile.delete();
+        } catch (Exception e) {
+            log.error("remove audio error", e);
+            throw new ServerException("remove audio error");
+        }
+    }
+
+
+    private String postprocessStt(String response) {
+        //pre : 안녕하세요 or 안녕하세요.
+        //post : 감사합니다 or 감사합니다.
+        String[] responseArray = response.split(" ");
+        StringBuilder sb = new StringBuilder();
+        if(!responseArray[0].contains("안녕하세요")){
+            sb.append(responseArray[0]);
+        }
+        for (int i = 1; i < responseArray.length-1; i++) {
+            sb.append(responseArray[i]);
+            sb.append(" ");
+        }
+        if(!responseArray[responseArray.length -1].contains("감사합니다")){
+            sb.append(responseArray[responseArray.length -1]);
+        }
+        return sb.toString();
+    }
+
     @Override
     public String getStt(String filePath) {
         String stt;
         try {
-            String textResponse = openAIService.whisperAPICall(filePath).block();
-            stt = (String) gson.fromJson(textResponse, HashMap.class).get("text");
+            String tempFilePath = createPreprocessAudioFile(filePath);
+            String textResponse = openAIService.whisperAPICall(tempFilePath).block();
+            stt = postprocessStt((String) gson.fromJson(textResponse, HashMap.class).get("text"));
+            removeAudioFile(tempFilePath);
+            return stt;
         } catch (Exception e) {
             log.error("get stt error", e);
             throw new ServerException("get stt error");
         }
-        // TODO: 이상한 값이 오는 것 같으면 stt를 ""로 바꿔주는 로직 필요
-        return stt;
     }
 
     @Override
