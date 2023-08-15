@@ -9,6 +9,7 @@ import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
+import com.ssafy.jarviser.service.StatisticsService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,9 @@ import java.util.Map;
 @RequestMapping("meeting")
 public class MeetingController {
     private final JwtService jwtService;
-    private final OpenAIService openAIService;
     private final MeetingService meetingService;
-    private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
+    private final StatisticsService statisticsService;
 
     private final Map<String,Integer> encryptedTable = new HashMap<>();
 
@@ -148,6 +148,22 @@ public class MeetingController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @GetMapping("/end/{encryptedKey}")
+    public ResponseEntity<Map<String,Object>> meetingEnd(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String encryptedKey){
+        Map<String, Object> response = new HashMap<>();
+        HttpStatus httpStatus = HttpStatus.OK;
+        try {
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+            statisticsService.summarizeTranscript(meetingId);
+            response.put("message","미팅 종료 처리 완료");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
 
     //미팅 키워드 통계 불러오는 api
     @GetMapping("/keywords/{encryptedKey}")
@@ -178,4 +194,6 @@ public class MeetingController {
         }
         return new ResponseEntity<>(response, httpStatus);
     }
+
+
 }
