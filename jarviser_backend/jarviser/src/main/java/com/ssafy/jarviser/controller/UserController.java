@@ -75,7 +75,7 @@ public class UserController {
         } catch (Exception e) {
             //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
             log.error("로그인 실패", e);
-            resultMap.put("message", FAIL);
+            resultMap.put("message", "아이디 또는 비밀번호를 다시 입력해주세요.");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -101,6 +101,26 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String email){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            User user = userService.findUserByEmail(email);
+            if (user == null){
+                resultMap.put("message", SUCCESS);
+            }else{
+                resultMap.put("message", "중복된 이메일 입니다.");
+            }
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
+            log.error("아이디 찾기 오류", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
     //마이페이지
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> mypage(
