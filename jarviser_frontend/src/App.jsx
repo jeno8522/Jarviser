@@ -32,7 +32,6 @@ function App() {
           <Route path="/joinMeeting/:urlKey" element={<JoinMeeting />} />
         </Routes>
       </Router>
-      <Footer></Footer>
     </>
   );
 }
