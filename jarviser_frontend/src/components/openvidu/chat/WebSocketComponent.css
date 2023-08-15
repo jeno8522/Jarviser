@@ -6,7 +6,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse; /* 새로운 메세지가 아래에서 위로 올라오게 함 */
+  flex-direction: column;
 }
 
 .chat-message {
@@ -17,6 +17,7 @@
   max-width: 70%;
   display: inline-block;
   word-wrap: break-word;
+  transition: opacity 0.3s;
 }
 
 .sent {
@@ -26,4 +27,8 @@
 
 .received {
   align-self: flex-start; /* 왼쪽 정렬 */
+}
+
+.dragging {
+  opacity: 0; /* 드래그 중인 요소를 보이지 않게 합니다 */
 }

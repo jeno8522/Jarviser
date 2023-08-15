@@ -26,11 +26,13 @@ class VideoRoomComponent extends Component {
     //   : "OpenVidu_User" + Math.floor(Math.random() * 100);
 
     let sessionName = props.sessionName;
+    let meetingId = props.meetingId;
     let userName = props.userName;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
-      mySessionId: sessionName,
+      mySessionName: sessionName, //sessionName
+      meetingId: meetingId, //encrypted 된 meetingId
       myUserName: userName,
       session: undefined,
       localUser: undefined,
@@ -243,9 +245,9 @@ class VideoRoomComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "Session End", //세션 종료시 세션에 표기할 text
+      mySessionName: "Session End", //세션 종료시 세션에 표기할 text
       myUserName: endUserName,
-      // mySessionId: "Session1010",
+      // mySessionName: "Session1010",
       // myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
       localUser: undefined,
     });
@@ -549,16 +551,26 @@ class VideoRoomComponent extends Component {
       this.hasBeenUpdated = false;
     }
   }
+  copyMeetingIdToClipboard() {
+    const el = document.createElement("textarea");
+    el.value = `http://localhost:3000/joinMeeting/${this.state.meetingId}`;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    alert("MeetingId copied to clipboard!");
+  }
 
   render() {
-    const mySessionId = this.state.mySessionId;
+    const mySessionName = this.state.mySessionName;
+    const meetingId = this.state.meetingId;
     const localUser = this.state.localUser;
     var chatDisplay = {display: this.state.chatDisplay};
 
     return (
       <div className="container" id="container">
         <ToolbarComponent
-          sessionId={mySessionId}
+          sessionId={mySessionName} //sessionName
           user={localUser}
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
@@ -570,7 +582,12 @@ class VideoRoomComponent extends Component {
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
-
+        <button
+          id="meetingIdCopyBtn"
+          onClick={this.copyMeetingIdToClipboard.bind(this)}
+        >
+          Copy MeetingId
+        </button>
         <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
@@ -636,16 +653,17 @@ class VideoRoomComponent extends Component {
    * more about the integration of OpenVidu in your application server.
    */
   async getToken() {
-    let result = await this.checkSessionId(this.state.mySessionId);
+    console.log("this.state.meetingId === ", this.state.meetingId);
+    let result = await this.checkSessionId(this.state.meetingId);
     if (result) {
-      return await this.createToken(this.state.mySessionId);
+      return await this.createToken(this.state.meetingId);
     } else {
-      const session = await this.createSession(this.state.mySessionId);
-      return await this.createToken(session.id);
+      const session = await this.createSession(this.state.meetingId);
+      return await this.createToken(this.state.meetingId);
     }
   }
 
-  async checkSessionId(sessionId) {
+  async checkSessionId(meetingId) {
     const response = await axios.get(
       APPLICATION_SERVER_URL + "openvidu/api/sessions",
       {
@@ -658,16 +676,16 @@ class VideoRoomComponent extends Component {
 
     let result = false;
     response.data.content.forEach((con) => {
-      if (con.id === sessionId) result = true;
+      if (con.id === meetingId) result = true;
     });
 
     return result;
   }
 
-  async createSession(sessionId) {
+  async createSession(meetingId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL + "openvidu/api/sessions",
-      {customSessionId: sessionId},
+      {customSessionId: meetingId},
       {
         headers: {
           Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
@@ -675,14 +693,14 @@ class VideoRoomComponent extends Component {
         },
       }
     );
-    return response.data; // The sessionId
+    return response.data; // The meetingId
   }
 
-  async createToken(sessionId) {
+  async createToken(meetingId) {
     const response = await axios.post(
       APPLICATION_SERVER_URL +
         "openvidu/api/sessions/" +
-        sessionId +
+        meetingId +
         "/connection",
       {},
       {

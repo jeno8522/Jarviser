@@ -59,6 +59,10 @@ public class MeetingServiceImp implements MeetingService{
         Meeting meeting = meetingRepository.findMeetingById(meetingId);
         //참여자가져오기
         User user = userRepository.findById(joinUserId).orElse(null);
+
+        Participant findParticipant = participantRepository.findParticipant(meetingId,joinUserId);
+        if(findParticipant!=null)return;
+
         //참여자 - 미팅 생성
         Participant participant = Participant.participate(user, meeting);
         //참여자로 참여자 설정

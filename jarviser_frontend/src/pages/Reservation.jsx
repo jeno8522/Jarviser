@@ -86,9 +86,6 @@ function Reservation({ closeModal }) {
       <h1>미팅 예약하기</h1>
     </ModalHeader>
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <ModalBody>
-        
-      
       <LeftContainer>
         <ContentLabel htmlFor="title">제목</ContentLabel>
         <TitleField>
@@ -171,28 +168,28 @@ function Reservation({ closeModal }) {
         }
         {...register("userEmail", {})}
       />
-      <Button
+      <AddButton
         type="button"
         disabled={isSubmitting}
         onClick={() => addUserEmail(document.getElementById("userEmail").value)}
       >
         추가
-      </Button>
+      </AddButton>
     </EmailContainer>
     {userEmail.map((email, index) => (
-      <div key={index}>
+      <EmailItem key={index}>
         {email}
         <Button type="button" onClick={() => deleteUser(index)}>
-          삭제
+          삭제  
         </Button>
-      </div>
+      </EmailItem>
     ))}
-  </RightContainer>
-  <SubmitButton type="submit" disabled={isSubmitting || userEmail.length === 0}>
+
+<SubmitButton type="submit" disabled={isSubmitting || userEmail.length === 0}>
     예약 완료
   </SubmitButton>
-      
-      </ModalBody>
+  </RightContainer>
+  
       </Form>
     </ModalContent>
     </ModalBackdrop>
@@ -204,13 +201,36 @@ const ReservationHeader = styled.div`
   margin-bottom: 20px;
 `;
 
+
+const RightContainer = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column; // 수직 배치
+    align-items: flex-end; // 오른쪽 정렬
+`;
+
+const SubmitButton = styled.button`
+    padding: 15px 30px;
+    background: #28a745;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s;
+    margin-top: 10px; // 상단에 여백 추가
+    &:hover {
+        background: #218838;
+    }
+`;
+
 const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -224,6 +244,8 @@ const ContentLabel = styled.label`
   display: block;
   font-size: 18px;
   margin-bottom: 5px;
+  color: #333; // 색상을 더 진하게 합니다.
+  font-weight: 600; // 더 굵게 만듭니다.
 `;
 
 const TitleText = styled.input`
@@ -232,6 +254,14 @@ const TitleText = styled.input`
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 16px;
+
+  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
+  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
+
+  &:focus {
+    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
+    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
+  }
 `;
 
 const TimeField = styled.div`
@@ -246,6 +276,14 @@ const TimeText = styled.input`
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 16px;
+
+  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
+  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
+
+  &:focus {
+    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
+    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
+  }
 `;
 
 const DescField = styled.div`
@@ -259,6 +297,14 @@ const DescText = styled.textarea`
   border: 1px solid #ccc;
   font-size: 16px;
   min-height: 100px;
+
+  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
+  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
+
+  &:focus {
+    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
+    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
+  }
 `;
 
 const EmailField = styled.div`
@@ -272,22 +318,18 @@ const EmailText = styled.input`
   border: 1px solid #ccc;
   font-size: 16px;
   margin-bottom: 10px;
-`;
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
+  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
+
+  &:focus {
+    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
+    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
+  }
 `;
 
 const ModalContent = styled.div`
-background-color: #ffffff;
+background-color: #f3f4f6; // 밝은 회색으로 변경
 padding: 20px;
 border-radius: 10px; // 모서리를 둥글게 만듭니다.
 position: relative;
@@ -318,63 +360,91 @@ const ModalHeader = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 10px 15px;
+  padding: 10px 10px;
   background: #007bff;
   color: #fff;
   border-radius: 5px;
   border: none;
   cursor: pointer;
   transition: background 0.3s;
-
+  width: 60px; // 버튼의 너비를 100px로 설정
+  margin-left: 10px; // 왼쪽 여백 추가
+  margin-bottom: 0px;
   &:hover {
     background: #0056b3;
   }
 `;
 
+const AddButton = styled.button`
+  padding: 10px 10px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 60px; // 버튼의 너비를 100px로 설정
+  margin-left: 10px; // 왼쪽 여백 추가
+  margin-bottom: 10px;
+  &:hover {
+    background: #0056b3;
+  }
+`;
+
+const EmailItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // 항목 사이에 공간을 최대로 둡니다.
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 3px 8px; // 높이와 좌우 패딩을 조금 줄입니다.
+  margin-bottom: 10px;
+  background-color: #f3f4f6;
+`;
+
+
+
 const Form = styled.form`
   display: flex;
   justify-content: space-between; // 필요에 따라 조정
-  max-width: 500px;
+  max-width: 700px;
   margin: 0 auto;
 `;
 
-const ModalBody = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const LeftContainer = styled.div`
-  flex: 1; // 왼쪽 컨테이너가 더 넓게 설정
-  padding-right: 20px; // 오른쪽 컨테이너와 간격을 조정
+  flex: 1;
+  padding-right: 40px; // 오른쪽 컨테이너와 간격을 조정
 `;
 
-const RightContainer = styled.div`
-  flex: 1; // 오른쪽 컨테이너가 더 좁게 설정
-`;
+// const RightContainer = styled.div`
+//   flex: 1;
+// `;
 
 const EmailContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center; // 항목들을 중앙에 정렬
+  margin-bottom: 0px;
 `;
 
-const SubmitButton = styled.button`
-  padding: 15px 30px;
-  background: #28a745; // 녹색 배경
-  color: #fff;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 18px; // 큰 글씨
-  transition: background 0.3s;
-  position: absolute;
-  right: 20px; // 우측 하단에 배치
-  bottom: 20px;
 
-  &:hover {
-    background: #218838;
-  }
-`;
+// const SubmitButton = styled.button`
+//   padding: 15px 30px;
+//   background: #28a745; // 녹색 배경
+//   color: #fff;
+//   border-radius: 10px;
+//   border: none;
+//   cursor: pointer;
+//   font-size: 18px; // 큰 글씨
+//   transition: background 0.3s;
+//   position: absolute;
+//   right: 20px; // 우측 하단에 배치
+//   bottom: 20px;
+
+//   &:hover {
+//     background: #218838;
+//   }
+// `;
 
 
 export default Reservation;

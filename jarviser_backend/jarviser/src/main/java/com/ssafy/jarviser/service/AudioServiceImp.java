@@ -67,7 +67,7 @@ public class AudioServiceImp implements AudioService {
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
         //FIXME: 적절한 절대 경로로 변경해줘야함. 상대경로로 인한 문제 발생
-        String filePath = "S:/project/S09P12A506/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
+        String filePath = "C:/ssafy/S09P12A506/jarviser_backend/jarviser/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
 //        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
         try {
             File savedFile = new File(filePath);
@@ -157,5 +157,26 @@ public class AudioServiceImp implements AudioService {
         }
         return staticOfAudioMessages;
     }
+
+    @Override
+    public AudioMessage findByAudioMessageId(long audioMessageId) {
+        return audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+    }
+
+    @Override
+    public Long updateByAudioMessageId(long audioMessageId, String changedContext) {
+        //기존 메시지 찾기
+        AudioMessage existingAudioMessage = audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+
+        // 오디오 메시지 업데이트
+        existingAudioMessage.setContent(changedContext);
+
+        // 변경 사항을 저장하고 반환
+        audioMessageRepository.save(existingAudioMessage);
+        return audioMessageId;
+    }
+
 
 }
