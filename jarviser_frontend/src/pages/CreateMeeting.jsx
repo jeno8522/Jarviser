@@ -24,7 +24,7 @@ const CreateMeeting = () => {
   }, [accessToken, navigate]);
 
   const [userName, setUserName] = useState();
-  const [sessionName, setSessionName] = useState("gsdfswerweqrwerwerer");
+  const [sessionName, setSessionName] = useState("test방");
   const [showVideoRoom, setShowVideoRoom] = useState(false);
   const [encryptedKey, setEncryptedKey] = useState("");
   function base64UrlDecode(str) {
@@ -76,6 +76,7 @@ const CreateMeeting = () => {
 
         // 미팅 생성에 성공했을 때만 VideoRoomComponent를 보여줍니다.
         setEncryptedKey(response.data.encryptedKey);
+        // console.log("typeof encryptedKey === ", typeof encryptedKey);
         setShowVideoRoom(true);
       } else {
         console.error("Error creating meeting:", response.data);
@@ -132,7 +133,7 @@ const CreateMeeting = () => {
         <VideoRoomComponent
           userName={payloadUserName}
           sessionName={sessionName}
-          meetingId={encryptedKey}
+          meetingId={Math.abs(encryptedKey).toString()}
         />
       )}
     </div>

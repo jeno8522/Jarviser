@@ -12,8 +12,17 @@
 .toolbar {
   min-height: 40px !important;
 }
-
-#titleContent {
+#meetingIdCopyBtn {
+  background-color: #ff5733 !important;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  position: relative; /* z-index를 적용하기 위해 position 설정 */
+  z-index: 999999; /* 높은 z-index 값 */
   max-width: 100px;
   background-color: #494949;
   margin: 5px -18px;

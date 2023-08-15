@@ -33,11 +33,12 @@ function UserMain() {
           생성하기
         </button>
       </Link>
-      <Link to="/joinmeeting">
+      <Link to="/joinMeeting">
         <button type="button" id="join_meeting_button">
           입장하기
         </button>
       </Link>
+
       <button type="button" id="reserve_meeting_button" onClick={reservation}>
         예약하기
       </button>
