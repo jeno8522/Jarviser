@@ -2,6 +2,7 @@ package com.ssafy.jarviser.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +43,9 @@ public class Meeting implements Serializable {
     @Column(name = "encryptedKey")
     private String encryptedKey;
 
+    @Column(name = "encryptedKey_hash")
+    private int encryptedKeyHash;
+
     @OneToMany(mappedBy = "meeting")
     private final List<AudioMessage> audioMessages = new ArrayList<>();
 
@@ -53,6 +57,9 @@ public class Meeting implements Serializable {
 
     @OneToMany(mappedBy = "meeting")
     private final List<KeywordStatistics> keywordStatistics = new ArrayList<>();
+
+    @OneToMany(mappedBy = "meeting")
+    private final List<ParticipantStatistics> participantStatisticsList = new ArrayList<>();
 
     @Builder
     public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
@@ -71,6 +78,11 @@ public class Meeting implements Serializable {
     public void addKeywordStatistics(KeywordStatistics keywordStatistics){
         this.keywordStatistics.add(keywordStatistics);
         keywordStatistics.setMeeting(this);
+    }
+
+    public void addParticipantStatistics(ParticipantStatistics participantStatistics){
+        this.participantStatisticsList.add(participantStatistics);
+        participantStatistics.setMeeting(this);
     }
 }
 

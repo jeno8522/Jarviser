@@ -1,9 +1,12 @@
 package com.ssafy.jarviser.controller;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.exception.ClientException;
 import com.ssafy.jarviser.exception.ServerException;
+import com.ssafy.jarviser.repository.AudioMessageRepository;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.AudioService;
+import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.StatisticsService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +72,8 @@ public class AudioController {
             resultMap.put("content", stt);
 
             messagingTemplate.convertAndSend("/topic/" + meetingId, resultMap);
+            statisticsService.accumulateTranscript(Long.parseLong(mId), stt);
+
         }catch (ClientException e){
             log.error("request error", e);
             resultMap.put("message", e.getMessage());
