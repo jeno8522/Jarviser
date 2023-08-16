@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/molecules/Header";
 import Footer from "./components/molecules/Footer";
 import Login from "./pages/Login";
@@ -32,7 +32,6 @@ function App() {
           <Route path="/joinMeeting/:urlKey" element={<JoinMeeting />} />
         </Routes>
       </Router>
-      <Footer></Footer>
     </>
   );
 }

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 // import jwt_decode from "jwt-decode"; // jwt-decode 라이브러리를 사용합니다.
 import Sidebar from "../components/molecules/Sidebar";
+import styled from "styled-components";
+import MainHeader from "../components/molecules/MainHeader";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -100,43 +102,152 @@ function MyPage() {
 
   return (
     <>
-    <Sidebar />
-    <div>
-      <p>이메일 : {userEmail}</p>
-      <form onSubmit={handleSubmit}>
-        <p>
-          이름 :{" "}
-          <input
-            type="text"
-            required={true}
-            value={userName}
-            onChange={handleChangeName}
-          />
-        </p>
-        <p>
-          비밀번호 :{" "}
-          <input
-            type="password"
-            required={true}
-            value={userPassword}
-            onChange={handleChangePassword}
-          />
-        </p>
-        <button type="submit">수정</button>
-      </form>
-      <button onClick={handleModalOpen}>탈퇴하기</button>
-      {modalOpen && (
-        <div>
-          <div>정말로 탈퇴하시겠습니까?</div>
-          <button onClick={handleModalClose}>취소</button>
-          <button onClick={handleDelete} disabled={isDeleting}>
-            확인
-          </button>
-        </div>
-      )}
-    </div>
+      <MainHeader />
+      <PageContent>
+        <Sidebar />
+        <DataContainer>
+          <BigBox>
+            <Box>
+              <h2>이메일</h2>
+            </Box>
+            <DataBox>{userEmail}</DataBox>
+          </BigBox>
+          <form onSubmit={handleSubmit}>
+            <BigBox>
+              <Box>
+                <h2>이름</h2>
+              </Box>
+              <DataInput
+                type="text"
+    
+                value={userName}
+                onChange={handleChangeName}
+              />
+            </BigBox>
+            <BigBox>
+              <Box>
+                <h2>비밀번호</h2>
+              </Box>
+              <DataInput
+                type="password"
+              
+                value={userPassword}
+                onChange={handleChangePassword}
+              />
+            </BigBox>
+            <ButtonContainer>
+              <ChangeButton type="submit">수정</ChangeButton>
+              <WithdrawButton onClick={handleModalOpen}>
+                탈퇴하기
+              </WithdrawButton>
+            </ButtonContainer>
+          </form>
+
+          {modalOpen && (
+            <div>
+              <div>정말로 탈퇴하시겠습니까?</div>
+              <button onClick={handleModalClose}>취소</button>
+              <button onClick={handleDelete} disabled={isDeleting}>
+                확인
+              </button>
+            </div>
+          )}
+        </DataContainer>
+      </PageContent>
     </>
   );
 }
 
 export default MyPage;
+
+const PageContent = styled.div`
+  display: flex;
+  width: 80%; // 너비를 100%로 설정
+  height: 85.5vh; // 높이를 화면 높이의 100%로 설정
+  align-items: center;
+  flex-shrink: 0;
+`;
+
+const Box = styled.div`
+  width: 140px;
+  height: 100px;
+  flex-shrink: 0;
+  background-color: #cae1fd;
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+`;
+
+const DataBox = styled.div`
+  display: flex;
+  width: 432px;
+  height: 99px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex-shrink: 0;
+  border: 1px solid var(--cool-gray-20, #dde1e6);
+  background: var(--default-white, #fff);
+  justify-content: center;
+  align-items: center;
+`;
+
+const DataInput = styled.input`
+  display: flex;
+  width: 400px;
+  height: 66px;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+  border: 1px solid var(--cool-gray-20, #dde1e6);
+  background: var(--default-white, #fff);
+`;
+
+const BigBox = styled.div`
+  display: flex;
+  boarder: 1px solid black;
+  margin: 20px;
+`;
+
+const ChangeButton = styled.button`
+  display: flex;
+  width: 100px;
+  height: 50px;
+  padding: 2px 0px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: #3742fa;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  margin: 20px;
+`;
+
+const WithdrawButton = styled.button`
+  display: flex;
+  width: 100px;
+  height: 50px;
+  padding: 2px 0px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: red;
+  color: black;
+  border-radius: 999px;
+  border: none;
+  margin: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  margin-left: 35%;
+`;
+
+const DataContainer = styled.div`
+  align-items: center;
+  margin-left: 55%;
+`;

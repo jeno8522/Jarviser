@@ -26,6 +26,7 @@ public class MeetingServiceImp implements MeetingService{
     private final AESEncryptionUtil aesEncryptionUtil;
     private final KeywordStatisticsRepository keywordStatisticsRepository;
     private final OpenAIService openAIService;
+    private final ParticipantStatisticsRepository participantStatisticsRepository;
 
     @Override
     public String createMeeting(Long hostId, String meetingName){
@@ -39,7 +40,12 @@ public class MeetingServiceImp implements MeetingService{
         meetingRepository.saveMeeting(meeting);
         //미팅의 pk 를 토대로 encrypt설정
         try {
-            meeting.setEncryptedKey(aesEncryptionUtil.encrypt(Long.toString(meeting.getId())));
+            String encryptedKey = aesEncryptionUtil.encrypt(Long.toString(meeting.getId()));
+            int encryptedKeyHash = encryptedKey.hashCode();
+
+            meeting.setEncryptedKey(encryptedKey);
+            meeting.setEncryptedKeyHash(encryptedKeyHash);
+
         }catch (Exception ignored){
 
         }
@@ -106,6 +112,15 @@ public class MeetingServiceImp implements MeetingService{
     }
 
     @Override
+    public void addParticipantsStatisticsToMeeting(long meetingId, List<ParticipantStatistics> participantStatistics) {
+        Meeting meeting = meetingRepository.findMeetingById(meetingId);
+        for(ParticipantStatistics participantStatistic : participantStatistics){
+            meeting.addParticipantStatistics(participantStatistic);
+            participantStatisticsRepository.save(participantStatistic);
+        }
+    }
+
+    @Override
     public List<AudioMessage> findAllAudioMessage(long meetingId) {
         return audioMessageRepository.findAllByMeetingId(meetingId);
     }
@@ -113,6 +128,11 @@ public class MeetingServiceImp implements MeetingService{
     @Override
     public List<KeywordStatistics> findAllKeywordStatistics(long meetingId) {
         return keywordStatisticsRepository.findAllByMeetingId(meetingId);
+    }
+
+    @Override
+    public List<ParticipantStatistics> findAllParticipantStatistics(long meetingId) {
+        return participantStatisticsRepository.findAllByMeetingId(meetingId);
     }
 
     //미팅 아이디 기준으로 계산
@@ -139,6 +159,8 @@ public class MeetingServiceImp implements MeetingService{
             keywordCount.put(keyword,keywordHit);
         }
 
+        if(total == 0) return keywordStatisticsList;
+
         for(String keyword : keywords){
             int hitCount = keywordCount.get(keyword);
 
@@ -153,9 +175,9 @@ public class MeetingServiceImp implements MeetingService{
     }
 
     @Override
-    public List<ParticipantsStaticsDTO> caculateParticipantsStatics(long meetingId) {
+    public List<ParticipantStatistics> caculateParticipantsStatics(long meetingId) {
         Map<Long,Integer> IdMap = new HashMap<>(); // 아이디 값 기준으로 총 발화된 Map
-        List<ParticipantsStaticsDTO> participantsStaticsDTOList = new ArrayList<>();
+        List<ParticipantStatistics> participantsStaticsDTOList = new ArrayList<>();
         //오디오 메시지들 다 불러오기
         List<AudioMessage> audioMessages = audioMessageRepository.findAllByMeetingId(meetingId);
 
@@ -172,20 +194,22 @@ public class MeetingServiceImp implements MeetingService{
             }
         }
 
+        if(total == 0) return participantsStaticsDTOList;
+
         Set<Long> keys = IdMap.keySet();
         for(long userId : keys){
             int speechLength = IdMap.get(userId);
             double percent = 100.0 * speechLength / total;
             User user = userRepository.findById(userId).orElse(null);
             assert user != null;
-            ParticipantsStaticsDTO participantsStaticsDTO = ParticipantsStaticsDTO
+            ParticipantStatistics participantStatistics = ParticipantStatistics
                     .builder()
                     .id(userId)
                     .name(user.getName())
-                    .percentage(percent)
+                    .percent(percent)
                     .build();
 
-            participantsStaticsDTOList.add(participantsStaticsDTO);
+            participantsStaticsDTOList.add(participantStatistics);
 
         }
 

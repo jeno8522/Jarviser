@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jarviser.main.iml" filepath="$PROJECT_DIR$/.idea/modules/jarviser.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jarviser.iml" filepath="$PROJECT_DIR$/.idea/modules/jarviser.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/jarviser.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jarviser.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/jarviser_backend.jarviser.test.iml" filepath="$PROJECT_DIR$/.idea/modules/jarviser_backend.jarviser.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jarviser_backend.jarviser.test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/jarviser_backend.jarviser.test~1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/jarviser_frontend.iml" filepath="$PROJECT_DIR$/.idea/jarviser_frontend.iml" />
     </modules>
   </component>

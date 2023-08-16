@@ -1,14 +1,14 @@
-import {useState} from "react";
+import { useState } from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const JoinMeeting = () => {
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
@@ -51,19 +51,15 @@ const JoinMeeting = () => {
   const handleJoinMeeting = async () => {
     console.log("encryptedKey === ", encryptedKey);
     console.log("accessToken === ", accessToken);
-    const endpoint = `http://localhost:8081/meeting/joinMeeting/${encryptedKey}`;
+    const endpoint = `https://i9a506.p.ssafy.io:8081/meeting/joinMeeting/${encryptedKey}`;
 
     // 미팅에 참여하기 위해 서버에 요청을 보냅니다.
     try {
-      const response = await axios.get(
-        endpoint,
-
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       console.log("response === ", response);
       if (response.status === 202) {
@@ -85,11 +81,11 @@ const JoinMeeting = () => {
       <form onSubmit={handleSubmit}>
         <label>
           User Name:
-          <input type="text" value={payloadUserName} />
+          <input type="text" value={payloadUserName} readOnly />
         </label>
         <label>
           Encrypted Key:
-          <input type="text" value={encryptedKey} />
+          <input type="text" value={encryptedKey} readOnly />
         </label>
         <input type="submit" value="Submit" />
       </form>

@@ -14,6 +14,8 @@ public interface AudioService {
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile)
             throws ServerException;
 
+    public void removeAudioFile(String filePath) throws ServerException;
+
     public String getStt(String filePath) throws ServerException;
 
     public Long createAudioMessage(Long userId, String mId, Long StartTime, String filePath, String stt)
@@ -24,6 +26,5 @@ public interface AudioService {
     AudioMessage findByAudioMessageId(long audioMessageId);
     //Update
     Long updateByAudioMessageId(long audioMessageId,String changedContext);
-
 
 }

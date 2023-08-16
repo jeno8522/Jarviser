@@ -197,7 +197,7 @@ public class InsertTestDummy implements CommandLineRunner {
                         .priority(1)
                         .build();
 //
-                meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
+                //meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,7 +215,7 @@ public class InsertTestDummy implements CommandLineRunner {
 
         List<KeywordStatistics> keywordStatistics = meetingService.caculateKeywordsStatics(testMeetingId);
 
-        meetingService.addKeywordStatisticsToMeeting(testMeetingId,keywordStatistics);
+        //meetingService.addKeywordStatisticsToMeeting(testMeetingId,keywordStatistics);
 
         for(ParticipantsStaticsDTO p : participantsStatics){
             System.out.println(p);

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
                         loginDto.getPassword()
                 )
         );
+
         var user = userRepository.findByEmail(loginDto.getEmail());
         //TODO Optional로 리팩토링
         var jwtToken = jwtService.generateToken(user);
@@ -76,7 +79,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if(!updateUserDto.getPassword().equals("")){
-            user.setPassword(updateUserDto.getPassword());
+            user.setPassword(encoder.encode(updateUserDto.getPassword()));
         }else{
             user.setPassword(user.getPassword());
         }
@@ -90,5 +93,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByEmail(String email) throws Exception {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Boolean checkUserPassword(RequestLoginDto loginDto) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginDto.getEmail(),
+                            loginDto.getPassword()
+                    )
+            );
+            return true;
+        }catch (AuthenticationException e){
+            return false;
+        }
+
     }
 }
