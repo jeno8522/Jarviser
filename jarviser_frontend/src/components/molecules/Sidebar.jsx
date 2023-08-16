@@ -60,5 +60,5 @@
       width: 170px;
       height: 104%;
       flex-shrink: 0;
-      background-color: #cae1fd;
+      background-color: #91C8E4;
     `;

@@ -172,7 +172,7 @@ const Box = styled.div`
   width: 140px;
   height: 100px;
   flex-shrink: 0;
-  background-color: #cae1fd;
+  background-color: #91C8E4;
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -220,8 +220,8 @@ const ChangeButton = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: #3742fa;
-  color: white;
+  background: #4682A9;
+  color: #F6F4EB;
   border: none;
   border-radius: 999px;
   margin: 20px;
@@ -236,7 +236,7 @@ const WithdrawButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   background: red;
-  color: black;
+  color: #F6F4EB;
   border-radius: 999px;
   border: none;
   margin: 20px;

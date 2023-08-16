@@ -56,16 +56,16 @@
 .react-calendar__navigation button {
   min-width: 60px; /* 버튼 너비 조절 */
   height: 60px; /* 버튼 높이 조절 */
-  background-color: #cae1fd;
+  background-color: #91C8E4;
 }
 
 .react-calendar__navigation button:disabled {
-  background-color: #cae1fd;
+  background-color: #91C8E4;
 }
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: #cae1fd;
+  background-color: #91C8E4;
   border-radius: 5rem;
 }
 

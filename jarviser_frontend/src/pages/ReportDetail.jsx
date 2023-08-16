@@ -255,8 +255,8 @@ const KeywordWrapper = styled.div`
 `;
 
 const DownloadButton = styled.button`
-  background-color: #3742fa;
-  color: white;
+  background-color: #4682A9;
+  color: #F6F4EB;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;

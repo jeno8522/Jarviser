@@ -136,10 +136,11 @@
       align-items: center;
       flex-shrink: 0;
       border-radius: 999px;
-      border: 2px solid var(--primary-60, #0f62fe);
-      background: var(--primary-60, #0f62fe);
-      color: white;
+      border: 2px solid var(--primary-60, #4682A9);
+      background: var(--primary-60, #4682A9);
+      color: #F6F4EB;
       margin: 2px;
+      font-size: 15px;
     `;
     
     const SignupButton = styled.button`
@@ -151,10 +152,11 @@
       align-items: center;
       flex-shrink: 0;
       border-radius: 999px;
-      border: 2px solid var(--primary-60, #0f62fe);
-      background: var(--primary-60, #0f62fe);
-      color: white;
+      border: 2px solid #4682A9;
+      background: #4682A9;
+      color: #F6F4EB;
       margin-left: 700px;
+      font-size: 15px;
     `;
     
     const MainPageImage = styled.img`
@@ -169,7 +171,7 @@
       display: flex;
       justify-content: center;
       height: 680px;
-      background: #f0f0f0;
+      background: #F6F4EB;
     `;
     
     const MainContianer2 = styled.div`
@@ -180,7 +182,7 @@
     
     const TextContainer2 = styled.div`
       align-self: stretch;
-      color: var(--primary-90, #001d6c);
+      color: var(--primary-90, #749BC2);
       text-align: center;
       /* Other/Caption */
       font-family: Roboto;
