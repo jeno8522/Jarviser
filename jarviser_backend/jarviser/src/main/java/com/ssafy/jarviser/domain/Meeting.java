@@ -36,6 +36,9 @@ public class Meeting implements Serializable {
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
+    
     @Column(name = "encryptedKey")
     private String encryptedKey;
 
@@ -47,6 +50,9 @@ public class Meeting implements Serializable {
 
     @OneToMany(mappedBy = "meeting")
     private final List<Participant> participants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "meeting")
+    private final List<KeywordStatistics> keywordStatistics = new ArrayList<>();
 
     @Builder
     public Meeting(long id,String meetingName,long hostId,String meetingUrl,LocalDateTime startTime){
@@ -60,6 +66,11 @@ public class Meeting implements Serializable {
     public void addAudioMessage(AudioMessage audioMessage){
         this.audioMessages.add(audioMessage);
         audioMessage.setMeeting(this);
+    }
+
+    public void addKeywordStatistics(KeywordStatistics keywordStatistics){
+        this.keywordStatistics.add(keywordStatistics);
+        keywordStatistics.setMeeting(this);
     }
 }
 

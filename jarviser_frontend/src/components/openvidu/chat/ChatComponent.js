@@ -6,7 +6,8 @@ import Send from "@material-ui/icons/Send";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import "./ChatComponent.css";
 import {Tooltip} from "@material-ui/core";
-
+import SockJS from "sockjs-client";
+import {Stomp} from "@stomp/stompjs";
 export default class ChatComponent extends Component {
   constructor(props) {
     super(props);

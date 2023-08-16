@@ -18,6 +18,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.InputStream;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -37,6 +38,7 @@ public class AudioServiceImp implements AudioService {
         try {
             // MultipartFile을 InputStream으로 변환
             InputStream inputStream = audioFile.getInputStream();
+            inputStream.skip(44); //표준 헤더만큼 넘기기
 
             // InputStream을 AudioInputStream으로 변환
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
@@ -64,7 +66,9 @@ public class AudioServiceImp implements AudioService {
 
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
-        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
+        //FIXME: 적절한 절대 경로로 변경해줘야함. 상대경로로 인한 문제 발생
+        String filePath = "C:/ssafy/S09P12A506/jarviser_backend/jarviser/audio/" + mId + "/" + userId + "/" + startTime + ".wav";
+//        String filePath = "audio/" + mId + "/" + userId + "/" + startTime + ".wav"; // TODO: .wav 파일을 하드코딩한 부분에 대한 고려 필요
         try {
             File savedFile = new File(filePath);
             if (!savedFile.getParentFile().exists()) {
@@ -97,13 +101,13 @@ public class AudioServiceImp implements AudioService {
     public Long createAudioMessage(Long userId, String mId, Long StartTime, String filePath, String stt) {
         try {
             AudioMessage audioMessage = AudioMessage.builder()
-                    .userId(userId)
+                    .user(userService.findUserById(userId))
                     .meeting(meetingService.findMeetingById(Long.parseLong(mId)))
-                    .startTime(new Date(StartTime))
+                    .startTime(new Date(StartTime).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                     .filePath(filePath)
                     .content(stt)
                     .speechLength(stt.length())
-                    .index(getIndex(Long.parseLong(mId)))
+                    .priority(getIndex(Long.parseLong(mId)))
                     .build();
             audioMessageRepository.save(audioMessage);
             return audioMessage.getId();
@@ -153,5 +157,26 @@ public class AudioServiceImp implements AudioService {
         }
         return staticOfAudioMessages;
     }
+
+    @Override
+    public AudioMessage findByAudioMessageId(long audioMessageId) {
+        return audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+    }
+
+    @Override
+    public Long updateByAudioMessageId(long audioMessageId, String changedContext) {
+        //기존 메시지 찾기
+        AudioMessage existingAudioMessage = audioMessageRepository.findById(audioMessageId)
+                .orElseThrow(() -> new IllegalArgumentException("No AudioMessage found with id: " + audioMessageId));
+
+        // 오디오 메시지 업데이트
+        existingAudioMessage.setContent(changedContext);
+
+        // 변경 사항을 저장하고 반환
+        audioMessageRepository.save(existingAudioMessage);
+        return audioMessageId;
+    }
+
 
 }

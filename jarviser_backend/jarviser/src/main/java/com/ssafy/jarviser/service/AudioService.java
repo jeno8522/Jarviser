@@ -20,4 +20,10 @@ public interface AudioService {
             throws ServerException;
 
     public Map<String, Double> staticsOfAudioMessages(List<AudioMessage> audioMessages) throws Exception;
+
+    AudioMessage findByAudioMessageId(long audioMessageId);
+    //Update
+    Long updateByAudioMessageId(long audioMessageId,String changedContext);
+
+
 }

@@ -7,6 +7,7 @@ import com.ssafy.jarviser.dto.*;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.UserService;
+import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final MeetingService meetingService;
+    private final AESEncryptionUtil aesEncryptionUtil;
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
 
@@ -72,7 +75,7 @@ public class UserController {
         } catch (Exception e) {
             //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
             log.error("로그인 실패", e);
-            resultMap.put("message", FAIL);
+            resultMap.put("message", "아이디 또는 비밀번호를 다시 입력해주세요.");
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -98,6 +101,26 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String email){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            User user = userService.findUserByEmail(email);
+            if (user == null){
+                resultMap.put("message", SUCCESS);
+            }else{
+                resultMap.put("message", "중복된 이메일 입니다.");
+            }
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            //FIXME : 모든 회원 가입 실패에 대하여 처리가 필요함
+            log.error("아이디 찾기 오류", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
     //마이페이지
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> mypage(
@@ -150,8 +173,7 @@ public class UserController {
 
             for (Meeting meeting : meetingList) {
                 User host = userService.findUserById(meeting.getHostId());
-                System.out.println("호스트들의 이름 : " + host.getName());
-                responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime()));
+                responseMeetingDtos.add(new ResponseMeetingDto(meeting.getMeetingName(), host.getName(), meeting.getStartTime(), aesEncryptionUtil.encrypt(String.valueOf(meeting.getId()))));
             }
             resultMap.put("meetinglist", responseMeetingDtos);
             status = HttpStatus.ACCEPTED;

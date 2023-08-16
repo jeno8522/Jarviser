@@ -37,17 +37,17 @@ public class MeetingRepositoryImp implements MeetingRepository{
                 .getSingleResult();
     }
 
-    @Override
-    public List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId) {
-        return em.createQuery(
-                "SELECT am " +
-                        "FROM AudioMessage am "+
-                        "WHERE am.meeting.id = :meetingId"
-        , AudioMessage.class)
-                .setParameter("meetingId",meetingId)
-                .getResultList()
-                ;
-    }
+//    @Override
+//    public List<AudioMessage> findAllAudioMessageByMeetingId(long meetingId) {
+//        return em.createQuery(
+//                "SELECT am " +
+//                        "FROM AudioMessage am "+
+//                        "WHERE am.meeting.id = :meetingId"
+//        , AudioMessage.class)
+//                .setParameter("meetingId",meetingId)
+//                .getResultList()
+//                ;
+//    }
 
     @Override
     public List<Meeting> findAllMeetingByUserId(long userid) {

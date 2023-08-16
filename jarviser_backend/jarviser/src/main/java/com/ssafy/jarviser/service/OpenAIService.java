@@ -53,7 +53,6 @@ public class OpenAIService {
                         });
     }
 
-
     // @Async를 해주지 않아도 WebClient를 사용하고 Mono를 반환하는 것 만으로 비동기
     public Mono<String> chatGPTSummary(String textContent, String query){
         HttpClient httpClient = HttpClient.create()

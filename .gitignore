@@ -213,4 +213,4 @@ $RECYCLE.BIN/
 
 *.gz
 **/generated/
-
+node_modules
