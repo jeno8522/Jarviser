@@ -9,7 +9,7 @@ function MeetingInfo({ date }) {
   const { accessToken } = useAccessToken();
   useEffect(() => {
     axios
-      .get("http://localhost:8081/user/meetinglist", {
+      .get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

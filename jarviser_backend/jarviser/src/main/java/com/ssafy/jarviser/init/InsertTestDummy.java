@@ -197,11 +197,34 @@ public class InsertTestDummy implements CommandLineRunner {
                         .priority(1)
                         .build();
 //
-                meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
+                //meetingService.addAudioMessageToMeeting(testMeeting.getId(),audioMessage);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        //회의 종료했다고 가정하기
+
+        //종료버튼 누르면 다음 로직 시작
+        //1. 발화자 통계
+
+        List<ParticipantsStaticsDTO> participantsStatics = meetingService.caculateParticipantsStatics(testMeetingId);
+
+        System.out.println(participantsStatics);
+        //2. 키워드 통계 (GPT 를 이용하기때문에 DB에 저장)
+
+        List<KeywordStatistics> keywordStatistics = meetingService.caculateKeywordsStatics(testMeetingId);
+
+        //meetingService.addKeywordStatisticsToMeeting(testMeetingId,keywordStatistics);
+
+        for(ParticipantsStaticsDTO p : participantsStatics){
+            System.out.println(p);
+        }
+        System.out.println("--------------------------------------");
+
+        for(KeywordStatistics p : keywordStatistics){
+            System.out.println(p.getKeyword() + " " + p.getPercent());
+        }
+        System.out.println("--------------------------------------");
     }
 }

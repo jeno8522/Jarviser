@@ -1,7 +1,7 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
 
@@ -15,7 +15,7 @@ const HTTP_STATUS = {
 
 const CreateMeeting = () => {
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
@@ -54,7 +54,7 @@ const CreateMeeting = () => {
     event.preventDefault();
     console.log("sessionName === ", sessionName);
     console.log("accessToken === ", accessToken);
-    const endpoint = `http://localhost:8081/meeting/create/${sessionName}`;
+    const endpoint = `https://i9a506.p.ssafy.io:8081/meeting/create/${sessionName}`;
     // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
     try {
       const response = await axios.post(

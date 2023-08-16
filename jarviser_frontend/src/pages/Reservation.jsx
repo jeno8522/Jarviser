@@ -36,7 +36,7 @@ function Reservation({ closeModal }) {
     console.log(headers);
     console.log(sendData);
     try {
-      await axios.post("http://localhost:8081/reservation", sendData, {
+      await axios.post("https://i9a506.p.ssafy.io:8081/reservation", sendData, {
         headers,
       });
 
@@ -80,118 +80,126 @@ function Reservation({ closeModal }) {
 
   return (
     <ModalBackdrop onClick={closeModal}>
-    <ModalContent onClick={e => e.stopPropagation()}> 
-    <CloseButton onClick={closeModal}>X</CloseButton>
-      <ModalHeader>
-      <h1>미팅 예약하기</h1>
-    </ModalHeader>
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <LeftContainer>
-        <ContentLabel htmlFor="title">제목</ContentLabel>
-        <TitleField>
-        <TitleText
-          id="title"
-          type="text"
-          placeholder="제목을 입력해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.title ? "true" : "false") : undefined
-          }
-          {...register("title", {
-            required: "제목은 필수 입력입니다.",
-            pattern: {},
-          })}
-        />
-        </TitleField>
-        {errors.title && <small role="alert">{errors.title.message}</small>}
-        <br />
-        <ContentLabel htmlFor="date">날짜</ContentLabel>
-        <TimeField>
-        <TimeText
-          id="date"
-          type="date"
-          placeholder="날짜를 선택해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.date ? "true" : "false") : undefined
-          }
-          {...register("date", {
-            required: "날짜는 필수 입력입니다.", 
-          })}
-        />
-        </TimeField>
-        {errors.date && <small role="alert">{errors.date.message}</small>}
-        <br />
-        <ContentLabel htmlFor="time">시간</ContentLabel>
-        <TimeField>
-        <TimeText
-          id="time"
-          type="time"
-          placeholder="시간을 선택해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.time ? "true" : "false") : undefined
-          }
-          {...register("time", {
-            required: "시간은 필수 입력입니다.",
-          })}
-        />
-        </TimeField>
-        {errors.time && <small role="alert">{errors.time.message}</small>}
-        <br />
-        <ContentLabel htmlFor="content">내용</ContentLabel>
-        <DescField>
-        <DescText
-          id="content"
-          type="textarea"
-          placeholder="내용을 입력해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.content ? "true" : "false") : undefined
-          }
-          {...register("content", {
-            required: "내용은 필수 입력입니다.",
-          })}
-          
-        />
-        
-        </DescField>
-        
-        {errors.content && <small role="alert">{errors.content.message}</small>}
-        <br />
-        </LeftContainer>
-        <RightContainer>
-    <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
-    <EmailContainer>
-      <EmailText
-        id="userEmail"
-        type="email"
-        placeholder="이메일을 입력해주세요."
-        aria-invalid={
-          isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
-        }
-        {...register("userEmail", {})}
-      />
-      <AddButton
-        type="button"
-        disabled={isSubmitting}
-        onClick={() => addUserEmail(document.getElementById("userEmail").value)}
-      >
-        추가
-      </AddButton>
-    </EmailContainer>
-    {userEmail.map((email, index) => (
-      <EmailItem key={index}>
-        {email}
-        <Button type="button" onClick={() => deleteUser(index)}>
-          삭제  
-        </Button>
-      </EmailItem>
-    ))}
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <CloseButton onClick={closeModal}>X</CloseButton>
+        <ModalHeader>
+          <h1>미팅 예약하기</h1>
+        </ModalHeader>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <LeftContainer>
+            <ContentLabel htmlFor="title">제목</ContentLabel>
+            <TitleField>
+              <TitleText
+                id="title"
+                type="text"
+                placeholder="제목을 입력해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.title ? "true" : "false") : undefined
+                }
+                {...register("title", {
+                  required: "제목은 필수 입력입니다.",
+                  pattern: {},
+                })}
+              />
+            </TitleField>
+            {errors.title && <small role="alert">{errors.title.message}</small>}
+            <br />
+            <ContentLabel htmlFor="date">날짜</ContentLabel>
+            <TimeField>
+              <TimeText
+                id="date"
+                type="date"
+                placeholder="날짜를 선택해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.date ? "true" : "false") : undefined
+                }
+                {...register("date", {
+                  required: "날짜는 필수 입력입니다.",
+                })}
+              />
+            </TimeField>
+            {errors.date && <small role="alert">{errors.date.message}</small>}
+            <br />
+            <ContentLabel htmlFor="time">시간</ContentLabel>
+            <TimeField>
+              <TimeText
+                id="time"
+                type="time"
+                placeholder="시간을 선택해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.time ? "true" : "false") : undefined
+                }
+                {...register("time", {
+                  required: "시간은 필수 입력입니다.",
+                })}
+              />
+            </TimeField>
+            {errors.time && <small role="alert">{errors.time.message}</small>}
+            <br />
+            <ContentLabel htmlFor="content">내용</ContentLabel>
+            <DescField>
+              <DescText
+                id="content"
+                type="textarea"
+                placeholder="내용을 입력해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.content ? "true" : "false") : undefined
+                }
+                {...register("content", {
+                  required: "내용은 필수 입력입니다.",
+                })}
+              />
+            </DescField>
 
-<SubmitButton type="submit" disabled={isSubmitting || userEmail.length === 0}>
-    예약 완료
-  </SubmitButton>
-  </RightContainer>
-  
-      </Form>
-    </ModalContent>
+            {errors.content && (
+              <small role="alert">{errors.content.message}</small>
+            )}
+            <br />
+          </LeftContainer>
+          <RightContainer>
+            <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
+            <EmailContainer>
+              <EmailText
+                id="userEmail"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                aria-invalid={
+                  isSubmitted
+                    ? errors.userEmail
+                      ? "true"
+                      : "false"
+                    : undefined
+                }
+                {...register("userEmail", {})}
+              />
+              <AddButton
+                type="button"
+                disabled={isSubmitting}
+                onClick={() =>
+                  addUserEmail(document.getElementById("userEmail").value)
+                }
+              >
+                추가
+              </AddButton>
+            </EmailContainer>
+            {userEmail.map((email, index) => (
+              <EmailItem key={index}>
+                {email}
+                <Button type="button" onClick={() => deleteUser(index)}>
+                  삭제
+                </Button>
+              </EmailItem>
+            ))}
+
+            <SubmitButton
+              type="submit"
+              disabled={isSubmitting || userEmail.length === 0}
+            >
+              예약 완료
+            </SubmitButton>
+          </RightContainer>
+        </Form>
+      </ModalContent>
     </ModalBackdrop>
   );
 }
@@ -201,27 +209,26 @@ const ReservationHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-
 const RightContainer = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column; // 수직 배치
-    align-items: flex-end; // 오른쪽 정렬
+  flex: 1;
+  display: flex;
+  flex-direction: column; // 수직 배치
+  align-items: flex-end; // 오른쪽 정렬
 `;
 
 const SubmitButton = styled.button`
-    padding: 15px 30px;
-    background: #28a745;
-    color: #fff;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s;
-    margin-top: 10px; // 상단에 여백 추가
-    &:hover {
-        background: #218838;
-    }
+  padding: 15px 30px;
+  background: #28a745;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+  margin-top: 10px; // 상단에 여백 추가
+  &:hover {
+    background: #218838;
+  }
 `;
 
 const ModalBackdrop = styled.div`
@@ -329,16 +336,16 @@ const EmailText = styled.input`
 `;
 
 const ModalContent = styled.div`
-background-color: #f3f4f6; // 밝은 회색으로 변경
-padding: 20px;
-border-radius: 10px; // 모서리를 둥글게 만듭니다.
-position: relative;
-max-width: 100%; // 모달의 최대 너비를 설정합니다.
-max-height: 80%; // 모달의 최대 높이를 설정합니다.
-overflow: auto; // 내용이 너무 길면 스크롤이 생깁니다.
-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과를 추가합니다.
-width: 800px; // 원하는 너비로 설정합니다.
-min-height: 300px; // 원하는 최소 높이로 설정합니다.
+  background-color: #f3f4f6; // 밝은 회색으로 변경
+  padding: 20px;
+  border-radius: 10px; // 모서리를 둥글게 만듭니다.
+  position: relative;
+  max-width: 100%; // 모달의 최대 너비를 설정합니다.
+  max-height: 80%; // 모달의 최대 높이를 설정합니다.
+  overflow: auto; // 내용이 너무 길면 스크롤이 생깁니다.
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과를 추가합니다.
+  width: 800px; // 원하는 너비로 설정합니다.
+  min-height: 300px; // 원하는 최소 높이로 설정합니다.
 `;
 
 const CloseButton = styled.button`
@@ -402,8 +409,6 @@ const EmailItem = styled.div`
   background-color: #f3f4f6;
 `;
 
-
-
 const Form = styled.form`
   display: flex;
   justify-content: space-between; // 필요에 따라 조정
@@ -427,7 +432,6 @@ const EmailContainer = styled.div`
   margin-bottom: 0px;
 `;
 
-
 // const SubmitButton = styled.button`
 //   padding: 15px 30px;
 //   background: #28a745; // 녹색 배경
@@ -445,6 +449,5 @@ const EmailContainer = styled.div`
 //     background: #218838;
 //   }
 // `;
-
 
 export default Reservation;
