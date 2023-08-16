@@ -127,6 +127,7 @@ public class MeetingController {
             for (AudioMessage audioMessage : allAudioMessage) {
                 ResponseAudioMessageDTO responseAudioMessageDTO = ResponseAudioMessageDTO
                         .builder()
+                        .audioMessageId(audioMessage.getId())
                         .length(audioMessage.getSpeechLength())
                         .priority(audioMessage.getPriority())
                         .content(audioMessage.getContent())
