@@ -3,6 +3,8 @@ package com.ssafy.jarviser.service;
 import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.dto.ResponseChatGPTKeywordsDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -22,9 +24,11 @@ import java.util.*;
 
 @Service
 @Slf4j
+@PropertySource("classpath:appKey.yml")
 public class OpenAIService {
 
-    private static final String token = "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";
+    @Value("${key}")
+    private String token;
 
     public Mono<String> whisperAPICall(String filePath) throws URISyntaxException, IOException {
 

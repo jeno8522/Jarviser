@@ -1,45 +1,81 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import moment from "moment";
+import useAccessToken from "./useAccessToken";
+
 function MeetingInfo({ date }) {
-  // 날짜에 따른 회의 정보를 가져오는 함수 (가상의 함수로 가정)
-  const getMeetingInfo = (selectedDate) => {
-    // 이 함수는 selectedDate에 해당하는 회의 정보를 가져오는 로직을 구현해야 합니다.
-    // 가상의 데이터를 사용하겠습니다.
-    const meetingData = [
-      {
-        date: "15-08-2023",
-        title: "HONGWOONG's MEETING",
-        description: "Meeting description 1",
-      },
-      {
-        date: "03-01-2022",
-        title: "Meeting 2",
-        description: "Meeting description 2",
-      },
-      // ...
-    ];
-
-    // selectedDate와 일치하는 회의 정보를 찾아 반환합니다.
-    const selectedMeeting = meetingData.find(
-      (meeting) => meeting.date === moment(date).format("DD-MM-YYYY")
-    );
-
-    return selectedMeeting;
+  const [meetings, setMeetings] = useState([]);
+  const { accessToken } = useAccessToken();
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8081/user/meetinglist",
+          {
+            headers,
+          }
+        );
 
-  // 선택한 날짜에 따른 회의 정보를 가져옵니다.
-  const meeting = getMeetingInfo(date.toISOString().split("T")[0]);
+        const meetingList = response.data.meetinglist;
+        console.log(meetingList);
+        const selectedMeetings = meetingList.filter(
+          (m) =>
+            moment(m.startTime).format("DD-MM-YYYY") ===
+            moment(date).format("DD-MM-YYYY")
+        );
+
+        setMeetings(selectedMeetings); // 선택된 회의를 상태로 설정
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching the meeting data:",
+          error
+        );
+      }
+    };
+
+    fetchData();
+  }, [date]);
+
+  const handleDelete = async (reservatedMeetingId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8081/reservation/${reservatedMeetingId}`,
+        {
+          headers,
+          data: { reservatedMeetingId },
+        }
+      );
+      const updatedMeetings = meetings.filter(
+        (meeting) => meeting.reservatedMeetingId !== reservatedMeetingId
+      );
+      setMeetings(updatedMeetings);
+    } catch (error) {
+      console.error("Failed to delete the meeting:", error);
+    }
+  };
 
   return (
     <div>
-      {meeting ? (
+      {meetings.length ? (
         <>
           <h2>Meeting Information for {moment(date).format("YYYY-MM-DD")}</h2>
-          <p>Title: {meeting.title}</p>
-          <p>Description: {meeting.description}</p>
+          {meetings.map((meeting) => (
+            <div key={meeting.meetingName}>
+              <p>Title: {meeting.meetingName}</p>
+              <p>Host: {meeting.hostName}</p>
+              <p>Start Time: {meeting.date}</p>
+              <button onClick={() => handleDelete(meeting.reservatedMeetingId)}>
+                삭제
+              </button>
+              <hr />
+            </div>
+          ))}
         </>
       ) : (
-        <p>No meetings found for {date.toISOString().split("T")[0]}</p>
+        <p>No meetings found for {moment(date).format("YYYY-MM-DD")}</p>
       )}
     </div>
   );
