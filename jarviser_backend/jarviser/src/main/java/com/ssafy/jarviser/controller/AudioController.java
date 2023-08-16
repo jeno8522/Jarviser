@@ -31,7 +31,6 @@ public class AudioController {
     private final StatisticsService statisticsService;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final SimpMessagingTemplate messagingTemplate;
-    private final StatisticsService statisticsService;
 
     private final HashMap<String, String> connectCheckMap = new HashMap<>(); //TODO: 추후 DB에 저장 필요 여부 확인
     private final HashMap<Long, String> userSessionMap = new HashMap<>(); //

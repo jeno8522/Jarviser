@@ -20,8 +20,8 @@ public class Encrypto {
         System.out.println(encrypt);
 
         String decrypt = aesEncryptionUtil.decrypt("fRsFnxwhA7frdnfFMjNPKA==");
-        System.out.println(;
-        String decrypt = aesEncryptionUtil.decrypt(encrypt);
+//        System.out.println(;
+//        String decrypt = aesEncryptionUtil.decrypt(encrypt);
 
         Assertions.assertEquals("1",decrypt);
     }
