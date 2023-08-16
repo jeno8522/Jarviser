@@ -28,8 +28,18 @@ const ReportDetail = () => {
 
   const getMeetingDetails = async () => {
     try {
+
+      // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
+      const meetingEnded = await axios.get(
+        `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          data: { meetingId: id },
+        }
+      );
+
       const responseAudioMessage = await axios.get(
-        `http://localhost:8081/meeting/audiomessage/fRsFnxwhA7frdnfFMjNPKA==`,
+        `http://localhost:8081/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -37,7 +47,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `http://localhost:8081/meeting/speech/fRsFnxwhA7frdnfFMjNPKA==`,
+        `http://localhost:8081/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -45,7 +55,7 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `http://localhost:8081/meeting/keywords/fRsFnxwhA7frdnfFMjNPKA==`,
+        `http://localhost:8081/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
