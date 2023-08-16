@@ -5,7 +5,6 @@ import ChatComponent from "./chat/ChatComponent";
 import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import StreamComponent from "./stream/StreamComponent";
 import "./VideoRoomComponent.css";
-
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
@@ -231,6 +230,36 @@ class VideoRoomComponent extends Component {
     );
   }
 
+  handleEndMeeting = async () => {
+    const endpoint = `http://localhost:8081/meeting/end/${this.state.meetingId}`;
+    const accessToken = localStorage.getItem("accessToken");
+
+    try {
+      const response = await axios.get(
+        endpoint,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      console.log("response === ", response);
+      if (response.status === 202) {
+        console.log("Successfully end the meeting!", response.data.meeting);
+
+        // 미팅 참여에 성공했을 때 원하는 추가적인 로직을 수행할 수 있습니다.
+      } else {
+        console.error("Error end the meeting:", response.data);
+        alert("Error end the meeting. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while end the meeting. Please try again.");
+    }
+  };
+
   leaveSession() {
     console.log("leave Session 실행됨유!!");
     const mySession = this.state.session;
@@ -254,6 +283,7 @@ class VideoRoomComponent extends Component {
     if (this.props.leaveSession) {
       this.props.leaveSession();
     }
+    this.handleEndMeeting();
   }
   camStatusChanged() {
     localUser.setVideoActive(!localUser.isVideoActive());
