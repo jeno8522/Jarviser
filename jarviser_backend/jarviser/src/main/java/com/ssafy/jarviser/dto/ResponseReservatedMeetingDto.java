@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
 public class ResponseReservatedMeetingDto {
     private long id;
     private String meetingName;
