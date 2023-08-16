@@ -57,6 +57,7 @@ const JoinMeeting = () => {
     try {
       const response = await axios.get(
         endpoint,
+        {},
 
         {
           headers: {
@@ -96,7 +97,7 @@ const JoinMeeting = () => {
       {showVideoRoom && (
         <VideoRoomComponent
           userName={payloadUserName}
-          meetingId={encryptedKey}
+          meetingId={encryptedKey.toString()}
         />
         // <VideoRoomComponent />
       )}
