@@ -86,18 +86,18 @@ const JoinMeeting = () => {
       <form onSubmit={handleSubmit}>
         <label>
           User Name:
-          <input type="text" value={payloadUserName} />
+          <input type="text" value={payloadUserName} readOnly />
         </label>
         <label>
           Encrypted Key:
-          <input type="text" value={encryptedKey} />
+          <input type="text" value={encryptedKey} readOnly />
         </label>
         <input type="submit" value="Submit" />
       </form>
       {showVideoRoom && (
         <VideoRoomComponent
           userName={payloadUserName}
-          meetingId={encryptedKey.toString()}
+          meetingId={encryptedKey}
         />
         // <VideoRoomComponent />
       )}
