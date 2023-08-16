@@ -36,7 +36,9 @@ public class AESEncryptionUtil {
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
             byte[] encryptedBytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
-            return new Base32().encodeToString(encryptedBytes); // Base32 인코딩
+            String encrypted = new Base32().encodeToString(encryptedBytes);
+            encrypted = encrypted.substring(0,encrypted.length() -6);
+            return encrypted; // Base32 인코딩
         }catch (Exception e){
             log.error("encrypt error : {}", e);
             throw new ServerException("encrypt error");
@@ -44,6 +46,7 @@ public class AESEncryptionUtil {
     }
     public String decrypt(String encryptedData){
         try{
+            encryptedData += "======";
             SecretKeySpec key = generateSecretKey();
             Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, key);
