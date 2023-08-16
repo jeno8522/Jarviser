@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import {Stomp} from "@stomp/stompjs";
+import {DndProvider, useDrag, useDrop} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
-import { useMicVAD } from "@ricky0123/vad-react";
+import {useMicVAD} from "@ricky0123/vad-react";
 const ItemType = {
   MESSAGE: "message",
 };
@@ -37,7 +37,7 @@ const SttComponent = (props) => {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        headers: { Authorization: "Bearer " + token },
+        headers: {Authorization: "Bearer " + token},
       });
 
       if (!response.ok) {
@@ -85,16 +85,16 @@ const SttComponent = (props) => {
       view.setInt16(index, audioData[i] * (0x7fff * volume), true);
       index += 2;
     }
-    return new Blob([view], { type: "audio/wav" });
+    return new Blob([view], {type: "audio/wav"});
   };
 
   return <div>{vad.userSpeaking && "User is speaking"}</div>;
 };
 
-const DraggableMessage = ({ message, index, moveMessage, userId }) => {
-  const [{ isDragging }, ref] = useDrag({
+const DraggableMessage = ({message, index, moveMessage, userId}) => {
+  const [{isDragging}, ref] = useDrag({
     type: ItemType.MESSAGE,
-    item: { index },
+    item: {index},
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -131,7 +131,12 @@ class WebSocketComponent extends React.Component {
     super(props);
     let meetingId = this.props.meetingId;
     this.state = {
-      messages: [],
+      messages: [
+        '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "1번참가자의뻘소리"}',
+        '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "2번참가자의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "3번참가자의뻘소리"}',
+      ],
+
       meetingId: meetingId,
       draggedIndex: null, // 드래그가 시작된 인덱스를 저장할 state
       userId: null, // userId 상태
@@ -145,7 +150,7 @@ class WebSocketComponent extends React.Component {
     if (token) {
       const parsedToken = JSON.parse(atob(token.split(".")[1]));
       if (parsedToken && parsedToken.userId) {
-        this.setState({ userId: parsedToken.userId });
+        this.setState({userId: parsedToken.userId});
       }
     }
     const socket = new SockJS("http://localhost:8081/ws");
@@ -162,7 +167,7 @@ class WebSocketComponent extends React.Component {
       stompClient.send(
         "/app/connect",
         {},
-        JSON.stringify({ meetingId: meetingId, Authorization: "Bearer " + token })
+        JSON.stringify({meetingId: meetingId, Authorization: "Bearer " + token})
       );
     });
   }
@@ -174,7 +179,7 @@ class WebSocketComponent extends React.Component {
   moveMessage = (fromIndex, toIndex) => {
     // 드래그 시작 시 draggedIndex를 설정
     if (this.state.draggedIndex === null) {
-      this.setState({ draggedIndex: fromIndex });
+      this.setState({draggedIndex: fromIndex});
       return; // 여기서 종료하면 아이템의 위치는 실제로 이동하지 않습니다.
     }
 
@@ -188,7 +193,7 @@ class WebSocketComponent extends React.Component {
 
     // 끝날 때 draggedIndex와 toIndex를 함께 출력하고, draggedIndex를 다시 null로 초기화
     this.printIndexes(this.state.draggedIndex, toIndex);
-    this.setState({ draggedIndex: null });
+    this.setState({draggedIndex: null});
   };
 
   render() {

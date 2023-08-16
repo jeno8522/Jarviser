@@ -20,6 +20,8 @@
 
 #navSessionInfo {
   position: absolute;
+  display: flex;
+  align-items: center;
 }
 
 #navButtons {
@@ -37,7 +39,8 @@
 #titleContent {
   max-width: 100px;
   background-color: #494949;
-  margin: 5px -18px;
+  margin: 5px -18px 5px 5px;
+  /* margin-right: 5px; */
   padding: 0px 15px;
   font-size: 16px;
   overflow: hidden;
@@ -52,7 +55,7 @@
 }
 
 #header_img {
-  max-width: 135px;
+  max-width: 80px;
   margin-right: 10px;
   margin-top: 10px;
 }

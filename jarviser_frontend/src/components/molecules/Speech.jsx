@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import styled from "styled-components";
 
 const Speech = ({ speechPercentage }) => {
-  // 데이터 필터링: NaN이 아닌 값만 추출하여 newData 배열에 저장
-  const newData = speechPercentage.filter((item) => !isNaN(item.percentage));
+  const [graphData, setGraphData] = useState([]);
 
-  // newData 배열을 기반으로 그래프 데이터 구성
-  const data = newData.map(({ name, percentage }) => ({
-    title: name,
-    value: percentage,
-    color: getRandomColor(),
-  }));
+  useEffect(() => {
+    // 데이터 필터링: NaN이 아닌 값만 추출하여 newData 배열에 저장
+    const newData = speechPercentage.filter((item) => !isNaN(item.percentage));
+
+    // 중복 발화자 제거를 위한 Set 활용
+    const uniqueSpeakers = new Set(newData.map((item) => item.name));
+
+    // 중복이 제거된 newData 배열을 기반으로 그래프 데이터 구성
+    const data = Array.from(uniqueSpeakers).map((speaker) => {
+      const speakerData = newData.find((item) => item.name === speaker);
+      return {
+        title: speaker,
+        value: speakerData.percentage,
+        color: getRandomColor(),
+      };
+    });
+
+    setGraphData(data);
+  }, [speechPercentage]);
 
   return (
     <div>
@@ -19,7 +31,7 @@ const Speech = ({ speechPercentage }) => {
         <span>발화자 통계</span>
       </TextBackground>
       <PieChart
-        data={data}
+        data={graphData}
         reveal={100} // 그래프 레이블을 항상 표시하도록 설정
         lineWidth={100} // 그래프 두께 설정 (선택사항)
         label={({ dataEntry }) =>

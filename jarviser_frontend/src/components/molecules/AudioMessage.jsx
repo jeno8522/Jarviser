@@ -1,10 +1,30 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const AudioMessage = ({ audioMessage, onEditClick, onSaveClick }) => {
+const AudioMessage = ({ audioMessage, onEditClick, onSaveClick, accessToken }) => {
   const [editedContent, setEditedContent] = useState(audioMessage.content);
 
-  const handleSaveClick = () => {
-    onSaveClick(editedContent);
+  const handleSaveClick = async () => {
+    try {
+      await onSaveClick(editedContent);
+
+      const response = await axios.post(
+        "http://localhost:8081/meeting/audiomessage/update",
+        {
+          audioMessageId: audioMessage.audioMessageId,
+          content: editedContent,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (response.status === 200) {
+        onSaveClick(editedContent);
+      }
+    } catch (error) {
+      console.error("Error updating audio message:", error);
+    }
   };
 
   return (
