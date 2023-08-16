@@ -14,7 +14,7 @@ import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
 import Reservation from "./Reservation";
-
+import TestComponent from "../components/openvidu/chat/stt/TestComponent";
 function UserMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -114,6 +114,7 @@ function UserMain() {
         </ButtonFrame>
       </PageContent>
       {isModalOpen && <Reservation closeModal={closeModal} />}
+      <TestComponent />
     </>
   );
 }
