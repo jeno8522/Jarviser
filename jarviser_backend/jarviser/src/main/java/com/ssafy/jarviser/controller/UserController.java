@@ -102,11 +102,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String email){
+    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String userId){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            User user = userService.findUserByEmail(email);
+            User user = userService.findUserByEmail(userId);
             if (user == null){
                 resultMap.put("message", SUCCESS);
             }else{
