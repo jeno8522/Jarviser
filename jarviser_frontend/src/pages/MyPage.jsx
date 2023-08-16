@@ -119,7 +119,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="text"
-                required={true}
                 value={userName}
                 onChange={handleChangeName}
               />
@@ -130,7 +129,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="password"
-                required={true}
                 value={userPassword}
                 onChange={handleChangePassword}
               />

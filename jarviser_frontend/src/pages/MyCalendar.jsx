@@ -78,9 +78,11 @@ export default MyCalendar;
 
 const PageWrapper = styled.div`
   display: flex;
+  heigth: 85.5vh;
 `;
 const CalendarContainer = styled.div`
   margin: 100px;
+  margin-left: 200px;
 `;
 const CalendarData = styled.div`
   display: flex;

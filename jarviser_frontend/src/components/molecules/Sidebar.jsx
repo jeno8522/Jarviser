@@ -65,8 +65,8 @@ const LogoImage = styled.img`
 const SidebarContianer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 13.5%;
-  height: 104%;
+  width: 150px;
+  height: 650px;
   flex-shrink: 0;
   background-color: #cae1fd;
 `;

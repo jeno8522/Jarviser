@@ -127,7 +127,7 @@ const PageContent = styled.div`
 `;
 
 const ButtonFrame = styled.div`
-  margin-left: 10%;
+  margin-left: 12%;
   display: flex;
   width: 100%; // 너비를 100%로 설정
   height: auto; // 높이를 자동으로 설정
