@@ -1,6 +1,14 @@
 import React from "react";
 import { Bar, Chart } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, Legend, BarElement, Tooltip } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Legend,
+  BarElement,
+  Tooltip,
+} from "chart.js";
+import styled from "styled-components";
 
 ChartJS.register(CategoryScale, LinearScale, Legend, BarElement, Tooltip);
 
@@ -24,7 +32,9 @@ const Keyword = ({ staticsOfKeywords }) => {
 
   return (
     <div>
-      <h2>회의 주요 키워드</h2>
+      <TextBackground>
+        <span>회의 주요 키워드</span>
+      </TextBackground>
       <Bar data={data} />
     </div>
   );
@@ -41,3 +51,13 @@ function getRandomColor() {
 }
 
 export default Keyword;
+
+const TextBackground = styled.div`
+  span {
+    background-color: #cae1fd;
+    padding: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+  }
+`;

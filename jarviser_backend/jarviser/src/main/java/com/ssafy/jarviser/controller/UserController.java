@@ -25,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000/*")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -101,7 +101,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{email}")
     public ResponseEntity<Map<String, Object>> checkId(@PathVariable String email){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -164,7 +164,6 @@ public class UserController {
     ) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
         try {
             token = token.split(" ")[1];
             Long userid = jwtService.extractUserId(token);
