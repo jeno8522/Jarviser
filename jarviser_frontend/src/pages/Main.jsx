@@ -7,7 +7,6 @@
     import { useEffect } from "react";
     import { useNavigate } from "react-router-dom";
     import useAccessToken from "../components/useAccessToken";
-    import WebSocketComponent from "../components/web-socket/WebSocketComponent";
     import styled from "styled-components";
     import MainImage from "../logo/Main.png";
     import Chart from "../logo/chart.png";

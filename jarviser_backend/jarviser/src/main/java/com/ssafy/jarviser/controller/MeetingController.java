@@ -53,7 +53,6 @@ public class MeetingController {
         try {
             Long hostId = jwtService.extractUserId(token);
             String encryptedKey = meetingService.createMeeting(hostId, meetingName);
-            encryptedKey = encryptedKey.substring(0,encryptedKey.length()-6);
             httpStatus = HttpStatus.ACCEPTED;
             responseMap.put("encryptedKey", encryptedKey);
 

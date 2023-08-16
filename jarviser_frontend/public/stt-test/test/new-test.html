@@ -9,9 +9,7 @@
       onSpeechEnd: (audio) => {
         console.log('speech end')
         // do something with `audio` (Float32Array of audio samples at sample rate 16000)...
-        console.log("start")
         const audioBlob = float32ArrayToWav(audio, 16000);
-        console.log("end")
         sendAudio(audioBlob);
       },
     })
@@ -96,7 +94,7 @@ const audioBlob = float32ArrayToWav(audio, 16000);
     let token = localStorage.getItem("access-token");
     const url = "http://localhost:8081/audio/transcript";
     const formData = new FormData();
-    const testID = "fRsFnxwhA7frdnfFMjNPKA=="; //임시로 넣은 testID
+    const testID = "PUNQLHY4EEB3P23WO7CTEM2PFA"; //임시로 넣은 testID
     formData.append("file", blob);
     formData.append("meetingId", testID);
     const response = await fetch(url, {

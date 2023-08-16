@@ -57,8 +57,6 @@ const JoinMeeting = () => {
     try {
       const response = await axios.get(
         endpoint,
-        {},
-
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
