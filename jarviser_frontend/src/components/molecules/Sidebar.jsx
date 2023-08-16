@@ -46,7 +46,7 @@ function Sidebar() {
     const payload = JSON.parse(`{ "password": "${password}" }`);
     try {
       const response = await axios.post(
-        "https://i9a506.p.ssafy.io:8081/user/check",
+        "http://localhost:8081/user/check",
         payload,
         {
           headers: {

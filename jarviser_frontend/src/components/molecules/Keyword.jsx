@@ -17,18 +17,29 @@ const Keyword = ({ staticsOfKeywords }) => {
     return <p>No keyword data available.</p>;
   }
 
+  // 중복된 키워드를 제거하는 로직 추가
+  const uniqueKeywords = [];
   const data = {
-    labels: staticsOfKeywords.map((item) => item.keyword),
+    labels: [],
     datasets: [
       {
         label: "Keyword Usage",
-        data: staticsOfKeywords.map((item) => item.percent),
-        backgroundColor: staticsOfKeywords.map(() => getRandomColor()), // 랜덤 컬러 생성 함수 호출
+        data: [],
+        backgroundColor: [],
         borderColor: "rgba(75,192,192,1)",
         borderWidth: 1,
       },
     ],
   };
+
+  staticsOfKeywords.forEach((item) => {
+    if (!uniqueKeywords.includes(item.keyword)) {
+      uniqueKeywords.push(item.keyword);
+      data.labels.push(item.keyword);
+      data.datasets[0].data.push(item.percent);
+      data.datasets[0].backgroundColor.push(getRandomColor());
+    }
+  });
 
   return (
     <div>

@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseAudioMessageDTO {
+    private long audioMessageId;
     private String name;
     private String content;
     private int length;

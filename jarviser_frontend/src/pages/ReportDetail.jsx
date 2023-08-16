@@ -28,7 +28,6 @@ const ReportDetail = () => {
 
   const getMeetingDetails = async () => {
     try {
-
       // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
       const meetingEnded = await axios.get(
         `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA`,
@@ -62,7 +61,33 @@ const ReportDetail = () => {
         }
       );
 
-      setAudioMessages(
+      const handleSaveClick = async (index, newContent) => {
+        try {
+          // 현재 수정된 내용을 DB에 업데이트
+          const response = await axios.post(
+            "http://localhost:8081/meeting/audiomessage/update",
+            {
+              audioMessageId: audioMessages[index].audioMessageId,
+              content: newContent,
+            },
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          );
+      
+          if (response.status === 200) {
+            const newAudioMessages = [...audioMessages];
+            newAudioMessages[index].content = newContent;
+            newAudioMessages[index].isEditing = false;
+            setAudioMessages(newAudioMessages);
+          }
+        } catch (error) {
+          console.error("Error updating audio message:", error);
+        }
+      };
+      
+
+       setAudioMessages(
         responseAudioMessage.data.audioMessages.map((audioMessage) => ({
           ...audioMessage,
           isEditing: false,
@@ -83,13 +108,28 @@ const ReportDetail = () => {
     setAudioMessages(newAudioMessages);
   };
 
-  const handleSaveClick = (index, newContent) => {
-    // TODO: 수정된 내용을 저장하고 DB에 업데이트
+  const handleSaveClick = async (index, newContent) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/meeting/audiomessage/update",
+        {
+          audioMessageId: audioMessages[index].audioMessageId,
+          content: newContent,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-    const newAudioMessages = [...audioMessages];
-    newAudioMessages[index].content = newContent;
-    newAudioMessages[index].isEditing = false;
-    setAudioMessages(newAudioMessages);
+      if (response.status === 200) {
+        const newAudioMessages = [...audioMessages];
+        newAudioMessages[index].content = newContent;
+        newAudioMessages[index].isEditing = false;
+        setAudioMessages(newAudioMessages);
+      }
+    } catch (error) {
+      console.error("Error updating audio message:", error);
+    }
   };
 
   const downloadTextFile = () => {
@@ -207,6 +247,9 @@ const SpeechWrapper = styled.div`
   width: 30rem;
   height: 30rem;
   margin-bottom: 50px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 `;
 
 const KeywordWrapper = styled.div`

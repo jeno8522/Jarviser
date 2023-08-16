@@ -14,7 +14,6 @@ import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
 import Reservation from "./Reservation";
-
 function UserMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -20,7 +20,7 @@ import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 
 import IconButton from "@material-ui/core/IconButton";
 
-const logo = require("../../../assets/images/openvidu_logo.png");
+const logo = require("../../../logo/Logo.png");
 
 export default class ToolbarComponent extends Component {
   constructor(props) {
@@ -83,6 +83,7 @@ export default class ToolbarComponent extends Component {
                 <span id="session-title">{mySessionId}</span>
               </div>
             )}
+            {this.props.children}
           </div>
 
           <div className="buttonsContent">
