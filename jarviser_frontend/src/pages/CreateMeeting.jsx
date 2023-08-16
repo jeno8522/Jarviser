@@ -133,7 +133,7 @@ const CreateMeeting = () => {
         <VideoRoomComponent
           userName={payloadUserName}
           sessionName={sessionName}
-          meetingId={Math.abs(encryptedKey).toString()}
+          meetingId={encryptedKey.toString()}
         />
       )}
     </div>
