@@ -80,12 +80,31 @@ public class MeetingController {
             //해당 미팅 id값을 통해 미팅 객체 찾기
             Meeting meeting = meetingService.findMeetingById(meetingId);
             //유저 id jwt토큰을 이용해서 획득
+            token = token.split(" ")[1];
             Long joinUserId = jwtService.extractUserId(token);
             meetingService.joinMeeting(joinUserId, meetingId);
-            resultMap.put("meeting", meeting);
+
+            //기존 유저들의 채팅정보 볼수 있게 미팅의 오디오메시지내역도 보내주기
+            List<AudioMessage> allAudioMessage = meetingService.findAllAudioMessage(meetingId);
+            //DTO로 변환
+            List<ResponseAudioMessageDTO> responseAudioMessageDTOList = new ArrayList<>();
+            for (AudioMessage audioMessage : allAudioMessage) {
+                ResponseAudioMessageDTO responseAudioMessageDTO = ResponseAudioMessageDTO
+                        .builder()
+                        .length(audioMessage.getSpeechLength())
+                        .priority(audioMessage.getPriority())
+                        .content(audioMessage.getContent())
+                        .startTime(audioMessage.getStartTime())
+                        .name(audioMessage.getUser().getName())
+                        .filePath(audioMessage.getFilePath())
+                        .build();
+                responseAudioMessageDTOList.add(responseAudioMessageDTO);
+            }
+            resultMap.put("audioMessages", responseAudioMessageDTOList);
 
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
+            e.printStackTrace();
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(resultMap, status);
