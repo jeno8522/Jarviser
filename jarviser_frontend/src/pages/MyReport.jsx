@@ -10,7 +10,7 @@ function MyReport() {
   const navigate = useNavigate();
   const { accessToken } = useAccessToken();
 
-  const itemsPerPage = 10; // 한 페이지당 표시할 아이템 개수
+  const itemsPerPage = 4; // 한 페이지당 표시할 아이템 개수
   const [currentPage, setCurrentPage] = useState(1);
   const [myReport, setMyReport] = useState([]);
 

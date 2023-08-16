@@ -62,7 +62,33 @@ const ReportDetail = () => {
         }
       );
 
-      setAudioMessages(
+      const handleSaveClick = async (index, newContent) => {
+        try {
+          // 현재 수정된 내용을 DB에 업데이트
+          const response = await axios.post(
+            "http://localhost:8081/meeting/audiomessage/update",
+            {
+              audioMessageId: audioMessages[index].audioMessageId,
+              content: newContent,
+            },
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          );
+      
+          if (response.status === 200) {
+            const newAudioMessages = [...audioMessages];
+            newAudioMessages[index].content = newContent;
+            newAudioMessages[index].isEditing = false;
+            setAudioMessages(newAudioMessages);
+          }
+        } catch (error) {
+          console.error("Error updating audio message:", error);
+        }
+      };
+      
+
+       setAudioMessages(
         responseAudioMessage.data.audioMessages.map((audioMessage) => ({
           ...audioMessage,
           isEditing: false,
@@ -83,13 +109,28 @@ const ReportDetail = () => {
     setAudioMessages(newAudioMessages);
   };
 
-  const handleSaveClick = (index, newContent) => {
-    // TODO: 수정된 내용을 저장하고 DB에 업데이트
+  const handleSaveClick = async (index, newContent) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/meeting/audiomessage/update",
+        {
+          audioMessageId: audioMessages[index].audioMessageId,
+          content: newContent,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-    const newAudioMessages = [...audioMessages];
-    newAudioMessages[index].content = newContent;
-    newAudioMessages[index].isEditing = false;
-    setAudioMessages(newAudioMessages);
+      if (response.status === 200) {
+        const newAudioMessages = [...audioMessages];
+        newAudioMessages[index].content = newContent;
+        newAudioMessages[index].isEditing = false;
+        setAudioMessages(newAudioMessages);
+      }
+    } catch (error) {
+      console.error("Error updating audio message:", error);
+    }
   };
 
   const downloadTextFile = () => {
