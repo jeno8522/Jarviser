@@ -161,13 +161,20 @@ public class UserController {
     @PostMapping("/check")
     public ResponseEntity<Map<String,Object>> checkPassword(
             @RequestHeader("Authorization") String token,
-            @RequestBody RequestLoginDto requestLoginDto
+            @RequestBody RequestPasswordDto requestPasswordDto
     ){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         token = token.split(" ")[1];
 
         try {
+            String email = jwtService.extractUserEmail(token);
+            RequestLoginDto requestLoginDto = RequestLoginDto
+                    .builder()
+                    .email(email)
+                    .password(requestPasswordDto.getPassword())
+                    .build();
+
             Boolean ret = userService.checkUserPassword(requestLoginDto);
             resultMap.put("response",ret);
             status = HttpStatus.ACCEPTED;
@@ -186,6 +193,7 @@ public class UserController {
         try {
             token = token.split(" ")[1];
             Long userid = jwtService.extractUserId(token);
+
             List<Meeting> meetingList = meetingService.findMeetingListByUserId(userid);
             List<ResponseMeetingDto> responseMeetingDtos = new ArrayList<>();
 
