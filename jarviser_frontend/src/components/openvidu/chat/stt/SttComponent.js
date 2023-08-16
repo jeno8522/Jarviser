@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 
 class SttComponent extends React.Component {
-  componentDidMount() {
-    this.initializeVAD();
+  async componentDidMount() {
+    await this.initializeVAD();
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return !this.myvad;
   }
 
   async initializeVAD() {
@@ -69,6 +72,7 @@ class SttComponent extends React.Component {
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("meetingId", this.props.meetingId);
+      console.log("sending audio");
       const response = await fetch(url, {
         method: "POST",
         body: formData,
@@ -86,7 +90,7 @@ class SttComponent extends React.Component {
   }
 
   render() {
-    return <div></div>;
+    return;
   }
 }
 
