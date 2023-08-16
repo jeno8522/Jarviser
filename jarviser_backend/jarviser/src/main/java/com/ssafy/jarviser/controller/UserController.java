@@ -25,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000/*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -101,12 +101,12 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String email){
+    @GetMapping("/{userId}")
+    public ResponseEntity<Map<String, Object>> checkId(@PathVariable String userId){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            User user = userService.findUserByEmail(email);
+            User user = userService.findUserByEmail(userId);
             if (user == null){
                 resultMap.put("message", SUCCESS);
             }else{
@@ -157,32 +157,6 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    //비밀번호 확인
-    @PostMapping("/check")
-    public ResponseEntity<Map<String,Object>> checkPassword(
-            @RequestHeader("Authorization") String token,
-            @RequestBody RequestPasswordDto requestPasswordDto
-    ){
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        token = token.split(" ")[1];
-
-        try {
-            String email = jwtService.extractUserEmail(token);
-            RequestLoginDto requestLoginDto = RequestLoginDto
-                    .builder()
-                    .email(email)
-                    .password(requestPasswordDto.getPassword())
-                    .build();
-
-            Boolean ret = userService.checkUserPassword(requestLoginDto);
-            resultMap.put("response",ret);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity<>(resultMap, status);
-    }
     //유저 참여 미팅 내역
     @GetMapping("/meetinglist")
     public ResponseEntity<Map<String, Object>> meetingList(
@@ -190,10 +164,10 @@ public class UserController {
     ) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
+
         try {
             token = token.split(" ")[1];
             Long userid = jwtService.extractUserId(token);
-
             List<Meeting> meetingList = meetingService.findMeetingListByUserId(userid);
             List<ResponseMeetingDto> responseMeetingDtos = new ArrayList<>();
 
