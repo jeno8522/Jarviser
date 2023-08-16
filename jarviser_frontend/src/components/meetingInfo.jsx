@@ -1,84 +1,88 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import moment from "moment";
-import useAccessToken from "./useAccessToken";
+import styled from "styled-components";
+import axios from "axios";
+import useAccessToken from "../components/useAccessToken";
 
 function MeetingInfo({ date }) {
-  const [meetings, setMeetings] = useState([]);
+  const [meetingData, setMeetingData] = useState([]);
   const { accessToken } = useAccessToken();
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8081/user/meetinglist",
-          {
-            headers,
-          }
-        );
-
-        const meetingList = response.data.meetinglist;
-        console.log(meetingList);
-        const selectedMeetings = meetingList.filter(
-          (m) =>
-            moment(m.startTime).format("DD-MM-YYYY") ===
-            moment(date).format("DD-MM-YYYY")
-        );
-
-        setMeetings(selectedMeetings); // 선택된 회의를 상태로 설정
-      } catch (error) {
-        console.error(
-          "An error occurred while fetching the meeting data:",
-          error
-        );
-      }
-    };
-
-    fetchData();
-  }, [date]);
-
-  const handleDelete = async (reservatedMeetingId) => {
-    try {
-      await axios.delete(
-        `http://localhost:8081/reservation/${reservatedMeetingId}`,
-        {
-          headers,
-          data: { reservatedMeetingId },
+    axios
+      .get("http://localhost:8081/user/meetinglist", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.meetinglist) {
+          setMeetingData(response.data.meetinglist);
+          console.log(response.data.meetinglist);
         }
+      })
+      .catch((error) =>
+        console.error("Error fetching the meeting list:", error)
       );
-      const updatedMeetings = meetings.filter(
-        (meeting) => meeting.reservatedMeetingId !== reservatedMeetingId
-      );
-      setMeetings(updatedMeetings);
-    } catch (error) {
-      console.error("Failed to delete the meeting:", error);
-    }
+  }, []);
+
+  const getMeetingsOfTheDay = (selectedDate) => {
+    return meetingData.filter(
+      (meeting) =>
+        moment(meeting.date).format("YYYY-MM-DD") ===
+        moment(selectedDate).format("YYYY-MM-DD")
+    );
   };
+
+  // 선택한 날짜에 따른 회의 정보를 가져옵니다.
+  const meetingsOfTheDay = getMeetingsOfTheDay(
+    date.toISOString().split("T")[0]
+  );
 
   return (
     <div>
-      {meetings.length ? (
+      {meetingsOfTheDay.length > 0 ? (
         <>
-          <h2>Meeting Information for {moment(date).format("YYYY-MM-DD")}</h2>
-          {meetings.map((meeting) => (
-            <div key={meeting.meetingName}>
-              <p>Title: {meeting.meetingName}</p>
-              <p>Host: {meeting.hostName}</p>
-              <p>Start Time: {meeting.date}</p>
-              <button onClick={() => handleDelete(meeting.reservatedMeetingId)}>
-                삭제
-              </button>
-              <hr />
-            </div>
+          <MeetingTime>
+            <span>{moment(date).format("YYYY-MM-DD")}</span>
+          </MeetingTime>
+          {meetingsOfTheDay.map((meeting, index) => (
+            <CalendarData key={index}>
+              <span>{moment(meeting.date).format("HH:mm")}</span>
+              <span>{meeting.meetingName}</span>
+            </CalendarData>
           ))}
         </>
       ) : (
-        <p>No meetings found for {moment(date).format("YYYY-MM-DD")}</p>
+        <>
+          <NoneMeeting>{date.toISOString().split("T")[0]}</NoneMeeting>
+          <p>미팅이 없습니다</p>
+        </>
       )}
     </div>
   );
 }
 
 export default MeetingInfo;
+
+const CalendarData = styled.div`
+  display: flex;
+  justify-content: between;
+  gap: 30px;
+  margin-left: 20px;
+  margin: 20px;
+`;
+
+const MeetingTime = styled.div`
+  span {
+    font-size: 30px;
+    background-color: #cae1fd;
+    border-radius: 10px;
+    padding: 0 5px; // 배경색이 텍스트를 약간 감싸도록 패딩 추가
+  }
+  margin: 20px;
+`;
+
+const NoneMeeting = styled.div`
+  font-size: 30px;
+  margin: 20px;
+`;

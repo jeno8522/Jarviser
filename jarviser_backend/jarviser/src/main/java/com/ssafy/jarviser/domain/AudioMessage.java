@@ -20,7 +20,7 @@ public class AudioMessage {
     @Column(name = "audio_message_id")
     private long id;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 2000)
     private String content;
 
     @Column(name = "start_time")
