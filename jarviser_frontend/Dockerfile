@@ -7,6 +7,6 @@ RUN npm run build
 # 실행 스테이지
 FROM nginx:alpine
 COPY --from=0 /app/build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 81
 EXPOSE 4443
 CMD ["nginx", "-g", "daemon off;"]

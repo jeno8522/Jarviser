@@ -6,7 +6,7 @@ services:
     image: jarviser-client:latest
     container_name: jarviser-frontend
     ports:
-      - "80:80"
+      - "81:81"
       - "4443:4443"
     depends_on:
       - backend
