@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if(!updateUserDto.getPassword().equals("")){
-            user.setPassword(updateUserDto.getPassword());
+            user.setPassword(encoder.encode(updateUserDto.getPassword()));
         }else{
             user.setPassword(user.getPassword());
         }
