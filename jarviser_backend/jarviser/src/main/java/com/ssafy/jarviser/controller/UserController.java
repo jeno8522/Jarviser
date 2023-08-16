@@ -161,14 +161,14 @@ public class UserController {
     @PostMapping("/check")
     public ResponseEntity<Map<String,Object>> checkPassword(
             @RequestHeader("Authorization") String token,
-            @RequestBody String password
+            @RequestBody RequestLoginDto requestLoginDto
     ){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         token = token.split(" ")[1];
-        Long userid = jwtService.extractUserId(token);
+
         try {
-            Boolean ret = userService.checkUserPassword(userid,password);
+            Boolean ret = userService.checkUserPassword(requestLoginDto);
             resultMap.put("response",ret);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {

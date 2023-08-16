@@ -20,5 +20,5 @@ public interface UserService {
 
     User findUserByEmail(String email) throws Exception;
 
-    Boolean checkUserPassword(long userId,String password) throws Exception;
+    Boolean checkUserPassword(RequestLoginDto loginDto) throws Exception;
 }
