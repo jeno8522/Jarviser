@@ -28,7 +28,6 @@ const ReportDetail = () => {
 
   const getMeetingDetails = async () => {
     try {
-
       // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
       const meetingEnded = await axios.get(
         `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA`,
@@ -248,6 +247,9 @@ const SpeechWrapper = styled.div`
   width: 30rem;
   height: 30rem;
   margin-bottom: 50px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 `;
 
 const KeywordWrapper = styled.div`
