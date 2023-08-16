@@ -91,4 +91,10 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) throws Exception {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public Boolean checkUserPassword(long userId, String password) throws Exception {
+        User user = userRepository.findUserById(userId);
+        return user.getPassword().equals(password);
+    }
 }

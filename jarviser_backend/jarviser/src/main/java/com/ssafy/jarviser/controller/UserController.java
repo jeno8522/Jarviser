@@ -157,6 +157,25 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    //비밀번호 확인
+    @PostMapping("/check")
+    public ResponseEntity<Map<String,Object>> checkPassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody String password
+    ){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        token = token.split(" ")[1];
+        Long userid = jwtService.extractUserId(token);
+        try {
+            Boolean ret = userService.checkUserPassword(userid,password);
+            resultMap.put("response",ret);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
     //유저 참여 미팅 내역
     @GetMapping("/meetinglist")
     public ResponseEntity<Map<String, Object>> meetingList(

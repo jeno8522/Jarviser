@@ -19,4 +19,6 @@ public interface UserService {
     User findUserById(Long id) throws Exception;
 
     User findUserByEmail(String email) throws Exception;
+
+    Boolean checkUserPassword(long userId,String password) throws Exception;
 }
