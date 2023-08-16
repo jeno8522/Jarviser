@@ -3,6 +3,7 @@ package com.ssafy.jarviser.controller;
 import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.domain.KeywordStatistics;
 import com.ssafy.jarviser.domain.Meeting;
+import com.ssafy.jarviser.domain.ParticipantStatistics;
 import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
 import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
 import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
@@ -39,8 +40,6 @@ public class MeetingController {
     private final AESEncryptionUtil aesEncryptionUtil;
     private final StatisticsService statisticsService;
 
-    private final Map<String,Integer> encryptedTable = new HashMap<>();
-
     //미팅생성
     @PostMapping("/create/{meetingName}")
     public ResponseEntity<Map<String, Object>> createMeeting(
@@ -54,10 +53,9 @@ public class MeetingController {
         try {
             Long hostId = jwtService.extractUserId(token);
             String encryptedKey = meetingService.createMeeting(hostId, meetingName);
-            int hashKey = encryptedKey.hashCode();
-            encryptedTable.put(encryptedKey,hashKey);
+
             httpStatus = HttpStatus.ACCEPTED;
-            responseMap.put("encryptedKey", hashKey);
+            responseMap.put("encryptedKey", encryptedKey);
 
         } catch (Exception e) {
             log.error("미팅 생성 실패 : {}", e);
@@ -70,16 +68,15 @@ public class MeetingController {
     @GetMapping("/joinMeeting/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
-            @PathVariable int encryptedKey) {
+            @PathVariable String encryptedKey) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
 
         try {
-            //int 값 기준으로 복호화 작업 진행
-            String encryptedString = String.valueOf(encryptedTable.get(encryptedKey));
+
             //미팅 복호화를 통해 미팅 id값 획득
-            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedString));
+            long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             //해당 미팅 id값을 통해 미팅 객체 찾기
             Meeting meeting = meetingService.findMeetingById(meetingId);
             //유저 id jwt토큰을 이용해서 획득
@@ -101,14 +98,16 @@ public class MeetingController {
             @RequestHeader("Authorization") String token,
             @PathVariable String encryptedKey
     ) {
-        Map<String,Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
         try {
+
+            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             List<AudioMessage> allAudioMessage = meetingService.findAllAudioMessage(meetingId);
             //DTO로 변환
             List<ResponseAudioMessageDTO> responseAudioMessageDTOList = new ArrayList<>();
-            for(AudioMessage audioMessage : allAudioMessage){
+            for (AudioMessage audioMessage : allAudioMessage) {
                 ResponseAudioMessageDTO responseAudioMessageDTO = ResponseAudioMessageDTO
                         .builder()
                         .length(audioMessage.getSpeechLength())
@@ -120,7 +119,7 @@ public class MeetingController {
                         .build();
                 responseAudioMessageDTOList.add(responseAudioMessageDTO);
             }
-            response.put("audioMessages",responseAudioMessageDTOList);
+            response.put("audioMessages", responseAudioMessageDTOList);
 
         } catch (Exception e) {
             httpStatus = HttpStatus.NOT_ACCEPTABLE;
@@ -138,10 +137,23 @@ public class MeetingController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            //미팅 방 가져오고
+
+            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
-            List<ParticipantsStaticsDTO> participantStatistics = meetingService.caculateParticipantsStatics(meetingId);
-            response.put("statistics",participantStatistics);
+            //통계 가져오기
+            List<ParticipantStatistics> allParticipantStatistics = meetingService.findAllParticipantStatistics(meetingId);
+
+            List<ParticipantsStaticsDTO> responseList = new ArrayList<>();
+
+            for (ParticipantStatistics participantStatistics : allParticipantStatistics) {
+                ParticipantsStaticsDTO participantsStaticsDTO = ParticipantsStaticsDTO
+                        .builder()
+                        .percentage(participantStatistics.getPercent())
+                        .name(participantStatistics.getName())
+                        .build();
+                responseList.add(participantsStaticsDTO);
+            }
+            response.put("statistics", responseList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -149,15 +161,31 @@ public class MeetingController {
     }
 
     @GetMapping("/end/{encryptedKey}")
-    public ResponseEntity<Map<String,Object>> meetingEnd(
+    public ResponseEntity<Map<String, Object>> meetingEnd(
             @RequestHeader("Authorization") String token,
-            @PathVariable String encryptedKey){
+            @PathVariable String encryptedKey) {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
+
+            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
-            statisticsService.summarizeTranscript(meetingId);
-            response.put("message","미팅 종료 처리 완료");
+            System.out.println("meeting ID : ---------------->" + meetingId);
+            //statisticsService.summarizeTranscript(meetingId);
+
+            //  <----- 키워드 디비에 저장 하기 ----->
+            //  1. chat gpt 를 이용하여 keyword 통계 계산하기
+            List<KeywordStatistics> keywordStatistics = meetingService.caculateKeywordsStatics(meetingId);
+            //  2. 계산된 리스트 db에 저장하기
+            meetingService.addKeywordStatisticsToMeeting(meetingId, keywordStatistics);
+
+            //발화자 통계 계산하기
+            //  1. 발화자 통계 계산하기
+            List<ParticipantStatistics> participantsStaticsList = meetingService.caculateParticipantsStatics(meetingId);
+            //  2. 계산된 리스트 db에 저장하기
+            meetingService.addParticipantsStatisticsToMeeting(meetingId, participantsStaticsList);
+
+            response.put("message", "미팅 종료 처리 완료");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -179,7 +207,7 @@ public class MeetingController {
             List<KeywordStatistics> allKeywordStatistics = meetingService.findAllKeywordStatistics(meetingId);
             List<KeywordStatisticsDTO> allKeywordStatisticsDTO = new ArrayList<>();
 
-            for(int i = 0 ;i<allKeywordStatistics.size();i++){
+            for (int i = 0; i < allKeywordStatistics.size(); i++) {
                 KeywordStatistics keywordStatistics = allKeywordStatistics.get(i);
                 KeywordStatisticsDTO keywordStatisticsDTO = KeywordStatisticsDTO
                         .builder()
@@ -188,12 +216,11 @@ public class MeetingController {
                         .build();
                 allKeywordStatisticsDTO.add(keywordStatisticsDTO);
             }
-            response.put("statistics",allKeywordStatisticsDTO);
+            response.put("statistics", allKeywordStatisticsDTO);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>(response, httpStatus);
     }
-
 
 }
