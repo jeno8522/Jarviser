@@ -74,8 +74,6 @@ public class MeetingController {
         HttpStatus status = null;
 
         try {
-            encryptedKey += "======";
-            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             //해당 미팅 id값을 통해 미팅 객체 찾기
             Meeting meeting = meetingService.findMeetingById(meetingId);
@@ -120,8 +118,6 @@ public class MeetingController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.ACCEPTED;
         try {
-            encryptedKey += "======";
-            //미팅 복호화를 통해 미팅 id값 획득
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             List<AudioMessage> allAudioMessage = meetingService.findAllAudioMessage(meetingId);
             //DTO로 변환
@@ -156,8 +152,7 @@ public class MeetingController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            encryptedKey += "======";
-            //미팅 복호화를 통해 미팅 id값 획득
+
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             //통계 가져오기
             List<ParticipantStatistics> allParticipantStatistics = meetingService.findAllParticipantStatistics(meetingId);
@@ -186,8 +181,7 @@ public class MeetingController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            encryptedKey += "======";
-            //미팅 복호화를 통해 미팅 id값 획득
+
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             System.out.println("meeting ID : ---------------->" + meetingId);
             //statisticsService.summarizeTranscript(meetingId);
@@ -222,7 +216,7 @@ public class MeetingController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus httpStatus = HttpStatus.OK;
         try {
-            encryptedKey += "======";
+
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             List<KeywordStatistics> allKeywordStatistics = meetingService.findAllKeywordStatistics(meetingId);
             List<KeywordStatisticsDTO> allKeywordStatisticsDTO = new ArrayList<>();
