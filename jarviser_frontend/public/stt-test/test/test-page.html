@@ -16,7 +16,7 @@
       var stompClient = Stomp.over(socket);
       stompClient.connect({}, function (frame) {
         stompClient.subscribe(
-          "/topic/meeting/" + meetingId,
+          "/topic/fRsFnxwhA7frdnfFMjNPKA==" + meetingId,
           function (messageOutput) {
             //받았다. 그러면 바디를 열어서 확인하면
             //바디 안에 누가 보냈는지
@@ -29,16 +29,20 @@
       });
 
       function uploadAudio() {
+        var token = localStorage.getItem("access-token");
         var audioFile = document.getElementById("audioFile").files[0];
-        var serverUrl = "http://localhost:8081/meeting/transcript"; // 서버의 URL
+        var serverUrl = "http://localhost:8081/audio/transcript"; // 서버의 URL
 
         var formData = new FormData();
         formData.append("file", audioFile);
-        formData.append("meetingId", meetingId);
+        formData.append("meetingId", "fRsFnxwhA7frdnfFMjNPKA==");
 
         fetch(serverUrl, {
           method: "POST",
           body: formData,
+          headers: {
+            "Authorization": "Bearer "+token,
+          },
         })
           .then((response) => response.json())
           .then((data) => {
@@ -51,7 +55,7 @@
         var serverUrl = "http://localhost:8081/meeting/message"; // 서버의 URL
 
         var formData = new FormData();
-        formData.append("meetingId", meetingId);
+        formData.append("meetingId", "fRsFnxwhA7frdnfFMjNPKA==");
         formData.append("content", userText);
 
         fetch(serverUrl, {
