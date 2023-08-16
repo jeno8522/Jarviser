@@ -6,8 +6,10 @@ import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.ParticipantStatistics;
 import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
 import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
+import com.ssafy.jarviser.dto.RequestUpdateAudioMessageDto;
 import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
 import com.ssafy.jarviser.security.JwtService;
+import com.ssafy.jarviser.service.AudioService;
 import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.OpenAIService;
 import com.ssafy.jarviser.service.StatisticsService;
@@ -39,6 +41,7 @@ public class MeetingController {
     private final MeetingService meetingService;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final StatisticsService statisticsService;
+    private final AudioService audioService;
 
     //미팅생성
     @PostMapping("/create/{meetingName}")
@@ -161,6 +164,7 @@ public class MeetingController {
             for (ParticipantStatistics participantStatistics : allParticipantStatistics) {
                 ParticipantsStaticsDTO participantsStaticsDTO = ParticipantsStaticsDTO
                         .builder()
+                        .id(participantStatistics.getId())
                         .percentage(participantStatistics.getPercent())
                         .name(participantStatistics.getName())
                         .build();
@@ -236,4 +240,23 @@ public class MeetingController {
         return new ResponseEntity<>(response, httpStatus);
     }
 
+    @PostMapping("/audiomessage/update")
+    public ResponseEntity<Map<String, Object>> audioMessageUpdate(
+            @RequestHeader("Authorization") String token,
+            @RequestBody RequestUpdateAudioMessageDto requestUpdateAudioMessageDto
+    ) {
+
+        Map<String, Object> response = new HashMap<>();
+        HttpStatus httpStatus = HttpStatus.OK;
+        try {
+            long audioMessageId = requestUpdateAudioMessageDto.getAudioMessageId();
+            String changedContent = requestUpdateAudioMessageDto.getContent();
+
+            audioService.updateByAudioMessageId(audioMessageId,changedContent);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(response, httpStatus);
+    }
 }
