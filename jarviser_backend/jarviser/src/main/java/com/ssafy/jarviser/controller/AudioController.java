@@ -1,9 +1,12 @@
 package com.ssafy.jarviser.controller;
 
+import com.ssafy.jarviser.domain.AudioMessage;
 import com.ssafy.jarviser.exception.ClientException;
 import com.ssafy.jarviser.exception.ServerException;
+import com.ssafy.jarviser.repository.AudioMessageRepository;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.AudioService;
+import com.ssafy.jarviser.service.MeetingService;
 import com.ssafy.jarviser.service.StatisticsService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +34,6 @@ public class AudioController {
     private final StatisticsService statisticsService;
     private final AESEncryptionUtil aesEncryptionUtil;
     private final SimpMessagingTemplate messagingTemplate;
-    private final StatisticsService statisticsService;
 
     private final HashMap<String, String> connectCheckMap = new HashMap<>(); //TODO: 추후 DB에 저장 필요 여부 확인
     private final HashMap<Long, String> userSessionMap = new HashMap<>(); //
