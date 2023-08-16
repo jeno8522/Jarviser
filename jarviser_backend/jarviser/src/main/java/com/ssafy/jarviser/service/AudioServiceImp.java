@@ -149,6 +149,8 @@ public class AudioServiceImp implements AudioService {
             }
         }
 
+        if(totalLength == 0)return staticOfAudioMessages;
+
         // getKeys
         Set<String> names = countOfStatic.keySet();
         for (String name : names) {

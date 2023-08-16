@@ -65,7 +65,7 @@ public class MeetingController {
     }
 
     //미팅 참여
-    @GetMapping("/joinMeeting/{encryptedKey}")
+    @PostMapping("/joinMeeting/{encryptedKey}")
     public ResponseEntity<Map<String, Object>> joinMeeting(
             @RequestHeader("Authorization") String token,
             @PathVariable String encryptedKey) {

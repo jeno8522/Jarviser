@@ -159,6 +159,8 @@ public class MeetingServiceImp implements MeetingService{
             keywordCount.put(keyword,keywordHit);
         }
 
+        if(total == 0) return keywordStatisticsList;
+
         for(String keyword : keywords){
             int hitCount = keywordCount.get(keyword);
 
@@ -191,6 +193,8 @@ public class MeetingServiceImp implements MeetingService{
                 IdMap.put(userId,prevlength + speechLength);
             }
         }
+
+        if(total == 0) return participantsStaticsDTOList;
 
         Set<Long> keys = IdMap.keySet();
         for(long userId : keys){
