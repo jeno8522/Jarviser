@@ -22,11 +22,18 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/jarviser
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=ssafy
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/jarviser
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ssafy
+      SERVER_SSL_KEY-STORE-TYPE: PKCS12
+      SERVER_SSL_KEY-STORE: /app/ssl/keystore.p12
+      SERVER_SSL_KEY-STORE-PASSWORD: xvh98r
+      SERVER_SSL_KEY-ALIAS: mykeyalias
+
     depends_on:
       - mysql
+    volumes:
+      - /home/ubuntu/pemKey/keystore.p12:/app/ssl/keystore.p12
 
   mysql:
     image: mysql
