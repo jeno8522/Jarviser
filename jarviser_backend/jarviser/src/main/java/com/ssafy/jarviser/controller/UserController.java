@@ -11,12 +11,18 @@ import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.ldap.PagedResultsControl;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +41,7 @@ public class UserController {
     private final AESEncryptionUtil aesEncryptionUtil;
     private static final String SUCCESS = "success";
     private static final String FAIL = "fail";
-
+    private final ResourceLoader resourceLoader;
 
     //회원가입
     @PostMapping("/signup")
@@ -182,6 +188,58 @@ public class UserController {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>(resultMap, status);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String,String>> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestHeader("Authorization") String token
+    ) throws IOException {
+
+        Resource resource = resourceLoader.getResource("classpath:/images/");
+        String resourcePath = resource.getFile().getAbsolutePath();
+        // Save the uploaded file to the resource directory
+        File dest = new File(resourcePath + "/" + file.getOriginalFilename());
+        file.transferTo(dest);
+
+        try{
+            token = token.split(" ")[1];
+            long userId = jwtService.extractUserId(token);
+            String imgUrl = dest.getPath();
+            userService.uploadImg(userId,imgUrl);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("업로드중 서버 에러 발생");
+        }
+    }
+
+    //이미지 가져오기
+    @GetMapping("/myProfileImg")
+    public ResponseEntity<Resource> getImage(
+            @RequestHeader("Authorization") String token
+    ) {
+        try {
+            token = token.split(" ")[1];
+            long userId = jwtService.extractUserId(token);
+            User user = userService.findUserById(userId);
+            String userProfileImgPath = user.getProfilePictureUrl();
+
+            Resource resource = resourceLoader.getResource(userProfileImgPath);
+
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) // Adjust content type based on your image type
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     //유저 참여 미팅 내역
     @GetMapping("/meetinglist")

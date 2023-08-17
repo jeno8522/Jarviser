@@ -46,4 +46,7 @@ public interface MeetingService{
 
     //미팅 - 참여자  이용하여 발화자 통계 계산
     List<ParticipantStatistics> caculateParticipantsStatics(long meetingId);
+
+    //미팅 로컬에서 요약
+    String createLocalSummary(long meetingId);
 }
