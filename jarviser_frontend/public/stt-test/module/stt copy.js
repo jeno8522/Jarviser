@@ -1,6 +1,6 @@
 document.getElementById("vad_start").addEventListener("click", () => {
   navigator.mediaDevices
-    .getUserMedia({audio: true})
+    .getUserMedia({ audio: true })
     .then((stream) => startVAD(stream)) // Pass the 'stream' to the startVAD function
     .catch((err) => console.log("getUserMedia() failed: ", err));
 });
@@ -55,7 +55,7 @@ function startRecording(stream) {
     mediaRecorder.addEventListener("dataavailable", function (e) {
       if (e.data.size > 0) {
         let data = e.data;
-        e.data = new Blob([], {type: "audio/webm;codecs=opus"})
+        e.data = new Blob([], { type: "audio/webm;codecs=opus" });
         recordedChunks.push(data);
         console.log("pushing..");
       }
@@ -63,7 +63,7 @@ function startRecording(stream) {
 
     mediaRecorder.addEventListener("stop", function () {
       setTimeout(() => {
-        let blob = new Blob(recordedChunks, {type: "audio/webm;codecs=opus"});
+        let blob = new Blob(recordedChunks, { type: "audio/webm;codecs=opus" });
         recordedChunks = [];
         sendAudio(blob);
       }, 0);
@@ -77,7 +77,7 @@ function startRecording(stream) {
 async function sendAudio(blob) {
   try {
     let token = localStorage.getItem("access-token");
-    const url = window.SERVER_URL+"/audio/transcript";
+    const url = "http://localhost:8081" + "/audio/transcript";
     const formData = new FormData();
     const testID = "fRsFnxwhA7frdnfFMjNPKA=="; //임시로 넣은 testID
     formData.append("file", blob);
@@ -85,7 +85,7 @@ async function sendAudio(blob) {
     const response = await fetch(url, {
       method: "POST",
       body: formData,
-      headers: {Authorization: "Bearer " + token},
+      headers: { Authorization: "Bearer " + token },
     });
 
     if (!response.ok) {

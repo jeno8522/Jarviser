@@ -21,12 +21,12 @@ function MyCalendar() {
 
     // 병렬 API 호출
     Promise.all([
-      axios.get(window.SERVER_URL+"/user/meetinglist", {
+      axios.get("http://localhost:8081" + "/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }),
-      axios.get(window.SERVER_URL+"/reservation", {
+      axios.get("http://localhost:8081" + "/reservation", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

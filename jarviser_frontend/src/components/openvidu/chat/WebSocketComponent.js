@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
-import {Stomp} from "@stomp/stompjs";
-import {DndProvider, useDrag, useDrop} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import { Stomp } from "@stomp/stompjs";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
 import axios from "axios";
@@ -17,7 +17,7 @@ const handleMoveMesseage = async (from, to) => {
   console.log("from === ", from, "to === ", to);
   const accessToken = localStorage.getItem("access-token");
 
-  const endpoint = `${window.SERVER_URL}/meeting/현웅,값을넣어야해`;
+  const endpoint = `${"http://localhost:8081"}/meeting/현웅,값을넣어야해`;
   // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
   try {
     const response = await axios.post(
@@ -27,7 +27,7 @@ const handleMoveMesseage = async (from, to) => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        data: {from: from, to: to},
+        data: { from: from, to: to },
       }
     );
 
@@ -44,10 +44,10 @@ const handleMoveMesseage = async (from, to) => {
     alert("An error occurred !!. Please try again.");
   }
 };
-const DraggableMessage = ({message, index, moveMessage, userId}) => {
-  const [{isDragging}, ref] = useDrag({
+const DraggableMessage = ({ message, index, moveMessage, userId }) => {
+  const [{ isDragging }, ref] = useDrag({
     type: ItemType.MESSAGE,
-    item: {index},
+    item: { index },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -113,10 +113,10 @@ class WebSocketComponent extends React.Component {
     if (token) {
       const parsedToken = JSON.parse(atob(token.split(".")[1]));
       if (parsedToken && parsedToken.userId) {
-        this.setState({userId: parsedToken.userId});
+        this.setState({ userId: parsedToken.userId });
       }
     }
-    const socket = new SockJS(window.SERVER_URL + "/ws");
+    const socket = new SockJS("http://localhost:8081" + "/ws");
     const stompClient = Stomp.over(socket);
     const meetingId = this.state.meetingId;
     stompClient.connect({}, function (frame) {
@@ -130,7 +130,10 @@ class WebSocketComponent extends React.Component {
       stompClient.send(
         "/app/connect",
         {},
-        JSON.stringify({meetingId: meetingId, Authorization: "Bearer " + token})
+        JSON.stringify({
+          meetingId: meetingId,
+          Authorization: "Bearer " + token,
+        })
       );
     });
     if (this.chatContainerRef.current) {
@@ -149,7 +152,7 @@ class WebSocketComponent extends React.Component {
   moveMessage = (fromIndex, toIndex) => {
     // 드래그 시작 시 draggedIndex를 설정
     if (this.state.draggedIndex === null) {
-      this.setState({draggedIndex: fromIndex});
+      this.setState({ draggedIndex: fromIndex });
       return; // 여기서 종료하면 아이템의 위치는 실제로 이동하지 않습니다.
     }
 
@@ -163,7 +166,7 @@ class WebSocketComponent extends React.Component {
 
     // 끝날 때 draggedIndex와 toIndex를 함께 출력하고, draggedIndex를 다시 null로 초기화
     // this.printIndexes(this.state.draggedIndex, toIndex);
-    this.setState({draggedIndex: null});
+    this.setState({ draggedIndex: null });
   };
 
   render() {
