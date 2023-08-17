@@ -232,7 +232,7 @@ class VideoRoomComponent extends Component {
   }
 
   handleEndMeeting = async () => {
-    const endpoint = `http://localhost:8081/meeting/end/${this.state.meetingId}`;
+    const endpoint = `${window.SERVER_URL}/meeting/end/${this.state.meetingId}`;
     const accessToken = localStorage.getItem("access-token");
 
     try {

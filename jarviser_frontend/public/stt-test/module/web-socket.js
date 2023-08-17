@@ -9,7 +9,7 @@ document.getElementById("text-send").addEventListener("click", function (e) {
 
 var meetingId = "2HPBABTLLHGJ75UFSKDKTB422M======"; //FIXME: 회의 ID 설정하기 - 암호화된 회의의 id를 지정한다. 현재 id 1인 값임
 var token = localStorage.getItem("access-token");
-var socket = new SockJS("http://localhost:8081/ws");
+var socket = new SockJS(window.SERVER_URL+"/ws");
 var stompClient = Stomp.over(socket);
 
 const stt = [];

@@ -17,7 +17,7 @@ const handleMoveMesseage = async (from, to) => {
   console.log("from === ", from, "to === ", to);
   const accessToken = localStorage.getItem("access-token");
 
-  const endpoint = `http://localhost:8081/meeting/현웅,값을넣어야해`;
+  const endpoint = `${window.SERVER_URL}/meeting/현웅,값을넣어야해`;
   // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
   try {
     const response = await axios.post(
@@ -88,15 +88,15 @@ class WebSocketComponent extends React.Component {
     let meetingId = this.props.meetingId;
     this.state = {
       messages: [
-        '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
-        '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
+        // '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
       ],
 
       meetingId: meetingId,
@@ -116,7 +116,7 @@ class WebSocketComponent extends React.Component {
         this.setState({userId: parsedToken.userId});
       }
     }
-    const socket = new SockJS("http://localhost:8081/ws");
+    const socket = new SockJS(window.SERVER_URL + "/ws");
     const stompClient = Stomp.over(socket);
     const meetingId = this.state.meetingId;
     stompClient.connect({}, function (frame) {
