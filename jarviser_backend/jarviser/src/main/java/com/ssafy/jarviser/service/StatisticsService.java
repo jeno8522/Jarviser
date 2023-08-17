@@ -135,7 +135,7 @@ public class StatisticsService {
     }
 
     public String getSummary(Long meetingId) {
-        Report report = reportRepository.getReferenceById(meetingId);
+        Report report = reportRepository.getReportByMeetingId(meetingId);
         return report.getSummary();
     }
 }
