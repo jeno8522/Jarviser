@@ -137,7 +137,16 @@ public class UserController {
         try {
             Long userId = jwtService.extractUserId(token);
             ResponseMypageDto responseMypageDto = userService.mypage(userId);
-            resultMap.put("response", responseMypageDto);
+            User user = userService.findUserById(userId);
+            String userProfileImgPath = user.getProfilePictureUrl();
+            resultMap.put("response",responseMypageDto);
+            if(userProfileImgPath!=null){
+                String imgPath = user.getProfilePictureUrl();
+                resultMap.put("imgPath",imgPath);
+            }else{
+                resultMap.put("imgPath",null);
+            }
+
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
