@@ -30,7 +30,7 @@ const ReportDetail = () => {
     try {
       // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
       const meetingEnded = await axios.get(
-        `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `${window.SERVER_URL}/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -38,7 +38,7 @@ const ReportDetail = () => {
       );
 
       const responseAudioMessage = await axios.get(
-        `http://localhost:8081/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `${window.SERVER_URL}/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -46,7 +46,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `http://localhost:8081/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `${window.SERVER_URL}/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -54,7 +54,7 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `http://localhost:8081/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `${window.SERVER_URL}/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -65,7 +65,7 @@ const ReportDetail = () => {
         try {
           // 현재 수정된 내용을 DB에 업데이트
           const response = await axios.post(
-            "http://localhost:8081/meeting/audiomessage/update",
+            window.SERVER_URL+"/meeting/audiomessage/update",
             {
               audioMessageId: audioMessages[index].audioMessageId,
               content: newContent,
@@ -111,7 +111,7 @@ const ReportDetail = () => {
   const handleSaveClick = async (index, newContent) => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/meeting/audiomessage/update",
+        window.SERVER_URL+"/meeting/audiomessage/update",
         {
           audioMessageId: audioMessages[index].audioMessageId,
           content: newContent,

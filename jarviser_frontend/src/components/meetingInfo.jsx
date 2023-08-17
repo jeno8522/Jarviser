@@ -9,12 +9,12 @@ function MeetingInfo({ date }) {
   const { accessToken } = useAccessToken();
   useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:8081/user/meetinglist", {
+      axios.get(window.SERVER_URL+"/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }),
-      axios.get("http://localhost:8081/reservation", {
+      axios.get(window.SERVER_URL+"/reservation", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

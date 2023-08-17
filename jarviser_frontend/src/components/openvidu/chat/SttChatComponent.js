@@ -22,7 +22,7 @@ function SttChatComponent() {
     comeinsession: receivedComeIn,
     leavesession: receivedLeave,
   };
-  var socket = new SockJS("http://localhost:8081/ws");
+  var socket = new SockJS(window.SERVER_URL+"/ws");
   var stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     stompClient.subscribe(
@@ -61,7 +61,7 @@ function SttChatComponent() {
 
   function uploadText(userText) {
     var token = localStorage.getItem("access-token");
-    var serverUrl = "http://localhost:8081/meeting/message"; // 서버의 URL
+    var serverUrl = window.SERVER_URL+"/meeting/message"; // 서버의 URL
 
     var formData = new FormData();
     formData.append("meetingId", meetingId);
@@ -174,7 +174,7 @@ function SttChatComponent() {
 
   async function sendAudio(blob) {
     try {
-      const url = "http://localhost:8081/meeting/transcript";
+      const url = window.SERVER_URL+"/meeting/transcript";
       const formData = new FormData();
       const testID = 3; //임시로 넣은 testID
       formData.append("file", blob, "audio" + index + ".wav");
