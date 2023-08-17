@@ -28,13 +28,28 @@ function MyPage() {
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result); // 이미지 파일의 내용을 base64 형식으로 상태에 저장
       };
       reader.readAsDataURL(file);
+      axios
+        .post("http://localhost:8081/user/upload", formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(formData);
+          console.log("이미지 업로드에 성공했습니다: ", response);
+        })
+        .catch((error) => {
+          console.log("이미지 업로드 중 에러가 발생했습니다: ", error);
+        });
     }
-    axios.post("http://localhost:8081/user/upload", {});
   };
   useEffect(() => {
     GetUser();
@@ -47,7 +62,8 @@ function MyPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const { email, name } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
+      console.log(response.data.response);
+      const { email, name, userProfileImgage } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
       setUserEmail(email);
       setUserName(name);
     } catch (error) {
@@ -212,7 +228,7 @@ const Box = styled.div`
   width: 140px;
   height: 100px;
   flex-shrink: 0;
-  background-color: #91C8E4;
+  background-color: #91c8e4;
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -260,8 +276,8 @@ const ChangeButton = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: #4682A9;
-  color: #F6F4EB;
+  background: #4682a9;
+  color: #f6f4eb;
   border: none;
   border-radius: 999px;
   margin: 20px;
@@ -276,7 +292,7 @@ const WithdrawButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   background: red;
-  color: #F6F4EB;
+  color: #f6f4eb;
   border-radius: 999px;
   border: none;
   margin: 20px;

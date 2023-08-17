@@ -1,15 +1,15 @@
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {BrowserRouter, Route} from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { BrowserRouter, Route } from "react-router-dom";
 import Signup from "./Signup";
 import Sidebar from "../components/molecules/Sidebar";
 import MyPage from "./MyPage";
 import MyCalendar from "./MyCalendar";
 import MyReport from "./MyReport";
-import {Link} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
@@ -26,7 +26,7 @@ function UserMain() {
   };
 
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
   const reservation = () => {
     navigate("/reservation");
   };
@@ -41,7 +41,7 @@ function UserMain() {
       <PageContent>
         <Sidebar />
         <ButtonFrame>
-          <Link to="/createmeeting">
+          <Link to="/createmeeting" className="no-underline">
             <ButtonWithImage>
               <StyledSVGButton>
                 <svg
@@ -60,7 +60,7 @@ function UserMain() {
             </ButtonWithImage>
           </Link>
 
-          <Link to="/joinmeeting">
+          <Link to="/joinmeeting" className="no-underline">
             <ButtonWithImage>
               <StyledSVGButton>
                 <svg
@@ -143,9 +143,9 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  border: solid 2px #749BC2;
+  border: solid 2px #749bc2;
   background-color: white;
-  color: #749BC2;
+  color: #749bc2;
   cursor: pointer;
 
   /* Button/L */
@@ -155,7 +155,7 @@ const Button = styled.button`
   font-weight: 500;
   line-height: 100%; /* 20px */
   letter-spacing: 0.5px;
-  font-color: #F6F4EB;
+  font-color: #f6f4eb;
 `;
 
 const ButtonWithImage = styled.div`
@@ -176,9 +176,9 @@ const StyledSVGButton = styled.button`
 `;
 
 const SVGPath = styled.path`
-  fill: #4682A9;
+  fill: #4682a9;
   &:hover {
-    fill: #91C8E4;
+    fill: #91c8e4;
   }
 `;
 

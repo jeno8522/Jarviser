@@ -1,6 +1,7 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.AudioMessage;
+
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.*;
@@ -10,6 +11,7 @@ import com.ssafy.jarviser.service.UserService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -19,14 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.naming.ldap.PagedResultsControl;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -137,7 +137,16 @@ public class UserController {
         try {
             Long userId = jwtService.extractUserId(token);
             ResponseMypageDto responseMypageDto = userService.mypage(userId);
-            resultMap.put("response", responseMypageDto);
+            User user = userService.findUserById(userId);
+            String userProfileImgPath = user.getProfilePictureUrl();
+            resultMap.put("response",responseMypageDto);
+            if(userProfileImgPath!=null){
+                String imgPath = user.getProfilePictureUrl();
+                resultMap.put("imgPath",imgPath);
+            }else{
+                resultMap.put("imgPath",null);
+            }
+
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -196,10 +205,12 @@ public class UserController {
             @RequestHeader("Authorization") String token
     ) throws IOException {
 
-        Resource resource = resourceLoader.getResource("classpath:/images/");
-        String resourcePath = resource.getFile().getAbsolutePath();
-        // Save the uploaded file to the resource directory
-        File dest = new File(resourcePath + "/" + file.getOriginalFilename());
+
+        String uploadDir = "C:\\Users\\SSAFY\\Desktop\\images";
+        String originalFilename = file.getOriginalFilename();
+        String newFilename = UUID.randomUUID() + "_" + originalFilename;
+        File dest = new File(uploadDir + File.separator + newFilename);
+
         file.transferTo(dest);
 
         try{
@@ -216,9 +227,11 @@ public class UserController {
 
     //이미지 가져오기
     @GetMapping("/myProfileImg")
-    public ResponseEntity<Resource> getImage(
+    public ResponseEntity<Map<String,Object>> getImage(
             @RequestHeader("Authorization") String token
     ) {
+        Map<String,Object> response = new HashMap<>();
+
         try {
             token = token.split(" ")[1];
             long userId = jwtService.extractUserId(token);
@@ -228,9 +241,8 @@ public class UserController {
             Resource resource = resourceLoader.getResource(userProfileImgPath);
 
             if (resource.exists()) {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) // Adjust content type based on your image type
-                        .body(resource);
+                response.put("userProfileImg",resource);
+                return new ResponseEntity<>(response,HttpStatus.OK);
             } else {
                 return ResponseEntity.notFound().build();
             }
