@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useMicVAD } from "@ricky0123/vad-react";
+import React, {useState, useEffect} from "react";
+import {useMicVAD} from "@ricky0123/vad-react";
 
 const SttComponent = () => {
   const token = localStorage.getItem("access-token");
@@ -37,7 +37,7 @@ const SttComponent = () => {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        headers: { Authorization: "Bearer " + this.token },
+        headers: {Authorization: "Bearer " + this.token},
       });
 
       if (!response.ok) {
@@ -85,8 +85,8 @@ const SttComponent = () => {
       view.setInt16(index, audioData[i] * (0x7fff * volume), true);
       index += 2;
     }
-    return new Blob([view], { type: "audio/wav" });
+    return new Blob([view], {type: "audio/wav"});
   };
 };
 
-export default { SttComponent };
+export default {SttComponent};

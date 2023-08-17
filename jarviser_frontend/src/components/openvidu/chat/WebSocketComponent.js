@@ -200,6 +200,7 @@ class WebSocketComponent extends React.Component {
     return (
       <DndProvider backend={HTML5Backend}>
         <div className="chat-container">
+          <div className="chat-title">STT 채팅</div>
           {this.state.messages.map((message, index) => (
             <DraggableMessage
               key={index}
