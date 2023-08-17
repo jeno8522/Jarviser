@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -203,5 +204,40 @@ public class InsertTestDummy implements CommandLineRunner {
             e.printStackTrace();
         }
 
+
+        //test meeting audiomessage 출력
+
+        String summary = "**회의 요약**\n" +
+                "\n" +
+                "**일시:** [회의 일시]\n" +
+                "**참석자:** [참석자 목록]\n" +
+                "\n" +
+                "**안건: 화상회의 서비스 개발 계획 수립**\n" +
+                "\n" +
+                "**주요 내용:**\n" +
+                "\n" +
+                "- 실시간 통신과 사용자 인터페이스에 중점을 두는 화상회의 서비스 개발 계획을 논의하였습니다.\n" +
+                "- WebRTC 기술을 사용하여 실시간 통신을 구현하고, 사용자 인터페이스는 반응형 디자인으로 구현할 예정입니다.\n" +
+                "- 보안을 강조하며, 데이터 암호화 기술의 도입을 검토하기로 하였습니다.\n" +
+                "- 다음 회의까지 각자 역할과 준비 사항을 정리해오기로 하였습니다.\n" +
+                "- 다음 주에 다시 모여 계획을 점검할 예정입니다.\n" +
+                "- 지속적인 팀 내 소통과 업무 공유의 중요성을 강조하였습니다.\n" +
+                "- 기술 스택과 도구 선택에 대한 연구가 필요하며, 선정한 것이 목표에 부합하는지 검토할 예정입니다.\n" +
+                "- 예산 및 자원 관리를 고려하여 준비해 오기로 하였습니다.\n" +
+                "- 품질 보증과 테스트 계획을 세워서 서비스 품질을 확보할 예정입니다.\n" +
+                "\n" +
+                "**다음 회의 일정:** [다음 회의 일시]\n" +
+                "\n" +
+                "**회의 요약:** 회의에서는 화상회의 서비스 개발 계획을 논의하였으며, 실시간 통신과 사용자 인터페이스 구조, 보안 및 암호화, 역할 분담 및 준비 사항, 소통 방식, 기술 스택 및 도구 선택, 예산 및 자원 관리, 품질 보증과 테스트 계획 등에 대한 내용을 다루었습니다. 다음 회의까지 각자 역할을 준비하고, 이에 따른 계획을 더욱 구체화해오기로 하였습니다.";
+
+        Report report = Report.builder()
+                .meeting(testMeeting)
+                .summary(summary)
+                .build();
+
+        //test meeting에 report 추가
+        testMeeting.addReport(report);
+
+        meetingService.addReport(testMeetingId,report);
     }
 }
