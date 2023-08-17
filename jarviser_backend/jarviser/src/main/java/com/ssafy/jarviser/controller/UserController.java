@@ -218,9 +218,11 @@ public class UserController {
 
     //이미지 가져오기
     @GetMapping("/myProfileImg")
-    public ResponseEntity<Resource> getImage(
+    public ResponseEntity<Map<String,Object>> getImage(
             @RequestHeader("Authorization") String token
     ) {
+        Map<String,Object> response = new HashMap<>();
+
         try {
             token = token.split(" ")[1];
             long userId = jwtService.extractUserId(token);
@@ -230,9 +232,8 @@ public class UserController {
             Resource resource = resourceLoader.getResource(userProfileImgPath);
 
             if (resource.exists()) {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG) // Adjust content type based on your image type
-                        .body(resource);
+                response.put("userProfileImg",resource);
+                return new ResponseEntity<>(response,HttpStatus.OK);
             } else {
                 return ResponseEntity.notFound().build();
             }
