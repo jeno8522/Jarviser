@@ -1,6 +1,7 @@
 package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.domain.AudioMessage;
+
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.User;
 import com.ssafy.jarviser.dto.*;
@@ -194,12 +195,9 @@ public class UserController {
             @RequestParam("file") MultipartFile file,
             @RequestHeader("Authorization") String token
     ) throws IOException {
-        // 현재 작업 디렉토리 가져오기
-        String currentDirectory = System.getProperty("user.dir");
 
-        // 프로젝트 내의 resources/images 디렉토리의 경로 구성
-        String uploadDir = currentDirectory + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "images";
-        // 중복을 방지하기 위해 파일 이름에 UUID를 추가
+
+        String uploadDir = "C:\\Users\\SSAFY\\Desktop\\images";
         String originalFilename = file.getOriginalFilename();
         String newFilename = UUID.randomUUID() + "_" + originalFilename;
         File dest = new File(uploadDir + File.separator + newFilename);
