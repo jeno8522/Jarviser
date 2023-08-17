@@ -21,7 +21,7 @@ function MyCalendar() {
 
     // meetinglist API 호출
     axios
-      .get("https://localhost:8081/user/meetinglist", {
+      .get(window.SERVER_URL+"user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
