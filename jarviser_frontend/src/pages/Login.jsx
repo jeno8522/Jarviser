@@ -20,7 +20,7 @@ function Login() {
     try {
       await new Promise((r) => setTimeout(r, 1000));
       const response = await axios.post(
-        "https://i9a506.p.ssafy.io:8081/user/login",
+        window.SERVER_URL+"/user/login",
         data
       );
       const accessToken = response.data["access-token"];
@@ -46,7 +46,7 @@ function Login() {
         <RightColumn>
           <LoginHeadLine>
             <h1>Login</h1>
-            </LoginHeadLine>
+          </LoginHeadLine>
           <LoginForm onSubmit={handleSubmit(onSubmit)}>
             <LoginLabel htmlFor="email">이메일</LoginLabel>
             <LoginField
@@ -136,45 +136,45 @@ const ImageLogo = styled.img`
 `;
 
 const RightColumn = styled.div`
-display: flex;
-width: 50%;
-height: 80%;
-padding: 40px;
-flex-direction: column;
-align-items: flex-start;
-justify-content: center;
-box-sizing: border-box;
-margin-bottom: 100px;
+  display: flex;
+  width: 50%;
+  height: 80%;
+  padding: 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 100px;
 `;
 
 const LoginForm = styled.form`
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-width: 40%;
-gap: 8px; // 각 필드와 레이블 사이의 간격
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 40%;
+  gap: 8px; // 각 필드와 레이블 사이의 간격
 `;
 
 const LoginLabel = styled.label`
-align-self: stretch;
-color: var(--cool-gray-70, #4d5358); // 글씨 색상 변경
-font-family: "Roboto", sans-serif;
-font-size: 16px; // 글자 크기 조정
-font-weight: 500; // 글씨 두께 조정
-margin-bottom: 4px; // 아래쪽 마진 추가
-letter-spacing: 0.5px; // 글자 간격 조정
-text-transform: uppercase; // 대문자 변환
+  align-self: stretch;
+  color: var(--cool-gray-70, #4d5358); // 글씨 색상 변경
+  font-family: "Roboto", sans-serif;
+  font-size: 16px; // 글자 크기 조정
+  font-weight: 500; // 글씨 두께 조정
+  margin-bottom: 4px; // 아래쪽 마진 추가
+  letter-spacing: 0.5px; // 글자 간격 조정
+  text-transform: uppercase; // 대문자 변환
 `;
 
 const LoginField = styled.input`
-width: 500px;
-height: 32px;
-font-size: 15px;
-border: 0;
-border-radius: 15px;
-outline: none;
-padding-left: 10px;
-background-color: #F6F4EB;
+  width: 500px;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #f6f4eb;
 
   color: var(--cool-gray-60, #697077);
   font-family: "Roboto", sans-serif;
@@ -197,7 +197,7 @@ const LoginButton = styled.button`
   padding: 12px;
   border: none; // 테두리 제거
   border-radius: 4px; // 모서리 둥글게
-  background: #4682A9;
+  background: #4682a9;
   color: white; // 글씨색 변경
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -207,8 +207,7 @@ const LoginButton = styled.button`
   margin-top: 10px;
   margin-left: 45%;
   &:hover {
-    background: var(--primary-50, #0043ce);
-    transform: translateY(-2px); // 호버 시 약간 위로 이동
+    background: #91c8e4; // 마우스 오버시 색상 변경
   }
 
   &:active {
@@ -223,13 +222,13 @@ const LoginButton = styled.button`
 `;
 
 const LoginHeadLine = styled.h1`
-font-family: "Roboto", sans-serif;
-font-size: 24px; // 글자 크기 조정
-font-weight: 500; // 글씨 두껍게
-color: #4682A9; // 글씨 색상 변경
-text-align: left; // 왼쪽 정렬
-letter-spacing: -1px; // 글자 간격 조정
-margin-bottom: 0px; // Header와 Form 간격 조정
+  font-family: "Roboto", sans-serif;
+  font-size: 24px; // 글자 크기 조정
+  font-weight: 500; // 글씨 두껍게
+  color: #4682a9; // 글씨 색상 변경
+  text-align: left; // 왼쪽 정렬
+  letter-spacing: -1px; // 글자 간격 조정
+  margin-bottom: 0px; // Header와 Form 간격 조정
 `;
 
 export default Login;

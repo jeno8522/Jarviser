@@ -126,31 +126,4 @@ public class OpenAIService {
 
     }
 
-    public Mono<String> chatGTPSummaryLocal(String contents){
-        WebClient webClient = WebClient.create("https://api.openai.com/v1/chat/completions");
-        String model = "gpt-3.5-turbo";
-
-        // Create the request body
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", model);
-        requestBody.put("messages", Arrays.asList(
-                new HashMap<String, String>() {{
-                    put("role", "user");
-                    put("content", contents + " 위 내용을 노션 스타일로 깔끔하게 이모티콘과 더불어서 정리해줘");
-                }}
-        ));
-
-        return webClient.post()
-                .header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(requestBody))
-                .retrieve()
-                .bodyToMono(ResponseChatGPTKeywordsDTO.class)
-                .map(response -> response.getChoices().get(0).getMessage().getContent())
-                .doOnError(e -> {
-                    // Log error or take action
-                    System.out.println("Error occurred: " + e.getMessage());
-                });
-
-    }
 }

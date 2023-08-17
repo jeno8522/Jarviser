@@ -52,7 +52,7 @@ const JoinMeeting = () => {
   const handleJoinMeeting = async () => {
     console.log("encryptedKey === ", encryptedKey);
     console.log("accessToken === ", accessToken);
-    const endpoint = `https://i9a506.p.ssafy.io:8081/meeting/joinMeeting/${encryptedKey}`;
+    const endpoint = `${window.SERVER_URL}/meeting/joinMeeting/${encryptedKey}`;
 
     // 미팅에 참여하기 위해 서버에 요청을 보냅니다.
     try {
