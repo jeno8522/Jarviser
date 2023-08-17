@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import styled from "styled-components";
+import { FaTimes } from "react-icons/fa";
 
 function Reservation({ closeModal }) {
   const navigate = useNavigate();
@@ -80,118 +81,124 @@ function Reservation({ closeModal }) {
 
   return (
     <ModalBackdrop onClick={closeModal}>
-    <ModalContent onClick={e => e.stopPropagation()}> 
-    <CloseButton onClick={closeModal}>X</CloseButton>
-      <ModalHeader>
-      <h1>미팅 예약하기</h1>
-    </ModalHeader>
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <LeftContainer>
-        <ContentLabel htmlFor="title">제목</ContentLabel>
-        <TitleField>
-        <TitleText
-          id="title"
-          type="text"
-          placeholder="제목을 입력해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.title ? "true" : "false") : undefined
-          }
-          {...register("title", {
-            required: "제목은 필수 입력입니다.",
-            pattern: {},
-          })}
-        />
-        </TitleField>
-        {errors.title && <small role="alert">{errors.title.message}</small>}
-        <br />
-        <ContentLabel htmlFor="date">날짜</ContentLabel>
-        <TimeField>
-        <TimeText
-          id="date"
-          type="date"
-          placeholder="날짜를 선택해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.date ? "true" : "false") : undefined
-          }
-          {...register("date", {
-            required: "날짜는 필수 입력입니다.", 
-          })}
-        />
-        </TimeField>
-        {errors.date && <small role="alert">{errors.date.message}</small>}
-        <br />
-        <ContentLabel htmlFor="time">시간</ContentLabel>
-        <TimeField>
-        <TimeText
-          id="time"
-          type="time"
-          placeholder="시간을 선택해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.time ? "true" : "false") : undefined
-          }
-          {...register("time", {
-            required: "시간은 필수 입력입니다.",
-          })}
-        />
-        </TimeField>
-        {errors.time && <small role="alert">{errors.time.message}</small>}
-        <br />
-        <ContentLabel htmlFor="content">내용</ContentLabel>
-        <DescField>
-        <DescText
-          id="content"
-          type="textarea"
-          placeholder="내용을 입력해주세요."
-          aria-invalid={
-            isSubmitted ? (errors.content ? "true" : "false") : undefined
-          }
-          {...register("content", {
-            required: "내용은 필수 입력입니다.",
-          })}
-          
-        />
-        
-        </DescField>
-        
-        {errors.content && <small role="alert">{errors.content.message}</small>}
-        <br />
-        </LeftContainer>
-        <RightContainer>
-    <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
-    <EmailContainer>
-      <EmailText
-        id="userEmail"
-        type="email"
-        placeholder="이메일을 입력해주세요."
-        aria-invalid={
-          isSubmitted ? (errors.userEmail ? "true" : "false") : undefined
-        }
-        {...register("userEmail", {})}
-      />
-      <AddButton
-        type="button"
-        disabled={isSubmitting}
-        onClick={() => addUserEmail(document.getElementById("userEmail").value)}
-      >
-        추가
-      </AddButton>
-    </EmailContainer>
-    {userEmail.map((email, index) => (
-      <EmailItem key={index}>
-        {email}
-        <Button type="button" onClick={() => deleteUser(index)}>
-          삭제  
-        </Button>
-      </EmailItem>
-    ))}
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <CloseButton onClick={closeModal}>X</CloseButton>
+        <ModalHeader>
+          <h1>미팅 예약하기</h1>
+        </ModalHeader>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <LeftContainer>
+            <ContentLabel htmlFor="title">제목</ContentLabel>
+            <TitleField>
+              <TitleText
+                id="title"
+                type="text"
+                placeholder="제목을 입력해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.title ? "true" : "false") : undefined
+                }
+                {...register("title", {
+                  required: "제목은 필수 입력입니다.",
+                  pattern: {},
+                })}
+              />
+            </TitleField>
+            {errors.title && <small role="alert">{errors.title.message}</small>}
+            <br />
+            <ContentLabel htmlFor="date">날짜</ContentLabel>
+            <TimeField>
+              <TimeText
+                id="date"
+                type="date"
+                placeholder="날짜를 선택해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.date ? "true" : "false") : undefined
+                }
+                {...register("date", {
+                  required: "날짜는 필수 입력입니다.",
+                })}
+              />
+            </TimeField>
+            {errors.date && <small role="alert">{errors.date.message}</small>}
+            <br />
+            <ContentLabel htmlFor="time">시간</ContentLabel>
+            <TimeField>
+              <TimeText
+                id="time"
+                type="time"
+                placeholder="시간을 선택해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.time ? "true" : "false") : undefined
+                }
+                {...register("time", {
+                  required: "시간은 필수 입력입니다.",
+                })}
+              />
+            </TimeField>
+            {errors.time && <small role="alert">{errors.time.message}</small>}
+            <br />
+            <ContentLabel htmlFor="content">내용</ContentLabel>
+            <DescField>
+              <DescText
+                id="content"
+                type="textarea"
+                placeholder="내용을 입력해주세요."
+                aria-invalid={
+                  isSubmitted ? (errors.content ? "true" : "false") : undefined
+                }
+                {...register("content", {
+                  required: "내용은 필수 입력입니다.",
+                })}
+              />
+            </DescField>
 
-<SubmitButton type="submit" disabled={isSubmitting || userEmail.length === 0}>
-    예약 완료
-  </SubmitButton>
-  </RightContainer>
-  
-      </Form>
-    </ModalContent>
+            {errors.content && (
+              <small role="alert">{errors.content.message}</small>
+            )}
+            <br />
+          </LeftContainer>
+          <RightContainer>
+            <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
+            <EmailContainer>
+              <EmailText
+                id="userEmail"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                aria-invalid={
+                  isSubmitted
+                    ? errors.userEmail
+                      ? "true"
+                      : "false"
+                    : undefined
+                }
+                {...register("userEmail", {})}
+              />
+              <AddButton
+                type="button"
+                disabled={isSubmitting}
+                onClick={() =>
+                  addUserEmail(document.getElementById("userEmail").value)
+                }
+              >
+                추가
+              </AddButton>
+            </EmailContainer>
+            {userEmail.map((email, index) => (
+              <EmailItem key={index}>
+                {email}
+                <DeleteIcon onClick={() => deleteUser(index)} />
+              </EmailItem>
+            ))}
+
+            <SubmitButton
+              type="submit"
+              disabled={isSubmitting || userEmail.length === 0}
+            >
+              예약 완료
+            </SubmitButton>
+          </RightContainer>
+        </Form>
+      </ModalContent>
     </ModalBackdrop>
   );
 }
@@ -201,27 +208,26 @@ const ReservationHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-
 const RightContainer = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column; // 수직 배치
-    align-items: flex-end; // 오른쪽 정렬
+  flex: 1;
+  display: flex;
+  flex-direction: column; // 수직 배치
+  align-items: flex-end; // 오른쪽 정렬
 `;
 
 const SubmitButton = styled.button`
-    padding: 15px 30px;
-    background: #28a745;
-    color: #fff;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s;
-    margin-top: 10px; // 상단에 여백 추가
-    &:hover {
-        background: #218838;
-    }
+  padding: 15px 30px;
+  background: #749bc2;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+  margin-top: 10px; // 상단에 여백 추가
+  &:hover {
+    background: #218838;
+  }
 `;
 
 const ModalBackdrop = styled.div`
@@ -250,18 +256,13 @@ const ContentLabel = styled.label`
 
 const TitleText = styled.input`
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const TimeField = styled.div`
@@ -272,18 +273,13 @@ const TimeField = styled.div`
 
 const TimeText = styled.input`
   width: 48%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const DescField = styled.div`
@@ -293,18 +289,10 @@ const DescField = styled.div`
 const DescText = styled.textarea`
   width: 100%;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border-radius: 20px;
   font-size: 16px;
   min-height: 100px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  background-color: #91c8e4;
 `;
 
 const EmailField = styled.div`
@@ -313,32 +301,26 @@ const EmailField = styled.div`
 
 const EmailText = styled.input`
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-bottom: 10px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const ModalContent = styled.div`
-background-color: #f3f4f6; // 밝은 회색으로 변경
-padding: 20px;
-border-radius: 10px; // 모서리를 둥글게 만듭니다.
-position: relative;
-max-width: 100%; // 모달의 최대 너비를 설정합니다.
-max-height: 80%; // 모달의 최대 높이를 설정합니다.
-overflow: auto; // 내용이 너무 길면 스크롤이 생깁니다.
-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과를 추가합니다.
-width: 800px; // 원하는 너비로 설정합니다.
-min-height: 300px; // 원하는 최소 높이로 설정합니다.
+  background-color: #f3f4f6; // 밝은 회색으로 변경
+  padding: 20px;
+  border-radius: 10px; // 모서리를 둥글게 만듭니다.
+  position: relative;
+  max-width: 100%; // 모달의 최대 너비를 설정합니다.
+  max-height: 80%; // 모달의 최대 높이를 설정합니다.
+  overflow: auto; // 내용이 너무 길면 스크롤이 생깁니다.
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과를 추가합니다.
+  width: 800px; // 원하는 너비로 설정합니다.
+  min-height: 300px; // 원하는 최소 높이로 설정합니다.
 `;
 
 const CloseButton = styled.button`
@@ -377,7 +359,7 @@ const Button = styled.button`
 
 const AddButton = styled.button`
   padding: 10px 10px;
-  background: #007bff;
+  background: #749bc2;
   color: #fff;
   border-radius: 5px;
   border: none;
@@ -402,8 +384,6 @@ const EmailItem = styled.div`
   background-color: #f3f4f6;
 `;
 
-
-
 const Form = styled.form`
   display: flex;
   justify-content: space-between; // 필요에 따라 조정
@@ -415,7 +395,15 @@ const LeftContainer = styled.div`
   flex: 1;
   padding-right: 40px; // 오른쪽 컨테이너와 간격을 조정
 `;
+const DeleteIcon = styled(FaTimes)`
+  color: #ff0000;
+  cursor: pointer;
+  transition: color 0.3s;
 
+  &:hover {
+    color: #cc0000;
+  }
+`;
 // const RightContainer = styled.div`
 //   flex: 1;
 // `;
@@ -426,7 +414,6 @@ const EmailContainer = styled.div`
   align-items: center; // 항목들을 중앙에 정렬
   margin-bottom: 0px;
 `;
-
 
 // const SubmitButton = styled.button`
 //   padding: 15px 30px;
@@ -445,6 +432,5 @@ const EmailContainer = styled.div`
 //     background: #218838;
 //   }
 // `;
-
 
 export default Reservation;
