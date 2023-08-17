@@ -5,7 +5,8 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import {useParams} from "react-router-dom";
-
+import styled from "styled-components";
+import Navigation from "../components/molecules/Navigation";
 const JoinMeeting = () => {
   const navigate = useNavigate();
   const {accessToken} = useAccessToken();
@@ -76,27 +77,77 @@ const JoinMeeting = () => {
     }
   };
 
+  const JoinContainer = styled.div`
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  `;
+
+  const Form = styled.form`
+    background-color: #f6f4eb;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  `;
+
+  const Label = styled.label`
+    display: block;
+    margin-bottom: 15px;
+  `;
+
+  const Input = styled.input`
+    width: 90%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  `;
+
+  const Button = styled.button`
+    background-color: #91c8e4;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  `;
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User Name:
-          <input type="text" value={payloadUserName} readOnly />
-        </label>
-        <label>
-          Encrypted Key:
-          <input type="text" value={encryptedKey} readOnly />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {showVideoRoom && (
-        <VideoRoomComponent
-          userName={payloadUserName}
-          meetingId={encryptedKey}
-        />
-        // <VideoRoomComponent />
-      )}
-    </div>
+    <>
+      <Navigation></Navigation>
+      <JoinContainer>
+        <Form onSubmit={handleSubmit}>
+          <Label>
+            User Name:
+            <Input type="text" value={payloadUserName} readOnly />
+          </Label>
+          <Label>
+            Encrypted Key:
+            <Input type="text" value={encryptedKey} readOnly />
+          </Label>
+          <Button type="submit" style={{marginTop: "20px"}}>
+            Submit
+          </Button>
+        </Form>
+        {showVideoRoom && (
+          <VideoRoomComponent
+            userName={payloadUserName}
+            meetingId={encryptedKey}
+          />
+        )}
+      </JoinContainer>
+    </>
   );
 };
 
