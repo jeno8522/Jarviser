@@ -10,7 +10,6 @@ import Sidebar from "../components/molecules/Sidebar";
 import styled from "styled-components";
 import MainHeader from "../components/molecules/MainHeader";
 
-
 function MyCalendar() {
   const navigate = useNavigate();
   const { accessToken } = useAccessToken();
@@ -22,7 +21,7 @@ function MyCalendar() {
 
     // meetinglist API 호출
     axios
-      .get("http://localhost:8081/user/meetinglist", {
+      .get("https://localhost:8081/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -86,8 +85,9 @@ const CalendarData = styled.div`
   display: flex;
   width: 350px;
   height: 400px;
+  max-height: 400px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤 생성 */
   position: relative;
-
   flex-direction: column;
   justify-content: start;
   flex-shrink: 0;

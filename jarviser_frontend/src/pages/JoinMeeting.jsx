@@ -55,14 +55,11 @@ const JoinMeeting = () => {
 
     // 미팅에 참여하기 위해 서버에 요청을 보냅니다.
     try {
-      const response = await axios.get(
-        endpoint,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       console.log("response === ", response);
       if (response.status === 202) {

@@ -593,7 +593,8 @@ class VideoRoomComponent extends Component {
     const meetingId = this.state.meetingId;
     const localUser = this.state.localUser;
     var chatDisplay = {display: this.state.chatDisplay};
-
+    
+    
     return (
       <div className="container" id="container">
         {/* <ToolbarComponent
@@ -676,6 +677,7 @@ class VideoRoomComponent extends Component {
                   chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}
                   messageReceived={this.checkNotification}
+                  sessionName={this.state.mySessionName}
                 />
               </div>
             )}
