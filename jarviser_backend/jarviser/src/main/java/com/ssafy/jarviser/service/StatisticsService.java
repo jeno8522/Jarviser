@@ -1,5 +1,9 @@
 package com.ssafy.jarviser.service;
 
+import com.nimbusds.jose.shaded.gson.JsonArray;
+import com.nimbusds.jose.shaded.gson.JsonElement;
+import com.nimbusds.jose.shaded.gson.JsonObject;
+import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.dto.TempTranscriptRecord;
@@ -8,6 +12,8 @@ import com.ssafy.jarviser.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +40,7 @@ public class StatisticsService {
     }
     @Async      // 비동기 처리
     public void accumulateTranscript(Long meetingId, String text){
+        log.info("accumulate:{}", text);
         if (!tempTranscriptHolder.containsKey(meetingId)) {
             TempTranscriptRecord tempTranscriptRecord = new TempTranscriptRecord();
             tempTranscriptRecord.append(text);
@@ -49,7 +56,7 @@ public class StatisticsService {
         TempTranscriptRecord tempTranscriptRecord = tempTranscriptHolder.get(meetingId);
         ArrayList<StringBuilder> partScripts = tempTranscriptRecord.getPartScripts();
         List<CompletableFuture<String>> futurePartSummaries = new ArrayList<>();
-
+        log.info("summarize호출");
         int idx = 0;
         for (StringBuilder partScript : partScripts) {
             String part = partScript.toString();
@@ -90,16 +97,43 @@ public class StatisticsService {
         }).thenAccept(wholeSummary -> {
             if (wholeSummary != null) {
                 log.info("전체요약: {}", wholeSummary);
+
                 Meeting meeting = meetingRepository.findMeetingById(meetingId);
-                Report report = Report.builder()
-                        .summary(wholeSummary)
-                        .meeting(meeting)
-                        .build();
-                reportRepository.save(report);
+
+
+                String jsonString = wholeSummary; // 여기에 주어진 JSON 문자열을 넣습니다.
+
+                JsonParser parser = new JsonParser();
+                JsonElement jsonTree = parser.parse(jsonString);
+
+                if (jsonTree.isJsonObject()) {
+                    JsonObject jsonObject = jsonTree.getAsJsonObject();
+                    JsonArray choicesArray = jsonObject.getAsJsonArray("choices");
+
+                    if (choicesArray.size() > 0) {
+                        JsonObject firstChoice = choicesArray.get(0).getAsJsonObject();
+                        JsonObject messageObject = firstChoice.getAsJsonObject("message");
+                        String content = messageObject.get("content").getAsString();
+
+                        Report report = Report.builder()
+                                .summary(content)
+                                .meeting(meeting)
+                                .build();
+                        reportRepository.save(report);
+                        log.info(content);
+                    }
+                }
+
+
             }
         });
 
         tempTranscriptHolder.remove(meetingId); // 메모리 관리
         return allFutures;
+    }
+
+    public String getSummary(Long meetingId) {
+        Report report = reportRepository.getReferenceById(meetingId);
+        return report.getSummary();
     }
 }

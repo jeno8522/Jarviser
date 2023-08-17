@@ -16,7 +16,7 @@ public class Report {
     @Column(name = "report_id")
     private long id;
 
-    @Column(name = "summary")
+    @Column(name = "summary",length = 5000)
     private String summary;
 
 
