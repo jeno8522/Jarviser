@@ -10,6 +10,7 @@ import com.ssafy.jarviser.service.UserService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -19,14 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.naming.ldap.PagedResultsControl;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -196,10 +195,17 @@ public class UserController {
             @RequestHeader("Authorization") String token
     ) throws IOException {
 
-        Resource resource = resourceLoader.getResource("classpath:/images/");
-        String resourcePath = resource.getFile().getAbsolutePath();
-        // Save the uploaded file to the resource directory
-        File dest = new File(resourcePath + "/" + file.getOriginalFilename());
+        // 현재 프로젝트의 경로 가져오기
+        String projectDir = System.getProperty("user.dir");
+
+        // resources/images 디렉토리의 경로 구성
+        String uploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "images";
+
+        // 중복을 방지하기 위해 파일 이름에 UUID를 추가
+        String originalFilename = file.getOriginalFilename();
+        String newFilename = UUID.randomUUID() + "_" + originalFilename;
+        File dest = new File(uploadDir + File.separator + newFilename);
+
         file.transferTo(dest);
 
         try{
