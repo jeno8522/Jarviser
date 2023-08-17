@@ -143,9 +143,9 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  border: 2px solid var(--primary-60, #0f62fe);
-  background: var(--primary-60, #0f62fe);
-  color: var(--default-white, #fff);
+  border: solid 2px #749BC2;
+  background-color: white;
+  color: #749BC2;
   cursor: pointer;
 
   /* Button/L */
@@ -155,6 +155,7 @@ const Button = styled.button`
   font-weight: 500;
   line-height: 100%; /* 20px */
   letter-spacing: 0.5px;
+  font-color: #F6F4EB;
 `;
 
 const ButtonWithImage = styled.div`
@@ -175,9 +176,9 @@ const StyledSVGButton = styled.button`
 `;
 
 const SVGPath = styled.path`
-  fill: #292d32;
+  fill: #4682A9;
   &:hover {
-    fill: #0f62fe;
+    fill: #91C8E4;
   }
 `;
 

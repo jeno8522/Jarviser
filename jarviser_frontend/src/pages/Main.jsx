@@ -4,7 +4,7 @@
     import { Link } from "react-router-dom";
     import Signup from "../pages/Signup";
     import Navigation from "../components/molecules/Navigation";
-    import { useEffect } from "react";
+    import { useEffect, useRef } from "react";
     import { useNavigate } from "react-router-dom";
     import useAccessToken from "../components/useAccessToken";
     import styled from "styled-components";
@@ -18,6 +18,14 @@
     function Main() {
       const navigate = useNavigate();
       const { accessToken } = useAccessToken();
+      const needsSectionRef = useRef(null);
+
+      const scrollToNeedsSection = () => {
+        const yOffset = -70; // 원하는 만큼 조정값을 설정합니다
+        const y = needsSectionRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    
+        window.scrollTo({ top: y, behavior: "smooth" });
+      };
     
       useEffect(() => {
         if (accessToken) {
@@ -35,14 +43,14 @@
               <TextContainer>
                 <h2>그럴싸한 설명</h2>
               </TextContainer>
-              <MoreButton as="a" href="#needs">
-                더 알아보기 &rarr;
-              </MoreButton>
+             <MoreButton onClick={scrollToNeedsSection}>
+        더 알아보기 &rarr;
+      </MoreButton>
             </TextsContainer>
             <MainPageImage src={MainImage} alt="JARVISER" />
           </MainContianer>
     
-          <MainContianer2>
+          <MainContianer2 ref={needsSectionRef}>
             <TextContainer2 id="needs">
               jarviser is the tool you need
             </TextContainer2>
@@ -129,17 +137,18 @@
     
     const MoreButton = styled.button`
       display: flex;
-      width: 108px;
-      height: 20px;
+      width: 160px;
+      height: 70px;
       padding: 16px 12px;
       justify-content: center;
       align-items: center;
       flex-shrink: 0;
       border-radius: 999px;
-      border: 2px solid var(--primary-60, #0f62fe);
-      background: var(--primary-60, #0f62fe);
-      color: white;
+      border: none;
+      background: var(--primary-60, #4682A9);
+      color: #F6F4EB;
       margin: 2px;
+      font-size: 15px;
     `;
     
     const SignupButton = styled.button`
@@ -151,10 +160,11 @@
       align-items: center;
       flex-shrink: 0;
       border-radius: 999px;
-      border: 2px solid var(--primary-60, #0f62fe);
-      background: var(--primary-60, #0f62fe);
-      color: white;
+      border: 2px solid #4682A9;
+      background: #4682A9;
+      color: #F6F4EB;
       margin-left: 700px;
+      font-size: 15px;
     `;
     
     const MainPageImage = styled.img`
@@ -169,7 +179,7 @@
       display: flex;
       justify-content: center;
       height: 680px;
-      background: #f0f0f0;
+      background: #F6F4EB;
     `;
     
     const MainContianer2 = styled.div`
@@ -180,7 +190,7 @@
     
     const TextContainer2 = styled.div`
       align-self: stretch;
-      color: var(--primary-90, #001d6c);
+      color: var(--primary-90, #749BC2);
       text-align: center;
       /* Other/Caption */
       font-family: Roboto;

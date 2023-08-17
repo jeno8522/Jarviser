@@ -17,7 +17,7 @@
       width: 1800;
       height: 94px;
       flex-shrink: 0;
-      background-color: #cae1fd;
+      background-color: #91C8E4;
       justify-content: space-between;
       align-items: center;
     `;

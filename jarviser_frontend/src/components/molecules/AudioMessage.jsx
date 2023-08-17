@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 const AudioMessage = ({ audioMessage, onEditClick, onSaveClick, accessToken }) => {
   const [editedContent, setEditedContent] = useState(audioMessage.content);
@@ -36,12 +37,12 @@ const AudioMessage = ({ audioMessage, onEditClick, onSaveClick, accessToken }) =
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
           />
-          <button onClick={handleSaveClick}>Save</button>
+          <Button onClick={handleSaveClick}>Save</Button>
         </div>
       ) : (
         <div>
           <p>Content: {audioMessage.content}</p>
-          <button onClick={onEditClick}>Edit</button>
+          <Button onClick={onEditClick}>Edit</Button>
         </div>
       )}
     </div>
@@ -49,3 +50,10 @@ const AudioMessage = ({ audioMessage, onEditClick, onSaveClick, accessToken }) =
 };
 
 export default AudioMessage;
+
+const Button = styled.button`
+  background-color: #749BC2;
+  border: none;
+  border-radius: 5px;
+  color: #F6F4EB;
+  `;
