@@ -28,13 +28,27 @@ function MyPage() {
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result); // 이미지 파일의 내용을 base64 형식으로 상태에 저장
       };
       reader.readAsDataURL(file);
+      axios
+        .post("http://localhost:8081/user/upload", formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("이미지 업로드에 성공했습니다: ", response.data);
+        })
+        .catch((error) => {
+          console.log("이미지 업로드 중 에러가 발생했습니다: ", error);
+        });
     }
-    axios.post("http://localhost:8081/user/upload", {});
   };
   useEffect(() => {
     GetUser();
