@@ -110,4 +110,12 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public void uploadImg(long userId,String filePath) throws Exception {
+        User user = userRepository.findUserById(userId);
+        user.setProfilePictureUrl(filePath);
+        userRepository.save(user);
+        System.out.println("DB에 저장 성공");
+    }
 }

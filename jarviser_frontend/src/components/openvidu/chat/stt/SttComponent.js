@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
 class SttComponent extends React.Component {
   async componentDidMount() {
@@ -9,21 +9,21 @@ class SttComponent extends React.Component {
   }
 
   async initializeVAD() {
-    try{
-    const myvad = await window.vad.MicVAD.new({
-      onSpeechStart: () => {
-        console.log("speech start");
-      },
-      onSpeechEnd: (audio) => {
-        console.log("speech end");
-        const audioBlob = this.float32ArrayToWav(audio, 16000);
-        this.sendAudio(audioBlob);
-      },
-    });
-    myvad.start();
-  }catch(error){
-    console.log(error);
-  }
+    try {
+      const myvad = await window.vad.MicVAD.new({
+        onSpeechStart: () => {
+          console.log("speech start");
+        },
+        onSpeechEnd: (audio) => {
+          console.log("speech end");
+          const audioBlob = this.float32ArrayToWav(audio, 16000);
+          this.sendAudio(audioBlob);
+        },
+      });
+      myvad.start();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   float32ArrayToWav(audioData, sampleRate) {
@@ -62,7 +62,7 @@ class SttComponent extends React.Component {
       index += 2;
     }
 
-    return new Blob([view], { type: "audio/wav" });
+    return new Blob([view], {type: "audio/wav"});
   }
 
   async sendAudio(blob) {
@@ -76,7 +76,7 @@ class SttComponent extends React.Component {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        headers: { Authorization: "Bearer " + token },
+        headers: {Authorization: "Bearer " + token},
       });
 
       if (!response.ok) {

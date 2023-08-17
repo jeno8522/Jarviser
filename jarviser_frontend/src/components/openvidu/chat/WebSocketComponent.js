@@ -5,11 +5,45 @@ import {DndProvider, useDrag, useDrop} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
+import axios from "axios";
+
 const ItemType = {
   MESSAGE: "message",
 };
 
+//현웅 이거 만들어놓음 에러날 순 있음
+const handleMoveMesseage = async (from, to) => {
+  // event.preventDefault();
+  console.log("from === ", from, "to === ", to);
+  const accessToken = localStorage.getItem("access-token");
 
+  const endpoint = `http://localhost:8081/meeting/현웅,값을넣어야해`;
+  // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
+  try {
+    const response = await axios.post(
+      endpoint,
+
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data: {from: from, to: to},
+      }
+    );
+
+    console.log("response === ", response);
+    if (response.status === 202) {
+      console.log("Move Messeage Success!!!", response.data);
+      //로직 추가 해줘야해 현웅
+    } else {
+      console.error("Error creating meeting:", response.data);
+      alert("Error !!!. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred !!. Please try again.");
+  }
+};
 const DraggableMessage = ({message, index, moveMessage, userId}) => {
   const [{isDragging}, ref] = useDrag({
     type: ItemType.MESSAGE,
@@ -27,21 +61,24 @@ const DraggableMessage = ({message, index, moveMessage, userId}) => {
         draggedItem.index = index;
       }
     },
+    drop: (draggedItem) => {
+      console.log(`Dragged from: ${draggedItem.index}, Dropped to: ${index}`);
+      // handleMoveMesseage(draggedItem.index, index);  현웅 이거 실행하면 axios 보내짐
+    },
   });
 
   return (
-    <div
-      ref={(node) => ref(drop(node))}
-      className={`chat-message ${
-        (console.log(
-          "이번 메세지의 유저아이디는" + message.userId,
-          "현재 로그인한 유저아이디는" + userId
-        ),
-        message.userId == userId ? "sent" : "received")
-      }`}
-    >
-      {message.content}
-    </div>
+    <>
+      <div
+        ref={(node) => ref(drop(node))}
+        className={`chat-message ${isDragging ? "dragging" : ""} ${
+          message.userId == userId ? "sent" : "received"
+        }`}
+      >
+        <div id="sttChatUserName">{message.userName} : </div>
+        {message.content}
+      </div>
+    </>
   );
 };
 
@@ -51,15 +88,22 @@ class WebSocketComponent extends React.Component {
     let meetingId = this.props.meetingId;
     this.state = {
       messages: [
-        '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "1번참가자의뻘소리"}',
-        '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "2번참가자의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "3번참가자의뻘소리"}',
+        '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
+        '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
       ],
 
       meetingId: meetingId,
       draggedIndex: null, // 드래그가 시작된 인덱스를 저장할 state
       userId: null, // userId 상태
     };
+    this.chatContainerRef = React.createRef();
   }
 
   componentDidMount() {
@@ -89,13 +133,19 @@ class WebSocketComponent extends React.Component {
         JSON.stringify({meetingId: meetingId, Authorization: "Bearer " + token})
       );
     });
+    if (this.chatContainerRef.current) {
+      const scrollHeight = this.chatContainerRef.current.scrollHeight;
+      this.chatContainerRef.current.scrollTop = scrollHeight;
+    }
   }
-
-  // 드래그와 드랍 인덱스를 출력하는 메서드
-  printIndexes = (draggedIndex, droppedIndex) => {
-    console.log(`Dragged from: ${draggedIndex}, Dropped to: ${droppedIndex}`);
-  };
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.messages.length !== this.state.messages.length) {
+      if (this.chatContainerRef.current) {
+        const scrollHeight = this.chatContainerRef.current.scrollHeight;
+        this.chatContainerRef.current.scrollTop = scrollHeight;
+      }
+    }
+  }
   moveMessage = (fromIndex, toIndex) => {
     // 드래그 시작 시 draggedIndex를 설정
     if (this.state.draggedIndex === null) {
@@ -112,14 +162,15 @@ class WebSocketComponent extends React.Component {
     });
 
     // 끝날 때 draggedIndex와 toIndex를 함께 출력하고, draggedIndex를 다시 null로 초기화
-    this.printIndexes(this.state.draggedIndex, toIndex);
+    // this.printIndexes(this.state.draggedIndex, toIndex);
     this.setState({draggedIndex: null});
   };
 
   render() {
     return (
       <DndProvider backend={HTML5Backend}>
-        <div className="chat-container">
+        <div className="chat-container" ref={this.chatContainerRef}>
+          <div className="chat-title">STT 채팅</div>
           {this.state.messages.map((message, index) => (
             <DraggableMessage
               key={index}
@@ -127,6 +178,7 @@ class WebSocketComponent extends React.Component {
               message={JSON.parse(message)}
               moveMessage={this.moveMessage}
               userId={this.state.userId}
+              userName={this.state.userName}
             />
           ))}
         </div>

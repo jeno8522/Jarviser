@@ -19,24 +19,30 @@ function MyCalendar() {
       navigate("/login");
     }
 
-    // meetinglist API 호출
-    axios
-      .get(window.SERVER_URL+"user/meetinglist", {
+    // 병렬 API 호출
+    Promise.all([
+      axios.get(window.SERVER_URL+"user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-      .then((response) => {
-        if (response.data.meetinglist) {
-          const updatedMarks = response.data.meetinglist.map((meeting) =>
-            moment(meeting.date).format("DD-MM-YYYY")
+      }),
+      axios.get(window.SERVER_URL+"reservation", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    ])
+      .then(([meetinglistResponse, reservationResponse]) => {
+        const meetingDates = meetinglistResponse.data.meetinglist.map(
+          (meeting) => moment(meeting.date).format("DD-MM-YYYY")
+        );
+        const reservationDates =
+          reservationResponse.data.reservatedMeetings.map(
+            (meeting) => moment(meeting.startTime).format("DD-MM-YYYY") // API 응답 형태에 따라 필요한 필드를 사용해야 합니다.
           );
-          setMarks(updatedMarks);
-        }
+        setMarks([...new Set([...meetingDates, ...reservationDates])]);
       })
-      .catch((error) =>
-        console.error("Error fetching the meeting list:", error)
-      );
+      .catch((error) => console.error("Error fetching the data:", error));
   }, [accessToken, navigate]);
   const [date, setDate] = useState(new Date());
 

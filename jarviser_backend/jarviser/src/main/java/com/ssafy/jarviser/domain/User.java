@@ -29,6 +29,9 @@ public class User implements UserDetails {
 
     private String name;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

@@ -23,7 +23,34 @@ function MyPage() {
   const [userName, setUserName] = useState("");
   const [modalOpen, setModalOpen] = useState(false); // 모달창 띄우기 여부 상태
   const [isDeleting, setIsDeleting] = useState(false); // 회원 탈퇴 중 여부 상태
+  const [profileImage, setProfileImage] = useState(null); // 사용자의 프로필 이미지를 저장할 상태
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result); // 이미지 파일의 내용을 base64 형식으로 상태에 저장
+      };
+      reader.readAsDataURL(file);
+      axios
+        .post("http://localhost:8081/user/upload", formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(formData);
+          console.log("이미지 업로드에 성공했습니다: ", response);
+        })
+        .catch((error) => {
+          console.log("이미지 업로드 중 에러가 발생했습니다: ", error);
+        });
+    }
+  };
   useEffect(() => {
     GetUser();
   }, []);
@@ -35,7 +62,8 @@ function MyPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const { email, name } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
+      console.log(response.data.response);
+      const { email, name, userProfileImgage } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
       setUserEmail(email);
       setUserName(name);
     } catch (error) {
@@ -105,7 +133,19 @@ function MyPage() {
       <MainHeader />
       <PageContent>
         <Sidebar />
+
         <DataContainer>
+          <ProfileImageContainer>
+            <ProfileImage
+              src={profileImage || "defaultProfileImagePath.jpg"}
+              alt="Profile"
+            />
+          </ProfileImageContainer>
+          <ProfileInput
+            type="file"
+            accept="image/*"
+            onChange={handleProfileImageChange}
+          />
           <BigBox>
             <Box>
               <h2>이메일</h2>
@@ -119,7 +159,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="text"
-    
                 value={userName}
                 onChange={handleChangeName}
               />
@@ -130,7 +169,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="password"
-              
                 value={userPassword}
                 onChange={handleChangePassword}
               />
@@ -159,7 +197,25 @@ function MyPage() {
 }
 
 export default MyPage;
+const ProfileImageContainer = styled.div`
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+`;
 
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const ProfileInput = styled.input`
+  display: block;
+  margin-bottom: 20px;
+`;
 const PageContent = styled.div`
   display: flex;
   width: 80%; // 너비를 100%로 설정
@@ -172,7 +228,7 @@ const Box = styled.div`
   width: 140px;
   height: 100px;
   flex-shrink: 0;
-  background-color: #cae1fd;
+  background-color: #91c8e4;
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -220,8 +276,8 @@ const ChangeButton = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: #3742fa;
-  color: white;
+  background: #4682a9;
+  color: #f6f4eb;
   border: none;
   border-radius: 999px;
   margin: 20px;
@@ -236,7 +292,7 @@ const WithdrawButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   background: red;
-  color: black;
+  color: #f6f4eb;
   border-radius: 999px;
   border: none;
   margin: 20px;

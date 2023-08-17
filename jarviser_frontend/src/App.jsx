@@ -12,6 +12,8 @@ import Reservation from "./pages/Reservation";
 import CreateMeeting from "./pages/CreateMeeting";
 import JoinMeeting from "./pages/JoinMeeting";
 import ReportDetail from "./pages/ReportDetail";
+
+import AppCSS from "./App.css";
 function App() {
   return (
     <>
@@ -27,7 +29,6 @@ function App() {
           <Route path="/reportdetail" element={<ReportDetail />} />
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/createmeeting" element={<CreateMeeting />} />
-          {/* <Route path="/joinMeeting" element={<JoinMeeting />} /> */}
 
           <Route path="/joinMeeting/:urlKey" element={<JoinMeeting />} />
         </Routes>

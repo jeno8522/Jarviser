@@ -60,7 +60,9 @@ function MyReport() {
                 <p>Date: {report.date}</p>
               </MeetingInfo>
               <DetailButton>
-                <Link to={"/reportdetail"}>통계보기</Link>
+                <Link to={"/reportdetail"} className="no-underline">
+                  통계보기
+                </Link>
               </DetailButton>
             </MeetingLi>
           ))}
@@ -114,8 +116,9 @@ const DetailButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   border-radius: 999px;
-  background-color: #3742fa;
-  color: white;
+  border: none; /* Remove the border color property */
+  background-color: #4682a9;
+  color: #f6f4eb !important;
 `;
 
 const AllContainer = styled.div`
@@ -138,7 +141,7 @@ const PaginationButton = styled.button`
   margin: 0 10px;
   padding: 5px 10px;
   border: none;
-  background-color: ${(props) => (props.disabled ? "#f0f0f0" : "#3742fa")};
+  background-color: ${(props) => (props.disabled ? "#f0f0f0" : "#4682A9")};
   color: ${(props) => (props.disabled ? "#999" : "white")};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
 `;

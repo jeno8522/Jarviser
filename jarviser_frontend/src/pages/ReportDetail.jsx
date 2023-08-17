@@ -152,7 +152,9 @@ const ReportDetail = () => {
         <Sidebar />
         <ContentContainer>
           <h1>회의 상세 정보</h1>
-          {!isLoading && (
+          {isLoading ? (
+            <LoadingSpinner /> // 또는 <LoadingMessage />
+          ) : (
             <ContentWrapper>
               <AudioWrapper>
                 {audioMessages.map((audio, index) => (
@@ -265,5 +267,24 @@ const DownloadButton = styled.button`
   margin-top: 10px;
   cursor: pointer;
 `;
+
+const LoadingSpinner = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 15px solid rgba(0, 0, 0, 0.1);
+  border-top: 15px solid #4682A9;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 
 // ... (기타 스타일 계속 유지)

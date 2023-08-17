@@ -8,17 +8,30 @@ function MeetingInfo({ date }) {
   const [meetingData, setMeetingData] = useState([]);
   const { accessToken } = useAccessToken();
   useEffect(() => {
-    axios
-      .get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
+    Promise.all([
+      axios.get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-      .then((response) => {
-        if (response.data.meetinglist) {
-          setMeetingData(response.data.meetinglist);
-          console.log(response.data.meetinglist);
-        }
+      }),
+      axios.get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    ])
+      .then(([meetinglistResponse, reservationResponse]) => {
+        const meetings = meetinglistResponse.data.meetinglist;
+        const reservations = reservationResponse.data.reservatedMeetings.map(
+          (reservation) => ({
+            ...reservation,
+            date: reservation.startTime, // 모든 항목에 일관된 'date' 필드를 만듭니다.
+          })
+        );
+
+        const combinedData = [...meetings, ...reservations];
+        setMeetingData(combinedData);
+        console.log(combinedData);
       })
       .catch((error) =>
         console.error("Error fetching the meeting list:", error)

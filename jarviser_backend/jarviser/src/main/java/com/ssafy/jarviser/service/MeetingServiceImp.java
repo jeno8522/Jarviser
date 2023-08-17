@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -214,6 +215,18 @@ public class MeetingServiceImp implements MeetingService{
         }
 
         return participantsStaticsDTOList;
+    }
+
+    @Override
+    public String createLocalSummary(long meetingId) {
+        List<AudioMessage> allAudioMessage = findAllAudioMessage(meetingId);
+        StringBuilder contents = new StringBuilder();
+        for(AudioMessage audioMessage : allAudioMessage){
+            contents.append(audioMessage.getContent());
+        }
+        String contentsString = contents.toString();
+        Mono<String> stringMono = openAIService.chatGTPSummaryLocal(contentsString);
+        return stringMono.block();
     }
 
 
