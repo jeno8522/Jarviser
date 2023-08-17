@@ -32,6 +32,8 @@ public interface MeetingService{
     //미팅 - 발화자 통계 저장
     void addParticipantsStatisticsToMeeting(long meetingId,List<ParticipantStatistics> participantStatistics);
 
+    //미팅 - 리포트 저장
+    void addReport(long meetingId,Report report);
     //미팅 아이디로 오디오 메시지 불러오기
     List<AudioMessage> findAllAudioMessage(long meetingId);
 
@@ -47,6 +49,4 @@ public interface MeetingService{
     //미팅 - 참여자  이용하여 발화자 통계 계산
     List<ParticipantStatistics> caculateParticipantsStatics(long meetingId);
 
-    //미팅 로컬에서 요약
-    String createLocalSummary(long meetingId);
 }

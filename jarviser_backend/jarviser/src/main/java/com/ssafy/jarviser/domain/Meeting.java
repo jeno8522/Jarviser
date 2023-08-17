@@ -84,5 +84,10 @@ public class Meeting implements Serializable {
         this.participantStatisticsList.add(participantStatistics);
         participantStatistics.setMeeting(this);
     }
+
+    public void addReport(Report report){
+        this.report = report;
+        report.setMeeting(this);
+    }
 }
 
