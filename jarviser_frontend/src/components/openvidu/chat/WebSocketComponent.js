@@ -91,6 +91,12 @@ class WebSocketComponent extends React.Component {
         '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
         '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
         '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
       ],
 
       meetingId: meetingId,
@@ -132,7 +138,14 @@ class WebSocketComponent extends React.Component {
       this.chatContainerRef.current.scrollTop = scrollHeight;
     }
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.messages.length !== this.state.messages.length) {
+      if (this.chatContainerRef.current) {
+        const scrollHeight = this.chatContainerRef.current.scrollHeight;
+        this.chatContainerRef.current.scrollTop = scrollHeight;
+      }
+    }
+  }
   moveMessage = (fromIndex, toIndex) => {
     // 드래그 시작 시 draggedIndex를 설정
     if (this.state.draggedIndex === null) {

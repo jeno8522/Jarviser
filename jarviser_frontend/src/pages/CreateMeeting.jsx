@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
 import styled from "styled-components";
-import Navigation from "../components/molecules/Navigation";
+import MainHeader from "../components/molecules/MainHeader";
 const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -112,7 +112,7 @@ const CreateMeeting = () => {
 
   return (
     <>
-      <Navigation></Navigation>
+      <MainHeader></MainHeader>
 
       <Form onSubmit={handleSubmit}>
         <Label>

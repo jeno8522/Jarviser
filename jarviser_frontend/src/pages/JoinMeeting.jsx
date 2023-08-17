@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import Navigation from "../components/molecules/Navigation";
+import MainHeader from "../components/molecules/MainHeader";
 const JoinMeeting = () => {
   const navigate = useNavigate();
   const {accessToken} = useAccessToken();
@@ -128,7 +128,7 @@ const JoinMeeting = () => {
 
   return (
     <>
-      <Navigation></Navigation>
+      <MainHeader></MainHeader>
 
       <Form onSubmit={handleSubmit}>
         <Label>
