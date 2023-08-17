@@ -20,6 +20,7 @@ const ReportDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const encryptedKey = location.state?.encryptedKey;
+  const [summaryData, setSummaryData] = useState(null);
 
   useEffect(() => {
     if (!accessToken) {
@@ -55,6 +56,15 @@ const ReportDetail = () => {
           data: { meetingId: id },
         }
       );
+
+      const responseSummary = await axios.get(
+        `http://localhost:8081/meeting/summary/${encryptedKey}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          data: { meetingId: id },
+        }
+      );
+      setSummaryData(responseSummary.data);
 
       const handleSaveClick = async (index, newContent) => {
         try {
@@ -146,6 +156,9 @@ const ReportDetail = () => {
         <Sidebar />
         <ContentContainer>
           <h1>회의 상세 정보</h1>
+          <p>
+            <Summarydiv>회의 요약 : {summaryData?.statistics}</Summarydiv>
+          </p>
           {isLoading ? (
             <LoadingSpinner /> // 또는 <LoadingMessage />
           ) : (
@@ -188,6 +201,9 @@ const ReportDetail = () => {
 
 export default ReportDetail;
 
+const Summarydiv = styled.div`
+  display: flex;
+`;
 const MainContainer = styled.div`
   display: flex;
 `;
