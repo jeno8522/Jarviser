@@ -94,7 +94,7 @@ const audioBlob = float32ArrayToWav(audio, 16000);
     let token = localStorage.getItem("access-token");
     const url = "http://localhost:8081/audio/transcript";
     const formData = new FormData();
-    const testID = "PUNQLHY4EEB3P23WO7CTEM2PFA"; //임시로 넣은 testID
+    const testID = "2HPBABTLLHGJ75UFSKDKTB422M======"; //임시로 넣은 testID
     formData.append("file", blob);
     formData.append("meetingId", testID);
     const response = await fetch(url, {
@@ -109,12 +109,6 @@ const audioBlob = float32ArrayToWav(audio, 16000);
     const data = await response.json();
     console.log(data.text);
 
-    // STT 결과를 <div id="stt-chatting"></div>에 추가하는 부분
-    const chatDiv = document.getElementById("stt-chatting");
-    const messageDiv = document.createElement("div");
-    messageDiv.className = "stt-message"; // CSS 클래스 추가 (필요시 스타일링을 위해)
-    messageDiv.textContent = data.text;
-    chatDiv.appendChild(messageDiv);
   } catch (error) {
     console.error("Error sending audio", error);
   }

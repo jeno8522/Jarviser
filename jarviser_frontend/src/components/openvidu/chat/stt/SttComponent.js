@@ -1,56 +1,32 @@
-import React, {useState, useEffect} from "react";
-import {useMicVAD} from "@ricky0123/vad-react";
+import React, {useEffect} from "react";
 
-const SttComponent = () => {
-  const token = localStorage.getItem("access-token");
-  const vad = useMicVAD({
-    startOnLoad: true,
-    onSpeechStart: () => {
-      console.log("speech start");
-    },
-    onSpeechEnd: (audio) => {
-      console.log("speech end");
-      const audioBlob = _float32ArrayToWav(audio, 16000);
-      _sendAudio(audioBlob);
-    },
-  });
+class SttComponent extends React.Component {
+  async componentDidMount() {
+    await this.initializeVAD();
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return !this.myvad;
+  }
 
-  const vad = useMicVAD({
-    startOnLoad: true,
-    onSpeechStart: () => {
-      console.log("speech start");
-    },
-    onSpeechEnd: (audio) => {
-      console.log("speech end");
-      const audioBlob = _float32ArrayToWav(audio, 16000);
-      _sendAudio(audioBlob);
-    },
-  });
-
-  const _sendAudio = async (blob) => {
+  async initializeVAD() {
     try {
-      const url = "http://localhost:8081/audio/transcript";
-      const formData = new FormData();
-      const testID = "fRsFnxwhA7frdnfFMjNPKA=="; //임시로 넣은 testID
-      formData.append("file", blob);
-      formData.append("meetingId", testID);
-      const response = await fetch(url, {
-        method: "POST",
-        body: formData,
-        headers: {Authorization: "Bearer " + this.token},
+      const myvad = await window.vad.MicVAD.new({
+        onSpeechStart: () => {
+          console.log("speech start");
+        },
+        onSpeechEnd: (audio) => {
+          console.log("speech end");
+          const audioBlob = this.float32ArrayToWav(audio, 16000);
+          this.sendAudio(audioBlob);
+        },
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log(data);
+      myvad.start();
     } catch (error) {
-      console.error("Error sending audio", error);
+      console.log(error);
     }
-  };
+  }
 
-  const _float32ArrayToWav = (audioData, sampleRate) => {
+  float32ArrayToWav(audioData, sampleRate) {
     const buffer = new ArrayBuffer(44 + audioData.length * 2);
     const view = new DataView(buffer);
 
@@ -85,8 +61,37 @@ const SttComponent = () => {
       view.setInt16(index, audioData[i] * (0x7fff * volume), true);
       index += 2;
     }
-    return new Blob([view], {type: "audio/wav"});
-  };
-};
 
-export default {SttComponent};
+    return new Blob([view], {type: "audio/wav"});
+  }
+
+  async sendAudio(blob) {
+    try {
+      let token = localStorage.getItem("access-token");
+      const url = "http://localhost:8081/audio/transcript";
+      const formData = new FormData();
+      formData.append("file", blob);
+      formData.append("meetingId", this.props.meetingId);
+      console.log("sending audio");
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+        headers: {Authorization: "Bearer " + token},
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data.text);
+    } catch (error) {
+      console.error("Error sending audio", error);
+    }
+  }
+
+  render() {
+    return;
+  }
+}
+
+export default SttComponent;

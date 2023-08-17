@@ -593,7 +593,8 @@ class VideoRoomComponent extends Component {
     const meetingId = this.state.meetingId;
     const localUser = this.state.localUser;
     var chatDisplay = {display: this.state.chatDisplay};
-
+    
+    
     return (
       <div className="container" id="container">
         {/* <ToolbarComponent

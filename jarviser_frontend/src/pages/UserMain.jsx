@@ -14,16 +14,36 @@ import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
 import Reservation from "./Reservation";
+import CreateMeeting from "./CreateMeeting";
+import JoinMeeting from "./JoinMeeting";
 
 function UserMain() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [isReserveModalOpen, setIsReserveModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeCreateModal = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  const openJoinModal = () => {
+    setIsJoinModalOpen(true);
+  };
+
+  const closeJoinModal = () => {
+    setIsJoinModalOpen(false);
+  };
+
+  const openReserveModal = () => {
+    setIsReserveModalOpen(true);
+  };
+
+  const closeReserveModal = () => {
+    setIsReserveModalOpen(false);
   };
 
   const navigate = useNavigate();
@@ -42,50 +62,58 @@ function UserMain() {
       <PageContent>
         <Sidebar />
         <ButtonFrame>
-          <Link to="/createmeeting">
-            <ButtonWithImage>
-              <StyledSVGButton>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="132"
-                  height="125"
-                  viewBox="0 0 132 125"
-                  fill="none"
-                >
-                  <SVGPath d="M66 0C29.634 0 0 28.0625 0 62.5C0 96.9375 29.634 125 66 125C102.366 125 132 96.9375 132 62.5C132 28.0625 102.366 0 66 0ZM92.4 67.1875H70.95V87.5C70.95 90.0625 68.706 92.1875 66 92.1875C63.294 92.1875 61.05 90.0625 61.05 87.5V67.1875H39.6C36.894 67.1875 34.65 65.0625 34.65 62.5C34.65 59.9375 36.894 57.8125 39.6 57.8125H61.05V37.5C61.05 34.9375 63.294 32.8125 66 32.8125C68.706 32.8125 70.95 34.9375 70.95 37.5V57.8125H92.4C95.106 57.8125 97.35 59.9375 97.35 62.5C97.35 65.0625 95.106 67.1875 92.4 67.1875Z" />
-                </svg>
-              </StyledSVGButton>
-              <Button type="button" id="create_meeting_button">
-                생성하기
-              </Button>
-            </ButtonWithImage>
-          </Link>
+          {/* <Link to="/createmeeting"> */}
+          <ButtonWithImage>
+            <StyledSVGButton onClick={openCreateModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="132"
+                height="125"
+                viewBox="0 0 132 125"
+                fill="none"
+              >
+                <SVGPath d="M66 0C29.634 0 0 28.0625 0 62.5C0 96.9375 29.634 125 66 125C102.366 125 132 96.9375 132 62.5C132 28.0625 102.366 0 66 0ZM92.4 67.1875H70.95V87.5C70.95 90.0625 68.706 92.1875 66 92.1875C63.294 92.1875 61.05 90.0625 61.05 87.5V67.1875H39.6C36.894 67.1875 34.65 65.0625 34.65 62.5C34.65 59.9375 36.894 57.8125 39.6 57.8125H61.05V37.5C61.05 34.9375 63.294 32.8125 66 32.8125C68.706 32.8125 70.95 34.9375 70.95 37.5V57.8125H92.4C95.106 57.8125 97.35 59.9375 97.35 62.5C97.35 65.0625 95.106 67.1875 92.4 67.1875Z" />
+              </svg>
+            </StyledSVGButton>
+            <Button
+              type="button"
+              id="create_meeting_button"
+              onClick={openCreateModal}
+            >
+              생성하기
+            </Button>
+          </ButtonWithImage>
+          {/* </Link> */}
 
-          <Link to="/joinmeeting">
-            <ButtonWithImage>
-              <StyledSVGButton>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="133"
-                  height="134"
-                  viewBox="0 0 133 134"
-                  fill="none"
-                >
-                  <SVGPath
-                    d="M66.5 0C29.8585 0 0 29.9541 0 66.7129C0 103.472 29.8585 133.426 66.5 133.426C103.142 133.426 133 103.472 133 66.7129C133 29.9541 103.142 0 66.5 0ZM85.0535 70.2487L61.579 93.7984C60.5815 94.7991 59.318 95.2661 58.0545 95.2661C56.791 95.2661 55.5275 94.7991 54.53 93.7984C52.6015 91.8637 52.6015 88.6615 54.53 86.7268L74.48 66.7129L54.53 46.6991C52.6015 44.7644 52.6015 41.5622 54.53 39.6275C56.4585 37.6928 59.6505 37.6928 61.579 39.6275L85.0535 63.1772C87.0485 65.1118 87.0485 68.314 85.0535 70.2487Z"
-                    fill="#292D32"
-                  />
-                </svg>
-              </StyledSVGButton>
+          {/* <Link to="/joinmeeting"> */}
+          <ButtonWithImage>
+            <StyledSVGButton onClick={openJoinModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="133"
+                height="134"
+                viewBox="0 0 133 134"
+                fill="none"
+              >
+                <SVGPath
+                  d="M66.5 0C29.8585 0 0 29.9541 0 66.7129C0 103.472 29.8585 133.426 66.5 133.426C103.142 133.426 133 103.472 133 66.7129C133 29.9541 103.142 0 66.5 0ZM85.0535 70.2487L61.579 93.7984C60.5815 94.7991 59.318 95.2661 58.0545 95.2661C56.791 95.2661 55.5275 94.7991 54.53 93.7984C52.6015 91.8637 52.6015 88.6615 54.53 86.7268L74.48 66.7129L54.53 46.6991C52.6015 44.7644 52.6015 41.5622 54.53 39.6275C56.4585 37.6928 59.6505 37.6928 61.579 39.6275L85.0535 63.1772C87.0485 65.1118 87.0485 68.314 85.0535 70.2487Z"
+                  fill="#292D32"
+                />
+              </svg>
+            </StyledSVGButton>
 
-              <Button type="button" id="join_meeting_button">
-                입장하기
-              </Button>
-            </ButtonWithImage>
-          </Link>
+            <Button
+              type="button"
+              id="join_meeting_button"
+              onClick={openJoinModal}
+            >
+              입장하기
+            </Button>
+          </ButtonWithImage>
+          {/* </Link> */}
 
           <ButtonWithImage>
-            <StyledSVGButton onClick={openModal}>
+            <StyledSVGButton onClick={openReserveModal}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="108"
@@ -106,14 +134,17 @@ function UserMain() {
             <Button
               type="button"
               id="reserve_meeting_button"
-              onClick={openModal}
+              onClick={openReserveModal}
             >
               예약하기
             </Button>
           </ButtonWithImage>
         </ButtonFrame>
       </PageContent>
-      {isModalOpen && <Reservation closeModal={closeModal} />}
+      {/* {isModalOpen && <Reservation closeModal={closeModal} />} */}
+      {isCreateModalOpen && <CreateMeeting closeModal={closeCreateModal} />}
+      {isJoinModalOpen && <JoinMeeting closeModal={closeJoinModal} />}
+      {isReserveModalOpen && <Reservation closeModal={closeReserveModal} />}
     </>
   );
 }
