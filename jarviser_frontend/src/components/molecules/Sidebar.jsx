@@ -118,7 +118,7 @@ const SidebarContianer = styled.div`
   width: 170px;
   height: 104%;
   flex-shrink: 0;
-  background-color: #91C8E4;
+  background-color: #91c8e4;
 `;
 
 const StyledModal = styled(Modal)`
@@ -153,7 +153,7 @@ const PasswordInput = styled.input`
 `;
 
 const LoginButton = styled.button`
-  background-color: #0f62fe;
+  background-color: #91c8e4;
   border: none;
   padding: 8px 15px;
   border-radius: 4px;

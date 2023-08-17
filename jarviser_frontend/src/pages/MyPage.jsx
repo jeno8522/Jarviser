@@ -62,10 +62,13 @@ function MyPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log(response.data.response);
-      const { email, name, userProfileImgage } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
+      const { email, name } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
+      console.log(response.data.imgPath);
+      const url = response.data.imgPath;
+      const cleanedUrl = url.replace(/"/g, "");
       setUserEmail(email);
       setUserName(name);
+      setProfileImage(cleanedUrl);
     } catch (error) {
       console.log(error);
     }
@@ -133,19 +136,17 @@ function MyPage() {
       <MainHeader />
       <PageContent>
         <Sidebar />
-
-        <DataContainer>
-          <ProfileImageContainer>
-            <ProfileImage
-              src={profileImage || "defaultProfileImagePath.jpg"}
-              alt="Profile"
-            />
+        <ImgContainger>
+          <ProfileImageContainer $imgUrl={profileImage}>
+            <ProfileImage src={profileImage} alt="Profile" />
           </ProfileImageContainer>
           <ProfileInput
             type="file"
             accept="image/*"
             onChange={handleProfileImageChange}
           />
+        </ImgContainger>
+        <DataContainer>
           <BigBox>
             <Box>
               <h2>이메일</h2>
@@ -197,13 +198,23 @@ function MyPage() {
 }
 
 export default MyPage;
+const ImgContainger = styled.div`
+  align-items: center;
+  justify-content: center;
+  margin-left: 10%;
+`;
 const ProfileImageContainer = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   border: 1px solid #ddd;
-  border-radius: 50%;
+  border-radius: 40%;
   overflow: hidden;
   margin-bottom: 20px;
+  background-image: url(${(props) =>
+    props.$imgUrl || "defaultProfileImagePath.jpg"});
+  background-size: cover;
+  background-position: center;
+  margin: 20%;
 `;
 
 const ProfileImage = styled.img`
@@ -213,7 +224,8 @@ const ProfileImage = styled.img`
 `;
 
 const ProfileInput = styled.input`
-  display: block;
+  display: flex;
+  margin-left: 36%;
   margin-bottom: 20px;
 `;
 const PageContent = styled.div`
@@ -305,5 +317,5 @@ const ButtonContainer = styled.div`
 
 const DataContainer = styled.div`
   align-items: center;
-  margin-left: 55%;
+  margin-left: 10%;
 `;
