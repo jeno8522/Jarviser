@@ -53,6 +53,8 @@ public class StatisticsService {
     @Async
     @Transactional
     public CompletableFuture<Void> summarizeTranscript(Long meetingId) {
+        if (tempTranscriptHolder.isEmpty()) return null;
+
         TempTranscriptRecord tempTranscriptRecord = tempTranscriptHolder.get(meetingId);
         ArrayList<StringBuilder> partScripts = tempTranscriptRecord.getPartScripts();
         List<CompletableFuture<String>> futurePartSummaries = new ArrayList<>();
