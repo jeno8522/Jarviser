@@ -14,6 +14,9 @@ public interface AudioService {
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile)
             throws ServerException;
 
+    public List<AudioMessage> getAllSttByMeetingId(long meetingId);
+    public void moveStt(long myId, long upId, long downId) throws ServerException;
+
     public void removeAudioFile(String filePath) throws ServerException;
 
     public String getStt(String filePath) throws ServerException;
