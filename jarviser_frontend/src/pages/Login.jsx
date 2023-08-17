@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import jarviserImg from "../assets/images/내 프로젝트.png"; // 로고 이미지 경로
 import Header from "../components/molecules/Navigation";
 import { useEffect } from "react";
 
@@ -44,9 +43,10 @@ function Login() {
       <Header />
 
       <Whole>
-        <ImageLogo src={jarviserImg} alt="Jarviser Logo" />
         <RightColumn>
-          <LoginHeadLine>login</LoginHeadLine>
+          <LoginHeadLine>
+            <h1>Login</h1>
+            </LoginHeadLine>
           <LoginForm onSubmit={handleSubmit(onSubmit)}>
             <LoginLabel htmlFor="email">이메일</LoginLabel>
             <LoginField
@@ -136,48 +136,46 @@ const ImageLogo = styled.img`
 `;
 
 const RightColumn = styled.div`
-  margin-left = 100px;
-  display: flex;
-  width: 40%;
-  height: 90%;
-  padding: 40px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  box-sizing: border-box;
-  background: linear-gradient(45deg, #b3daff, #4da6ff);
-  color: white; // 텍스트 색상 변경
-  border-radius: 20px; // 모서리 둥글게
-  left-margin:100%;
+display: flex;
+width: 50%;
+height: 80%;
+padding: 40px;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+box-sizing: border-box;
+margin-bottom: 100px;
 `;
 
 const LoginForm = styled.form`
-  margin-top = 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 40%;
-  gap: 8px;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+width: 40%;
+gap: 8px; // 각 필드와 레이블 사이의 간격
 `;
 
 const LoginLabel = styled.label`
-  align-self: stretch;
-  color: var(--cool-gray-70, #4d5358);
-  font-family: "Roboto", sans-serif;
-  font-size: 18px; // 크기 조정
-  font-weight: 600; // 굵기 조정
-  margin-bottom: 4px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+align-self: stretch;
+color: var(--cool-gray-70, #4d5358); // 글씨 색상 변경
+font-family: "Roboto", sans-serif;
+font-size: 16px; // 글자 크기 조정
+font-weight: 500; // 글씨 두께 조정
+margin-bottom: 4px; // 아래쪽 마진 추가
+letter-spacing: 0.5px; // 글자 간격 조정
+text-transform: uppercase; // 대문자 변환
 `;
 
 const LoginField = styled.input`
-  width: 200%;
-  height: 15px;
-  padding: 6px;
-  border: 1px solid var(--cool-gray-30, #c1c7cd);
-  border-radius: 4px;
-  background: var(--cool-gray-10, #f2f4f8);
+width: 500px;
+height: 32px;
+font-size: 15px;
+border: 0;
+border-radius: 15px;
+outline: none;
+padding-left: 10px;
+background-color: #F6F4EB;
+
   color: var(--cool-gray-60, #697077);
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -194,21 +192,20 @@ const LoginField = styled.input`
 
 const LoginButton = styled.button`
   width: 200px; // 너비 조정
+  width: 100%; // 전체 너비
   height: 48px;
   padding: 12px;
-  border: none;
-  border-radius: 4px;
-  background: linear-gradient(45deg, #2e2efe, #4da6ff);
-  color: white;
+  border: none; // 테두리 제거
+  border-radius: 4px; // 모서리 둥글게
+  background: #4682A9;
+  color: white; // 글씨색 변경
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); // 그림자 효과 추가
-  margin-top: 100px;
-  margin-left: 70%;
-  border-radius: 999px;
+  font-weight: 500; // 글씨 두껍게
+  cursor: pointer; // 마우스 커서 변경
+  transition: background 0.3s ease; // 효과 추가
+  margin-top: 10px;
+  margin-left: 45%;
   &:hover {
     background: var(--primary-50, #0043ce);
     transform: translateY(-2px); // 호버 시 약간 위로 이동
@@ -226,15 +223,13 @@ const LoginButton = styled.button`
 `;
 
 const LoginHeadLine = styled.h1`
-  font-family: "Roboto", sans-serif;
-  font-size: 32px; // 크기 조정
-  font-weight: 700; // 굵기 조정
-  color: white; // 색상 변경
-  text-align: left;
-  letter-spacing: -1px;
-  margin-top: 50px;
-  margin-bottom: 0px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); // 텍스트 그림자 추가
+font-family: "Roboto", sans-serif;
+font-size: 24px; // 글자 크기 조정
+font-weight: 500; // 글씨 두껍게
+color: #4682A9; // 글씨 색상 변경
+text-align: left; // 왼쪽 정렬
+letter-spacing: -1px; // 글자 간격 조정
+margin-bottom: 0px; // Header와 Form 간격 조정
 `;
 
 export default Login;
