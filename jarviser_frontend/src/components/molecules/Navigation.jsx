@@ -38,9 +38,9 @@ const LoginButton = styled.button`
   flex-shrink: 0;
   border-radius: 999px;
   border: none;
-  border: 2px solid #0e50cc;
-  background-color: transparent;
-  color: #0e50cc;
+  border: 2px solid #4682A9;
+  background-color: #F6F4EB;
+  color: #4682A9;
   margin-right: 10px;
 `;
 
@@ -53,9 +53,9 @@ const SignupButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   border-radius: 999px;
-  border: 2px solid var(--primary-60, #0f62fe);
-  background: var(--primary-60, #0f62fe);
-  color: white;
+  border: 2px solid var(--primary-60, #4682A9);
+  background: var(--primary-60, #4682A9);
+  color: #F6F4EB;
   margin: 2px;
 `;
 
@@ -71,7 +71,7 @@ const HeaderContainer = styled.div`
   width: 1800;
   height: 94px;
   flex-shrink: 0;
-  background-color: #cae1fd;
+  background-color: #91C8E4;
   justify-content: space-between;
   align-items: center;
 `;

@@ -116,5 +116,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userId);
         user.setProfilePictureUrl(filePath);
         userRepository.save(user);
+        System.out.println("DB에 저장 성공");
     }
 }
