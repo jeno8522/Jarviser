@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -33,9 +38,35 @@ public class AudioServiceImp implements AudioService {
     private final UserService userService;
     private final HashMap<Long, Long> indexMap = new HashMap<>();
     private final Gson gson = new Gson();
-    private final String projectPath = System.getProperty("user.dir");
-    private final String beforeAudioPath = projectPath + "/audio/preprocess/beforeAudio.webm";
-    private final String afterAudioPath = projectPath + "/audio/preprocess/afterAudio.webm";
+    private final String rootPath = System.getProperty("user.dir");
+
+    private final String beforeAudioPath = saveAudioFileToTemp("audio/beforeAudio.webm");
+    private final String afterAudioPath = saveAudioFileToTemp("audio/afterAudio.webm");
+
+    private String saveAudioFileToTemp(String resourcePath) {
+        String path = rootPath + resourcePath;
+        try {
+            InputStream inStream = new ClassPathResource(resourcePath).getInputStream();
+
+            // 목적지 파일 경로를 설정합니다.
+            Path outputPath = Paths.get(path);
+
+            // 디렉터리가 없으면 생성합니다.
+            Files.createDirectories(outputPath.getParent());
+
+            try (OutputStream outStream = Files.newOutputStream(outputPath)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inStream.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, bytesRead);
+                }
+            }
+        }catch (Exception e) {
+            log.error("save audio file to temp error", e);
+            throw new ServerException("save audio file to temp error");
+        }
+        return path;
+    }
 
     @Override
     public Long getTimeOfAudio(MultipartFile audioFile) {
@@ -70,7 +101,7 @@ public class AudioServiceImp implements AudioService {
 
     @Override
     public String saveAudioFile(String mId, long userId, long startTime, MultipartFile audioFile) {
-        String filePath = projectPath +"/" + "audio/" + mId + "/" + userId + "/" + startTime + ".webm";
+        String filePath = rootPath +"/" + "audio/" + mId + "/" + userId + "/" + startTime + ".webm";
         try {
             File savedFile = new File(filePath);
             if (!savedFile.getParentFile().exists()) {
@@ -87,7 +118,11 @@ public class AudioServiceImp implements AudioService {
 
 
     private String createPreprocessAudioFile(String filePath) {
-        String tempFilePath = projectPath + "/audio/temp/" + System.currentTimeMillis() + ".webm";
+        String tempFilePath = rootPath + "/audio/temp/" + System.currentTimeMillis() + ".webm";
+        File tempFile = new File(tempFilePath);
+            if (!tempFile.getParentFile().exists()) {
+                tempFile.getParentFile().mkdirs();
+            }
 
         String command = String.format(
                 "ffmpeg -i %s -i %s -i %s -filter_complex [0:a][1:a][2:a]concat=n=3:v=0:a=1[aout] -map [aout] %s",
@@ -138,9 +173,12 @@ public class AudioServiceImp implements AudioService {
         String stt;
         try {
             String tempFilePath = createPreprocessAudioFile(filePath);
-            String textResponse = openAIService.whisperAPICall(tempFilePath).block();
-            stt = postprocessStt((String) gson.fromJson(textResponse, HashMap.class).get("text"));
-            removeAudioFile(tempFilePath);
+            try{
+                String textResponse = openAIService.whisperAPICall(tempFilePath).block();
+                stt = postprocessStt((String) gson.fromJson(textResponse, HashMap.class).get("text"));
+            }finally {
+                removeAudioFile(tempFilePath);
+            }
             return stt;
         } catch (Exception e) {
             log.error("get stt error", e);
