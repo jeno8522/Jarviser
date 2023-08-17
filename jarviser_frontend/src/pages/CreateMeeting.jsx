@@ -109,95 +109,90 @@ const CreateMeeting = () => {
   const handleUserNameChange = (event) => {
     setUserName(payloadUserName);
   };
-  const CreateContainer = styled.div`
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f9f9f9;
-    min-height: 100vh;
-  `;
-
-  const Form = styled.form`
-    background-color: #f6f4eb;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  `;
-
-  const Label = styled.label`
-    display: block;
-    margin-bottom: 15px;
-  `;
-
-  const Input = styled.input`
-    width: 90%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  `;
-
-  const Button = styled.button`
-    background-color: #91c8e4;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-  `;
 
   return (
     <>
       <Navigation></Navigation>
-      <CreateContainer>
-        <Form onSubmit={handleSubmit}>
-          <Label>
-            User Name:
-            <Input
-              type="text"
-              value={payloadUserName}
-              onChange={handleUserNameChange}
-            />
-          </Label>
-          <Label>
-            Session Name:
-            <Input
-              type="text"
-              value={sessionName}
-              onSubmit={handleSessionNameChange}
-              placeholder="방 이름을 입력해주세요"
-            />
-            {/* <Button
-            type="button"
-            onClick={handleCopy}
-            style={{marginTop: "10px"}}
-          >
-            Copy
-          </Button> */}
-          </Label>
-          <Button type="submit" style={{marginTop: "20px"}}>
-            Submit
-          </Button>
-        </Form>
-        {showVideoRoom && (
-          <VideoRoomComponent
-            userName={payloadUserName}
-            sessionName={sessionName}
-            meetingId={encryptedKey}
+
+      <Form onSubmit={handleSubmit}>
+        <Label>
+          User Name:
+          <Input
+            type="text"
+            value={payloadUserName}
+            onChange={handleUserNameChange}
+            readOnly
           />
-        )}
-      </CreateContainer>
+        </Label>
+        <Label>
+          Session Name:
+          <Input
+            type="text"
+            placeholder="방 이름을 입력해주세요"
+            onChange={handleSessionNameChange}
+          />
+        </Label>
+        <Button type="submit" style={{marginTop: "20px"}}>
+          Submit
+        </Button>
+      </Form>
+
+      {showVideoRoom && (
+        <VideoRoomComponent
+          userName={payloadUserName}
+          sessionName={sessionName}
+          meetingId={encryptedKey}
+        />
+      )}
     </>
   );
 };
+const CreateContainer = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+`;
 
+const Form = styled.form`
+  background-color: #f6f4eb;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  position: absolute;
+  top: 30%;
+  left: 35%;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 15px;
+`;
+
+const Input = styled.input`
+  width: 90%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const Button = styled.button`
+  background-color: #91c8e4;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 export default CreateMeeting;

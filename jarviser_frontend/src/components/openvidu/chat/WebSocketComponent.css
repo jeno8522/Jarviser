@@ -30,9 +30,15 @@
   border-radius: 20px;
   background-color: #fff;
   max-width: 70%;
-  display: inline-block;
+  /* display: inline-block; */
   word-wrap: break-word;
-  transition: opacity 0.3s;
+  transition: top 0.3s ease-in-out;
+  position: relative;
+}
+.chat-message.dragging {
+  opacity: 0.5;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .sent {
@@ -46,4 +52,10 @@
 
 .dragging {
   opacity: 0; /* 드래그 중인 요소를 보이지 않게 합니다 */
+}
+
+#sttChatUserName {
+  /* background-color: #f0f0f0 !important; */
+  color: #dfdfdf !important;
+  z-index: 100000;
 }

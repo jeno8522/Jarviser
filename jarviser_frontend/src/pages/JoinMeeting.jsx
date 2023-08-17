@@ -93,6 +93,9 @@ const JoinMeeting = () => {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    position: absolute;
+    top: 30%;
+    left: 35%;
   `;
 
   const Label = styled.label`
@@ -126,27 +129,26 @@ const JoinMeeting = () => {
   return (
     <>
       <Navigation></Navigation>
-      <JoinContainer>
-        <Form onSubmit={handleSubmit}>
-          <Label>
-            User Name:
-            <Input type="text" value={payloadUserName} readOnly />
-          </Label>
-          <Label>
-            Encrypted Key:
-            <Input type="text" value={encryptedKey} readOnly />
-          </Label>
-          <Button type="submit" style={{marginTop: "20px"}}>
-            Submit
-          </Button>
-        </Form>
-        {showVideoRoom && (
-          <VideoRoomComponent
-            userName={payloadUserName}
-            meetingId={encryptedKey}
-          />
-        )}
-      </JoinContainer>
+
+      <Form onSubmit={handleSubmit}>
+        <Label>
+          User Name:
+          <Input type="text" value={payloadUserName} readOnly />
+        </Label>
+        <Label>
+          Encrypted Key:
+          <Input type="text" value={encryptedKey} readOnly />
+        </Label>
+        <Button type="submit" style={{marginTop: "20px"}}>
+          Submit
+        </Button>
+      </Form>
+      {showVideoRoom && (
+        <VideoRoomComponent
+          userName={payloadUserName}
+          meetingId={encryptedKey}
+        />
+      )}
     </>
   );
 };
