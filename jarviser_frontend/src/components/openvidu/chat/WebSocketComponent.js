@@ -88,15 +88,15 @@ class WebSocketComponent extends React.Component {
     let meetingId = this.props.meetingId;
     this.state = {
       messages: [
-        '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
-        '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
-        '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:50", "type": "connect", "userName": "1번참가자", "userId": "1", "content": "의뻘소리"}',
+        // '{"time": "16:32:51", "type": "connect", "userName": "2번참가자", "userId": "2", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
+        // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
       ],
 
       meetingId: meetingId,
@@ -116,7 +116,7 @@ class WebSocketComponent extends React.Component {
         this.setState({userId: parsedToken.userId});
       }
     }
-    const socket = new SockJS(window.SERVER_URL+"/ws");
+    const socket = new SockJS(window.SERVER_URL + "/ws");
     const stompClient = Stomp.over(socket);
     const meetingId = this.state.meetingId;
     stompClient.connect({}, function (frame) {
