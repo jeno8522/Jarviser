@@ -28,10 +28,9 @@ const ReportDetail = () => {
 
   const getMeetingDetails = async () => {
     try {
-
       // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
       const meetingEnded = await axios.get(
-        `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `http://localhost:8081/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -39,7 +38,7 @@ const ReportDetail = () => {
       );
 
       const responseAudioMessage = await axios.get(
-        `http://localhost:8081/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `http://localhost:8081/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -47,7 +46,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `http://localhost:8081/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `http://localhost:8081/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -55,7 +54,7 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `http://localhost:8081/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `http://localhost:8081/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -153,7 +152,9 @@ const ReportDetail = () => {
         <Sidebar />
         <ContentContainer>
           <h1>회의 상세 정보</h1>
-          {!isLoading && (
+          {isLoading ? (
+            <LoadingSpinner /> // 또는 <LoadingMessage />
+          ) : (
             <ContentWrapper>
               <AudioWrapper>
                 {audioMessages.map((audio, index) => (
@@ -248,6 +249,9 @@ const SpeechWrapper = styled.div`
   width: 30rem;
   height: 30rem;
   margin-bottom: 50px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 `;
 
 const KeywordWrapper = styled.div`
@@ -263,5 +267,24 @@ const DownloadButton = styled.button`
   margin-top: 10px;
   cursor: pointer;
 `;
+
+const LoadingSpinner = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 15px solid rgba(0, 0, 0, 0.1);
+  border-top: 15px solid #4682A9;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 
 // ... (기타 스타일 계속 유지)

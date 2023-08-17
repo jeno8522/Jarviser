@@ -75,7 +75,7 @@ const CalendarData = styled.div`
 const MeetingTime = styled.div`
   span {
     font-size: 30px;
-    background-color: #cae1fd;
+    background-color: #91C8E4;
     border-radius: 10px;
     padding: 0 5px; // 배경색이 텍스트를 약간 감싸도록 패딩 추가
   }

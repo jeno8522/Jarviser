@@ -144,9 +144,9 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  border: 2px solid #4682A9;
-  background: #4682A9;
-  color: var(--default-white, #fff);
+  border: solid 2px #749BC2;
+  background-color: white;
+  color: #749BC2;
   cursor: pointer;
 
   /* Button/L */
