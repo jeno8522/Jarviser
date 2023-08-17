@@ -30,7 +30,7 @@ function MyPage() {
 
   async function GetUser() {
     try {
-      const response = await axios.get("http://localhost:8081/user/mypage", {
+      const response = await axios.get(window.SERVER_URL+"/user/mypage", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -58,7 +58,7 @@ function MyPage() {
 
     try {
       const response = await axios.patch(
-        "http://localhost:8081/user/update",
+        window.SERVER_URL+"/user/update",
         {
           name: userName,
           password: userPassword,
@@ -79,7 +79,7 @@ function MyPage() {
   const handleDelete = async () => {
     try {
       setIsDeleting(true); // 탈퇴 중 상태로 변경
-      await axios.delete("http://localhost:8081/user/delete", {
+      await axios.delete(window.SERVER_URL+"/user/delete", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

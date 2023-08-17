@@ -72,7 +72,7 @@ class WebSocketComponent extends React.Component {
         this.setState({userId: parsedToken.userId});
       }
     }
-    const socket = new SockJS("http://localhost:8081/ws");
+    const socket = new SockJS(window.SERVER_URL+"/ws");
     const stompClient = Stomp.over(socket);
     const meetingId = this.state.meetingId;
     stompClient.connect({}, function (frame) {

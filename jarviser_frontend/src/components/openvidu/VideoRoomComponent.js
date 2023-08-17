@@ -232,7 +232,7 @@ class VideoRoomComponent extends Component {
   }
 
   handleEndMeeting = async () => {
-    const endpoint = `http://localhost:8081/meeting/end/${this.state.meetingId}`;
+    const endpoint = `${window.SERVER_URL}/meeting/end/${this.state.meetingId}`;
     const accessToken = localStorage.getItem("access-token");
 
     try {
@@ -580,7 +580,7 @@ class VideoRoomComponent extends Component {
   }
   copyMeetingIdToClipboard() {
     const el = document.createElement("textarea");
-    el.value = `http://localhost:3000/joinMeeting/${this.state.meetingId}`;
+    el.value = `https://i9a506.p.ssafy.io:4443/joinMeeting/${this.state.meetingId}`;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
