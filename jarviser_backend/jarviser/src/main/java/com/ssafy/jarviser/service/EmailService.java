@@ -46,7 +46,7 @@ public class EmailService {
     // CONSIDER
     //1. 모두 읽어들인 후 비즈니스 로직으로 10분 이내로 남은걸 뽑아낼 것이냐
     //2. 쿼리에서 10분 이내로 남은걸 뽑아낼 것이냐
-    @Scheduled(fixedRate = 30000*1000)
+    @Scheduled(fixedRate = 1200*1000)
     public void checkReservationTask(){
         log.info("--------scheduling-----------");
         LocalDateTime curTime = LocalDateTime.now();
