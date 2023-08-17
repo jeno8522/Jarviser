@@ -5,14 +5,18 @@ import {DndProvider, useDrag, useDrop} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
+import axios from "axios";
+
 const ItemType = {
   MESSAGE: "message",
 };
 
 //현웅 이거 만들어놓음 에러날 순 있음
 const handleMoveMesseage = async (from, to) => {
-  event.preventDefault();
+  // event.preventDefault();
   console.log("from === ", from, "to === ", to);
+  const accessToken = localStorage.getItem("access-token");
+
   const endpoint = `http://localhost:8081/meeting/현웅,값을넣어야해`;
   // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
   try {
