@@ -23,7 +23,19 @@ function MyPage() {
   const [userName, setUserName] = useState("");
   const [modalOpen, setModalOpen] = useState(false); // 모달창 띄우기 여부 상태
   const [isDeleting, setIsDeleting] = useState(false); // 회원 탈퇴 중 여부 상태
+  const [profileImage, setProfileImage] = useState(null); // 사용자의 프로필 이미지를 저장할 상태
 
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result); // 이미지 파일의 내용을 base64 형식으로 상태에 저장
+      };
+      reader.readAsDataURL(file);
+    }
+    axios.post("http://localhost:8081/user/upload", {});
+  };
   useEffect(() => {
     GetUser();
   }, []);
@@ -105,7 +117,19 @@ function MyPage() {
       <MainHeader />
       <PageContent>
         <Sidebar />
+
         <DataContainer>
+          <ProfileImageContainer>
+            <ProfileImage
+              src={profileImage || "defaultProfileImagePath.jpg"}
+              alt="Profile"
+            />
+          </ProfileImageContainer>
+          <ProfileInput
+            type="file"
+            accept="image/*"
+            onChange={handleProfileImageChange}
+          />
           <BigBox>
             <Box>
               <h2>이메일</h2>
@@ -119,7 +143,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="text"
-    
                 value={userName}
                 onChange={handleChangeName}
               />
@@ -130,7 +153,6 @@ function MyPage() {
               </Box>
               <DataInput
                 type="password"
-              
                 value={userPassword}
                 onChange={handleChangePassword}
               />
@@ -159,7 +181,25 @@ function MyPage() {
 }
 
 export default MyPage;
+const ProfileImageContainer = styled.div`
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+`;
 
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const ProfileInput = styled.input`
+  display: block;
+  margin-bottom: 20px;
+`;
 const PageContent = styled.div`
   display: flex;
   width: 80%; // 너비를 100%로 설정
