@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {useState} from "react";
+import {useForm} from "react-hook-form";
 import Signup from "../../pages/Signup";
 import Login from "../../pages/Login";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Header from "./Header";
 function Navigation() {
@@ -42,6 +42,7 @@ const LoginButton = styled.button`
   background-color: #f6f4eb;
   color: #4682a9;
   margin-right: 10px;
+  cursor: pointer;
 `;
 
 const SignupButton = styled.button`
@@ -57,6 +58,7 @@ const SignupButton = styled.button`
   background: var(--primary-60, #4682a9);
   color: #f6f4eb;
   margin: 2px;
+  cursor: pointer;
 `;
 
 const NavigationContainer = styled.div`

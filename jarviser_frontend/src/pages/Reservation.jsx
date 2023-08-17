@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import styled from "styled-components";
+import { FaTimes } from "react-icons/fa";
 
 function Reservation({ closeModal }) {
   const navigate = useNavigate();
@@ -185,9 +186,7 @@ function Reservation({ closeModal }) {
             {userEmail.map((email, index) => (
               <EmailItem key={index}>
                 {email}
-                <Button type="button" onClick={() => deleteUser(index)}>
-                  삭제
-                </Button>
+                <DeleteIcon onClick={() => deleteUser(index)} />
               </EmailItem>
             ))}
 
@@ -209,6 +208,7 @@ const ReservationHeader = styled.div`
   margin-bottom: 20px;
 `;
 
+
 const RightContainer = styled.div`
   flex: 1;
   display: flex;
@@ -218,7 +218,7 @@ const RightContainer = styled.div`
 
 const SubmitButton = styled.button`
   padding: 15px 30px;
-  background: #28a745;
+  background: #749bc2;
   color: #fff;
   border-radius: 10px;
   border: none;
@@ -257,18 +257,13 @@ const ContentLabel = styled.label`
 
 const TitleText = styled.input`
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const TimeField = styled.div`
@@ -279,18 +274,13 @@ const TimeField = styled.div`
 
 const TimeText = styled.input`
   width: 48%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const DescField = styled.div`
@@ -300,18 +290,10 @@ const DescField = styled.div`
 const DescText = styled.textarea`
   width: 100%;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border-radius: 20px;
   font-size: 16px;
   min-height: 100px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  background-color: #91c8e4;
 `;
 
 const EmailField = styled.div`
@@ -320,19 +302,13 @@ const EmailField = styled.div`
 
 const EmailText = styled.input`
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  margin-bottom: 10px;
-
-  border: 2px solid #007bff; // 테두리를 두껍게 하고 파란색으로 변경
-  transition: border-color 0.3s, box-shadow 0.3s; // 트랜지션 효과 추가
-
-  &:focus {
-    border-color: #0056b3; // 포커스될 때 테두리 색상 변경
-    box-shadow: 0 0 5px rgba(0, 56, 179, 0.3); // 포커스될 때 그림자 효과 추가
-  }
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: #91c8e4;
 `;
 
 const ModalContent = styled.div`
@@ -384,7 +360,7 @@ const Button = styled.button`
 
 const AddButton = styled.button`
   padding: 10px 10px;
-  background: #007bff;
+  background: #749bc2;
   color: #fff;
   border-radius: 5px;
   border: none;
@@ -409,6 +385,8 @@ const EmailItem = styled.div`
   background-color: #f3f4f6;
 `;
 
+
+
 const Form = styled.form`
   display: flex;
   justify-content: space-between; // 필요에 따라 조정
@@ -420,7 +398,15 @@ const LeftContainer = styled.div`
   flex: 1;
   padding-right: 40px; // 오른쪽 컨테이너와 간격을 조정
 `;
+const DeleteIcon = styled(FaTimes)`
+  color: #ff0000;
+  cursor: pointer;
+  transition: color 0.3s;
 
+  &:hover {
+    color: #cc0000;
+  }
+`;
 // const RightContainer = styled.div`
 //   flex: 1;
 // `;
