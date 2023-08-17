@@ -1,3 +1,4 @@
+
 package com.ssafy.jarviser.domain;
 
 import jakarta.persistence.*;
@@ -25,3 +26,4 @@ public class Report {
     private Meeting meeting;
 
 }
+

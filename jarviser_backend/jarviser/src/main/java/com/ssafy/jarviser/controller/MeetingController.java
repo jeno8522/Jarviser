@@ -1,13 +1,12 @@
+
 package com.ssafy.jarviser.controller;
 
-import com.ssafy.jarviser.domain.AudioMessage;
-import com.ssafy.jarviser.domain.KeywordStatistics;
-import com.ssafy.jarviser.domain.Meeting;
-import com.ssafy.jarviser.domain.ParticipantStatistics;
+import com.ssafy.jarviser.domain.*;
 import com.ssafy.jarviser.dto.KeywordStatisticsDTO;
 import com.ssafy.jarviser.dto.ParticipantsStaticsDTO;
 import com.ssafy.jarviser.dto.RequestUpdateAudioMessageDto;
 import com.ssafy.jarviser.dto.ResponseAudioMessageDTO;
+import com.ssafy.jarviser.repository.ReportRepository;
 import com.ssafy.jarviser.security.JwtService;
 import com.ssafy.jarviser.service.AudioService;
 import com.ssafy.jarviser.service.MeetingService;
@@ -188,7 +187,7 @@ public class MeetingController {
 
             long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
             System.out.println("meeting ID : ---------------->" + meetingId);
-            //statisticsService.summarizeTranscript(meetingId);
+            statisticsService.summarizeTranscript(meetingId);
 
             //  <----- 키워드 디비에 저장 하기 ----->
             //  1. chat gpt 를 이용하여 keyword 통계 계산하기
@@ -235,6 +234,23 @@ public class MeetingController {
                 allKeywordStatisticsDTO.add(keywordStatisticsDTO);
             }
             response.put("statistics", allKeywordStatisticsDTO);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(response, httpStatus);
+    }
+
+    @GetMapping("/summary/{encryptedKey}")
+    public ResponseEntity<Map<String, Object>> meetingSummary(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String encryptedKey
+    ) {
+        long meetingId = Long.parseLong(aesEncryptionUtil.decrypt(encryptedKey));
+        Map<String, Object> response = new HashMap<>();
+        HttpStatus httpStatus = HttpStatus.OK;
+        try {
+            String summary = statisticsService.getSummary(meetingId);
+            response.put("statistics", summary);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
