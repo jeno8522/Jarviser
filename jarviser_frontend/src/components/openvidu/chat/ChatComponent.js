@@ -14,9 +14,11 @@ export default class ChatComponent extends Component {
     this.state = {
       messageList: [],
       message: "",
+      sessionName: "",
     };
     this.chatScroll = React.createRef();
-
+    this.state.sessionName = this.props.sessionName;
+    console.log("props.sessionName === ", props.sessionName);
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.close = this.close.bind(this);
@@ -112,8 +114,8 @@ export default class ChatComponent extends Component {
         <div id="chatComponent" style={styleChat}>
           <div id="chatToolbar">
             <span>
-              {this.props.user.getStreamManager().stream.session.sessionId} -
-              CHAT
+              {/* {this.props.user.getStreamManager().stream.session.sessionId} */}
+              {this.state.sessionName}
             </span>
             <IconButton id="closeButton" onClick={this.close}>
               <HighlightOff color="secondary" />

@@ -160,17 +160,6 @@
   background: #f3a95f;
 }
 
-.react-calendar__tile .dot {
-  width: 5px;
-  height: 5px;
-  background-color: #428bca;
-  border-radius: 5rem;
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .dot {
   position: relative;
 }

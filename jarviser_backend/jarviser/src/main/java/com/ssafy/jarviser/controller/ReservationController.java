@@ -68,6 +68,7 @@ public class ReservationController {
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getReservationList(
             @RequestHeader("Authorization") String token) {
+        log.info("Received token: {}", token);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         token = token.split(" ")[1];

@@ -4,7 +4,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
-
+import styled from "styled-components";
+import Navigation from "../components/molecules/Navigation";
 const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -24,7 +25,7 @@ const CreateMeeting = () => {
   }, [accessToken, navigate]);
 
   const [userName, setUserName] = useState();
-  const [sessionName, setSessionName] = useState("test방");
+  const [sessionName, setSessionName] = useState();
   const [showVideoRoom, setShowVideoRoom] = useState(false);
   const [encryptedKey, setEncryptedKey] = useState("");
   function base64UrlDecode(str) {
@@ -87,56 +88,115 @@ const CreateMeeting = () => {
       alert("An error occurred while creating the meeting. Please try again.");
     }
   };
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(sessionName)
-      .then(() => {
-        alert("Session Name copied to clipboard!");
-      })
-      .catch((err) => {
-        alert("Failed to copy!");
-      });
+  // const handleCopy = () => {
+  //   navigator.clipboard
+  //     .writeText(sessionName)
+  //     .then(() => {
+  //       alert("Session Name copied to clipboard!");
+  //     })
+  //     .catch((err) => {
+  //       alert("Failed to copy!");
+  //     });
+  // };
+  const handleInputFocus = () => {
+    if (!sessionName) {
+      setSessionName("");
+    }
   };
-
   const handleSessionNameChange = (event) => {
     setSessionName(event.target.value);
   };
   const handleUserNameChange = (event) => {
     setUserName(payloadUserName);
   };
+  const CreateContainer = styled.div`
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  `;
+
+  const Form = styled.form`
+    background-color: #f6f4eb;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  `;
+
+  const Label = styled.label`
+    display: block;
+    margin-bottom: 15px;
+  `;
+
+  const Input = styled.input`
+    width: 90%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  `;
+
+  const Button = styled.button`
+    background-color: #91c8e4;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  `;
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User Name:
-          <input
-            type="text"
-            value={payloadUserName}
-            onChange={handleUserNameChange}
-          />
-        </label>
-        <label>
-          Session Name:
-          <input
-            type="text"
-            value={sessionName}
-            onChange={handleSessionNameChange}
-          />
-          <button type="button" onClick={handleCopy}>
+    <>
+      <Navigation></Navigation>
+      <CreateContainer>
+        <Form onSubmit={handleSubmit}>
+          <Label>
+            User Name:
+            <Input
+              type="text"
+              value={payloadUserName}
+              onChange={handleUserNameChange}
+            />
+          </Label>
+          <Label>
+            Session Name:
+            <Input
+              type="text"
+              value={sessionName}
+              onSubmit={handleSessionNameChange}
+              placeholder="방 이름을 입력해주세요"
+            />
+            {/* <Button
+            type="button"
+            onClick={handleCopy}
+            style={{marginTop: "10px"}}
+          >
             Copy
-          </button>
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {showVideoRoom && (
-        <VideoRoomComponent
-          userName={payloadUserName}
-          sessionName={sessionName}
-          meetingId={encryptedKey}
-        />
-      )}
-    </div>
+          </Button> */}
+          </Label>
+          <Button type="submit" style={{marginTop: "20px"}}>
+            Submit
+          </Button>
+        </Form>
+        {showVideoRoom && (
+          <VideoRoomComponent
+            userName={payloadUserName}
+            sessionName={sessionName}
+            meetingId={encryptedKey}
+          />
+        )}
+      </CreateContainer>
+    </>
   );
 };
 

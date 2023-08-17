@@ -21,4 +21,7 @@ public interface UserService {
     User findUserByEmail(String email) throws Exception;
 
     Boolean checkUserPassword(RequestLoginDto loginDto) throws Exception;
+
+    //이미지 업로드
+    void uploadImg(long userId,String filePath) throws Exception;
 }

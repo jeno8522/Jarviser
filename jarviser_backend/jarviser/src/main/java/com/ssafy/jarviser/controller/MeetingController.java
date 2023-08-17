@@ -104,8 +104,8 @@ public class MeetingController {
 
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            e.printStackTrace();
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            log.error("error", e);
+            resultMap.put("message", e.getMessage());
         }
         return new ResponseEntity<>(resultMap, status);
     }
