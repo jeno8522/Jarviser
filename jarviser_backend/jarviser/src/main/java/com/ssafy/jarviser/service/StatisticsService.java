@@ -1,5 +1,9 @@
 package com.ssafy.jarviser.service;
 
+import com.nimbusds.jose.shaded.gson.JsonArray;
+import com.nimbusds.jose.shaded.gson.JsonElement;
+import com.nimbusds.jose.shaded.gson.JsonObject;
+import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.ssafy.jarviser.domain.Meeting;
 import com.ssafy.jarviser.domain.Report;
 import com.ssafy.jarviser.dto.TempTranscriptRecord;
@@ -93,6 +97,7 @@ public class StatisticsService {
         }).thenAccept(wholeSummary -> {
             if (wholeSummary != null) {
                 log.info("전체요약: {}", wholeSummary);
+
                 Meeting meeting = meetingRepository.findMeetingById(meetingId);
 
 
@@ -125,5 +130,10 @@ public class StatisticsService {
 
         tempTranscriptHolder.remove(meetingId); // 메모리 관리
         return allFutures;
+    }
+
+    public String getSummary(Long meetingId) {
+        Report report = reportRepository.getReferenceById(meetingId);
+        return report.getSummary();
     }
 }
