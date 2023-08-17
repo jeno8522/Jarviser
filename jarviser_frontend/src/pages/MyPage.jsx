@@ -43,7 +43,8 @@ function MyPage() {
           },
         })
         .then((response) => {
-          console.log("이미지 업로드에 성공했습니다: ", response.data);
+          console.log(formData);
+          console.log("이미지 업로드에 성공했습니다: ", response);
         })
         .catch((error) => {
           console.log("이미지 업로드 중 에러가 발생했습니다: ", error);
@@ -61,7 +62,8 @@ function MyPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const { email, name } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
+      console.log(response.data.response);
+      const { email, name, userProfileImgage } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
       setUserEmail(email);
       setUserName(name);
     } catch (error) {
@@ -226,7 +228,7 @@ const Box = styled.div`
   width: 140px;
   height: 100px;
   flex-shrink: 0;
-  background-color: #91C8E4;
+  background-color: #91c8e4;
   display: flex;
   justify-content: center; /* 가로 중앙 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -274,8 +276,8 @@ const ChangeButton = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  background: #4682A9;
-  color: #F6F4EB;
+  background: #4682a9;
+  color: #f6f4eb;
   border: none;
   border-radius: 999px;
   margin: 20px;
@@ -290,7 +292,7 @@ const WithdrawButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   background: red;
-  color: #F6F4EB;
+  color: #f6f4eb;
   border-radius: 999px;
   border: none;
   margin: 20px;

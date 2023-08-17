@@ -60,7 +60,9 @@ function MyReport() {
                 <p>Date: {report.date}</p>
               </MeetingInfo>
               <DetailButton>
-                <Link to={"/reportdetail"}>통계보기</Link>
+                <Link to={"/reportdetail"} className="no-underline">
+                  통계보기
+                </Link>
               </DetailButton>
             </MeetingLi>
           ))}
@@ -118,7 +120,6 @@ const DetailButton = styled.button`
   background-color: #4682a9;
   color: #f6f4eb !important;
 `;
-
 
 const AllContainer = styled.div`
   display: flex;

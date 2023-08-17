@@ -11,12 +11,12 @@ function Navigation() {
       <HeaderContainer>
         <Header />
         <NavigationContainer>
-          <Link to="/Login">
+          <Link to="/Login" className="no-underline">
             <LoginButton type="button" id="login_button">
               Login
             </LoginButton>
           </Link>
-          <Link to="/Signup">
+          <Link to="/Signup" className="no-underline">
             <SignupButton type="button" id="signup_button">
               Signup
             </SignupButton>
@@ -38,9 +38,9 @@ const LoginButton = styled.button`
   flex-shrink: 0;
   border-radius: 999px;
   border: none;
-  border: 2px solid #4682A9;
-  background-color: #F6F4EB;
-  color: #4682A9;
+  border: 2px solid #4682a9;
+  background-color: #f6f4eb;
+  color: #4682a9;
   margin-right: 10px;
 `;
 
@@ -53,9 +53,9 @@ const SignupButton = styled.button`
   align-items: center;
   flex-shrink: 0;
   border-radius: 999px;
-  border: 2px solid var(--primary-60, #4682A9);
-  background: var(--primary-60, #4682A9);
-  color: #F6F4EB;
+  border: 2px solid var(--primary-60, #4682a9);
+  background: var(--primary-60, #4682a9);
+  color: #f6f4eb;
   margin: 2px;
 `;
 
@@ -71,7 +71,7 @@ const HeaderContainer = styled.div`
   width: 1800;
   height: 94px;
   flex-shrink: 0;
-  background-color: #91C8E4;
+  background-color: #91c8e4;
   justify-content: space-between;
   align-items: center;
 `;
