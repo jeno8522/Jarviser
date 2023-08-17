@@ -1,9 +1,10 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
 import SttChatComponent from "../components/openvidu/chat/SttChatComponent";
+import styled from "styled-components";
 
 const HTTP_STATUS = {
   OK: 200,
@@ -13,9 +14,9 @@ const HTTP_STATUS = {
   UNAUTHORIZED: 401,
 };
 
-const CreateMeeting = () => {
+const CreateMeeting = ({ closeModal }) => {
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
@@ -91,10 +92,10 @@ const CreateMeeting = () => {
     navigator.clipboard
       .writeText(sessionName)
       .then(() => {
-        alert("Session Name copied to clipboard!");
+        alert("Meeting URL이 복사됐습니다.");
       })
       .catch((err) => {
-        alert("Failed to copy!");
+        alert("Meeting URL 복사에 실패했습니다.");
       });
   };
 
@@ -106,38 +107,110 @@ const CreateMeeting = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User Name:
-          <input
-            type="text"
-            value={payloadUserName}
-            onChange={handleUserNameChange}
+    <ModalBackground>
+      <ModalContainer>
+        <CloseButton onClick={closeModal}>×</CloseButton>
+        <Form onSubmit={handleSubmit}>
+          <Label>
+            User Name:
+            <Input
+              type="text"
+              value={payloadUserName}
+              onChange={handleUserNameChange}
+            />
+          </Label>
+          <Label>
+            Meeting Name:
+            <Input
+              type="text"
+              value={sessionName}
+              onChange={handleSessionNameChange}
+            />
+            <Button type="button" onClick={handleCopy}>
+              Copy
+            </Button>
+          </Label>
+          <Button type="submit">Submit</Button>
+        </Form>
+        {showVideoRoom && (
+          <VideoRoomComponent
+            userName={payloadUserName}
+            sessionName={sessionName}
+            meetingId={encryptedKey}
           />
-        </label>
-        <label>
-          Session Name:
-          <input
-            type="text"
-            value={sessionName}
-            onChange={handleSessionNameChange}
-          />
-          <button type="button" onClick={handleCopy}>
-            Copy
-          </button>
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {showVideoRoom && (
-        <VideoRoomComponent
-          userName={payloadUserName}
-          sessionName={sessionName}
-          meetingId={encryptedKey}
-        />
-      )}
-    </div>
+        )}
+      </ModalContainer>
+    </ModalBackground>
   );
 };
 
 export default CreateMeeting;
+
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const ModalContainer = styled.div`
+  position: relative;
+  width: 70%;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const Button = styled.button`
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+
+  &:hover {
+    color: #ff0000;
+  }
+`;

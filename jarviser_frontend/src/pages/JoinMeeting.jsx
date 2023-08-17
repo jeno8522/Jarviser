@@ -1,14 +1,15 @@
-import {useState} from "react";
+import { useState } from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
-const JoinMeeting = () => {
+const JoinMeeting = ({ closeModal }) => {
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
@@ -55,14 +56,11 @@ const JoinMeeting = () => {
 
     // 미팅에 참여하기 위해 서버에 요청을 보냅니다.
     try {
-      const response = await axios.get(
-        endpoint,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       console.log("response === ", response);
       if (response.status === 202) {
@@ -80,27 +78,98 @@ const JoinMeeting = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User Name:
-          <input type="text" value={payloadUserName} readOnly />
-        </label>
-        <label>
-          Encrypted Key:
-          <input type="text" value={encryptedKey} readOnly />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {showVideoRoom && (
-        <VideoRoomComponent
-          userName={payloadUserName}
-          meetingId={encryptedKey}
-        />
-        // <VideoRoomComponent />
-      )}
-    </div>
+    <ModalBackground>
+      <ModalContainer>
+        <CloseButton onClick={closeModal}>×</CloseButton>
+        <Form onSubmit={handleSubmit}>
+          <Label>
+            User Name:
+            <Input type="text" value={payloadUserName} readOnly />
+          </Label>
+          <Label>
+            Encrypted Key:
+            <Input type="text" value={encryptedKey} readOnly />
+          </Label>
+          <Button type="submit">Submit</Button>
+        </Form>
+        {showVideoRoom && (
+          <VideoRoomComponent
+            userName={payloadUserName}
+            meetingId={encryptedKey}
+          />
+        )}
+      </ModalContainer>
+    </ModalBackground>
   );
 };
 
 export default JoinMeeting;
+
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const ModalContainer = styled.div`
+  position: relative;
+  width: 70%;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+`;
+
+const Button = styled.button`
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+
+  &:hover {
+    color: #ff0000;
+  }
+`;
