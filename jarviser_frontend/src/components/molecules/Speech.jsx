@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import { PieChart } from "react-minimal-pie-chart";
 import styled from "styled-components";
 
-const Speech = ({ speechPercentage }) => {
+const Speech = ({ speechPercentage = [] }) => {
+  // 초기값 설정
   const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
+    if (!Array.isArray(speechPercentage)) {
+      // 배열인지 확인
+      return;
+    }
+
     // 데이터 필터링: NaN이 아닌 값만 추출하여 newData 배열에 저장
     const newData = speechPercentage.filter((item) => !isNaN(item.percentage));
 

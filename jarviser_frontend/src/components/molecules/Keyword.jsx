@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar, Chart } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,8 +12,8 @@ import styled from "styled-components";
 
 ChartJS.register(CategoryScale, LinearScale, Legend, BarElement, Tooltip);
 
-const Keyword = ({ staticsOfKeywords }) => {
-  if (!staticsOfKeywords || staticsOfKeywords.length === 0) {
+const Keyword = ({ staticsOfKeywords = [] }) => {
+  if (!Array.isArray(staticsOfKeywords) || staticsOfKeywords.length === 0) {
     return <p>No keyword data available.</p>;
   }
 
