@@ -1,15 +1,15 @@
-import {useState} from "react";
+import { useState } from "react";
 import VideoRoomComponent from "../components/openvidu/VideoRoomComponent";
 import axios from "axios";
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainHeader from "../components/molecules/MainHeader";
 const JoinMeeting = () => {
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
 
   useEffect(() => {
     if (!accessToken) {
@@ -52,7 +52,7 @@ const JoinMeeting = () => {
   const handleJoinMeeting = async () => {
     console.log("encryptedKey === ", encryptedKey);
     console.log("accessToken === ", accessToken);
-    const endpoint = `${window.SERVER_URL}/meeting/joinMeeting/${encryptedKey}`;
+    const endpoint = `${"http://localhost:8081"}/meeting/joinMeeting/${encryptedKey}`;
 
     // 미팅에 참여하기 위해 서버에 요청을 보냅니다.
     try {
@@ -139,7 +139,7 @@ const JoinMeeting = () => {
           Encrypted Key:
           <Input type="text" value={encryptedKey} readOnly />
         </Label>
-        <Button type="submit" style={{marginTop: "20px"}}>
+        <Button type="submit" style={{ marginTop: "20px" }}>
           Submit
         </Button>
       </Form>

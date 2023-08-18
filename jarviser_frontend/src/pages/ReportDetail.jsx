@@ -8,6 +8,7 @@ import Speech from "../components/molecules/Speech";
 import Keyword from "../components/molecules/Keyword";
 import MainHeader from "../components/molecules/MainHeader";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 const ReportDetail = () => {
   const navigate = useNavigate();
@@ -17,6 +18,9 @@ const ReportDetail = () => {
   const [speechPercentage, setSpeechPercentage] = useState({});
   const [staticsOfKeywords, setStaticsOfKeywords] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+  const encryptedKey = location.state?.encryptedKey;
+  const [summaryData, setSummaryData] = useState(null);
 
   useEffect(() => {
     if (!accessToken) {
@@ -26,19 +30,11 @@ const ReportDetail = () => {
     }
   }, [accessToken, navigate]);
 
+  console.log("encryptedKey", encryptedKey);
   const getMeetingDetails = async () => {
     try {
-      // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
-      const meetingEnded = await axios.get(
-        `${window.SERVER_URL}/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          data: { meetingId: id },
-        }
-      );
-
       const responseAudioMessage = await axios.get(
-        `${window.SERVER_URL}/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `http://localhost:8081/meeting/audiomessage/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -46,7 +42,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `${window.SERVER_URL}/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `http://localhost:8081/meeting/speech/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -54,18 +50,27 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `${window.SERVER_URL}/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
+        `http://localhost:8081/meeting/keywords/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
         }
       );
 
+      const responseSummary = await axios.get(
+        `http://localhost:8081/meeting/summary/${encryptedKey}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          data: { meetingId: id },
+        }
+      );
+      setSummaryData(responseSummary.data);
+
       const handleSaveClick = async (index, newContent) => {
         try {
           // 현재 수정된 내용을 DB에 업데이트
           const response = await axios.post(
-            window.SERVER_URL+"/meeting/audiomessage/update",
+            "http://localhost:8081/meeting/audiomessage/update",
             {
               audioMessageId: audioMessages[index].audioMessageId,
               content: newContent,
@@ -74,7 +79,7 @@ const ReportDetail = () => {
               headers: { Authorization: `Bearer ${accessToken}` },
             }
           );
-      
+
           if (response.status === 200) {
             const newAudioMessages = [...audioMessages];
             newAudioMessages[index].content = newContent;
@@ -85,9 +90,8 @@ const ReportDetail = () => {
           console.error("Error updating audio message:", error);
         }
       };
-      
 
-       setAudioMessages(
+      setAudioMessages(
         responseAudioMessage.data.audioMessages.map((audioMessage) => ({
           ...audioMessage,
           isEditing: false,
@@ -111,7 +115,7 @@ const ReportDetail = () => {
   const handleSaveClick = async (index, newContent) => {
     try {
       const response = await axios.post(
-        window.SERVER_URL+"/meeting/audiomessage/update",
+        "http://localhost:8081/meeting/audiomessage/update",
         {
           audioMessageId: audioMessages[index].audioMessageId,
           content: newContent,
@@ -152,6 +156,9 @@ const ReportDetail = () => {
         <Sidebar />
         <ContentContainer>
           <h1>회의 상세 정보</h1>
+          <p>
+            <Summarydiv>회의 요약 : {summaryData?.statistics}</Summarydiv>
+          </p>
           {isLoading ? (
             <LoadingSpinner /> // 또는 <LoadingMessage />
           ) : (
@@ -194,6 +201,9 @@ const ReportDetail = () => {
 
 export default ReportDetail;
 
+const Summarydiv = styled.div`
+  display: flex;
+`;
 const MainContainer = styled.div`
   display: flex;
 `;
@@ -259,8 +269,8 @@ const KeywordWrapper = styled.div`
 `;
 
 const DownloadButton = styled.button`
-  background-color: #4682A9;
-  color: #F6F4EB;
+  background-color: #4682a9;
+  color: #f6f4eb;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
@@ -274,17 +284,20 @@ const LoadingSpinner = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   border: 15px solid rgba(0, 0, 0, 0.1);
-  border-top: 15px solid #4682A9;
+  border-top: 15px solid #4682a9;
   border-radius: 50%;
   width: 100px;
   height: 100px;
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
-
 
 // ... (기타 스타일 계속 유지)

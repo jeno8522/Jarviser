@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 class SttComponent extends React.Component {
   async componentDidMount() {
@@ -71,13 +71,13 @@ class SttComponent extends React.Component {
       index += 2;
     }
 
-    return new Blob([view], {type: "audio/wav"});
+    return new Blob([view], { type: "audio/wav" });
   }
 
   async sendAudio(blob) {
     try {
       let token = localStorage.getItem("access-token");
-      const url = window.SERVER_URL+"/audio/transcript";
+      const url = "http://localhost:8081" + "/audio/transcript";
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("meetingId", this.props.meetingId);
@@ -85,7 +85,7 @@ class SttComponent extends React.Component {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        headers: {Authorization: "Bearer " + token},
+        headers: { Authorization: "Bearer " + token },
       });
 
       if (!response.ok) {

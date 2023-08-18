@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import {Stomp} from "@stomp/stompjs";
+import {DndProvider, useDrag, useDrop} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
 import axios from "axios";

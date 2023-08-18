@@ -36,7 +36,7 @@ function MyPage() {
       };
       reader.readAsDataURL(file);
       axios
-        .post(window.SERVER_URL+"/user/upload", formData, {
+        .post("http://localhost:8081" + "/user/upload", formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
@@ -57,11 +57,14 @@ function MyPage() {
 
   async function GetUser() {
     try {
-      const response = await axios.get(window.SERVER_URL+"/user/mypage", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8081" + "/user/mypage",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       const { email, name } = response.data.response; // 객체에서 이메일과 이름 정보 가져오기
       console.log(response.data.imgPath);
       const url = response.data.imgPath;
@@ -89,7 +92,7 @@ function MyPage() {
 
     try {
       const response = await axios.patch(
-        window.SERVER_URL+"/user/update",
+        "http://localhost:8081" + "/user/update",
         {
           name: userName,
           password: userPassword,
@@ -110,7 +113,7 @@ function MyPage() {
   const handleDelete = async () => {
     try {
       setIsDeleting(true); // 탈퇴 중 상태로 변경
-      await axios.delete(window.SERVER_URL+"/user/delete", {
+      await axios.delete("http://localhost:8081" + "/user/delete", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

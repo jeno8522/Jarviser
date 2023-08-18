@@ -244,17 +244,13 @@ class VideoRoomComponent extends Component {
       });
 
       console.log("response === ", response);
-      if (response.status === 202) {
-        console.log("Successfully end the meeting!", response.data.meeting);
-
-        // 미팅 참여에 성공했을 때 원하는 추가적인 로직을 수행할 수 있습니다.
-      } else {
-        console.error("Error end the meeting:", response.data);
-        alert("Error end the meeting. Please try again.");
-      }
+      console.log("Successfully end the meeting!", response.data.meeting);
+      alert("미팅이 종료되었습니다.");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while end the meeting. Please try again.");
+    } finally {
+      window.location.href = "/usermain";
     }
   };
 
@@ -291,7 +287,6 @@ class VideoRoomComponent extends Component {
   }
 
   micStatusChanged() {
-    
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({isAudioActive: localUser.isAudioActive()});
@@ -686,7 +681,7 @@ class VideoRoomComponent extends Component {
           {/* <SttChatComponent />
            */}
           {this.state.localUser && (<WebSocketComponent
-          meetingId={meetingId} 
+          meetingId={meetingId}
           muted={!this.state.localUser.isAudioActive()}/>)}
         </div>
       </div>
