@@ -1,34 +1,39 @@
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {BrowserRouter, Route} from "react-router-dom";
-import Signup from "./Signup";
+import { useState } from "react";
 import Sidebar from "../components/molecules/Sidebar";
-import MyPage from "./MyPage";
-import MyCalendar from "./MyCalendar";
-import MyReport from "./MyReport";
-import {Link} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAccessToken from "../components/useAccessToken";
-import {useEffect} from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
-import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
+import JoinMeetingModal from "./JoinMeetingModal";
 import Reservation from "./Reservation";
 import "animate.css";
-import man from "../logo/man.png";
+
 function UserMain() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReservationModalOpen, setIsReservatopmModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   const openModal = () => {
-    setIsModalOpen(true);
+    setIsReservatopmModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsReservatopmModalOpen(false);
+  };
+
+  const openJoinModal = () => {
+    console.log("여기다");
+    setIsJoinModalOpen(true);
+    console.log(isJoinModalOpen);
+  };
+
+  const closeJoinModal = () => {
+    setIsJoinModalOpen(false);
   };
 
   const navigate = useNavigate();
-  const {accessToken} = useAccessToken();
+  const { accessToken } = useAccessToken();
   const reservation = () => {
     navigate("/reservation");
   };
@@ -62,34 +67,36 @@ function UserMain() {
             </ButtonWithImage>
           </Link>
 
-          {/* <Link to="/mainjoinmeeting" className="no-underline">
-            <ButtonWithImage>
-              <StyledSVGButton>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="133"
-                  height="134"
-                  viewBox="0 0 133 134"
-                  fill="none"
-                >
-                  <SVGPath
-                    d="M66.5 0C29.8585 0 0 29.9541 0 66.7129C0 103.472 29.8585 133.426 66.5 133.426C103.142 133.426 133 103.472 133 66.7129C133 29.9541 103.142 0 66.5 0ZM85.0535 70.2487L61.579 93.7984C60.5815 94.7991 59.318 95.2661 58.0545 95.2661C56.791 95.2661 55.5275 94.7991 54.53 93.7984C52.6015 91.8637 52.6015 88.6615 54.53 86.7268L74.48 66.7129L54.53 46.6991C52.6015 44.7644 52.6015 41.5622 54.53 39.6275C56.4585 37.6928 59.6505 37.6928 61.579 39.6275L85.0535 63.1772C87.0485 65.1118 87.0485 68.314 85.0535 70.2487Z"
-                    fill="#292D32"
-                  />
-                </svg>
-              </StyledSVGButton>
+          <ButtonWithImage>
+            <StyledSVGButton onClick={openJoinModal}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="133"
+                height="134"
+                viewBox="0 0 133 134"
+                fill="none"
+              >
+                <SVGPath
+                  d="M66.5 0C29.8585 0 0 29.9541 0 66.7129C0 103.472 29.8585 133.426 66.5 133.426C103.142 133.426 133 103.472 133 66.7129C133 29.9541 103.142 0 66.5 0ZM85.0535 70.2487L61.579 93.7984C60.5815 94.7991 59.318 95.2661 58.0545 95.2661C56.791 95.2661 55.5275 94.7991 54.53 93.7984C52.6015 91.8637 52.6015 88.6615 54.53 86.7268L74.48 66.7129L54.53 46.6991C52.6015 44.7644 52.6015 41.5622 54.53 39.6275C56.4585 37.6928 59.6505 37.6928 61.579 39.6275L85.0535 63.1772C87.0485 65.1118 87.0485 68.314 85.0535 70.2487Z"
+                  fill="#292D32"
+                />
+              </svg>
+            </StyledSVGButton>
 
-              <Button type="button" id="join_meeting_button">
-                입장하기
-              </Button>
-            </ButtonWithImage>
-          </Link> */}
+            <Button
+              type="button"
+              id="join_meeting_button"
+              onClick={openJoinModal}
+            >
+              입장하기
+            </Button>
+          </ButtonWithImage>
 
-          <MainImage
+          {/* <MainImage
             className="animate__animated animate__bounce"
             src={man}
             alt="man"
-          />
+          /> */}
 
           <ButtonWithImage>
             <StyledSVGButton onClick={openModal}>
@@ -120,7 +127,8 @@ function UserMain() {
           </ButtonWithImage>
         </ButtonFrame>
       </PageContent>
-      {isModalOpen && <Reservation closeModal={closeModal} />}
+      {isReservationModalOpen && <Reservation closeModal={closeModal} />}
+      {isJoinModalOpen && <JoinMeetingModal closeModal={closeJoinModal} />}
     </>
   );
 }
@@ -138,8 +146,9 @@ const ButtonFrame = styled.div`
   display: flex;
   width: 100%; // 너비를 100%로 설정
   height: auto; // 높이를 자동으로 설정
-  align-items: flex-start;
-  gap: 10%; // 버튼 사이의 간격을 퍼센티지로 설정
+  justify-content: between;
+  align-items: between;
+  gap: 20%; // 버튼 사이의 간격을 퍼센티지로 설정
   flex-shrink: 0;
 `;
 
