@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
-import {Stomp} from "@stomp/stompjs";
-import {DndProvider, useDrag, useDrop} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import { Stomp } from "@stomp/stompjs";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
 import axios from "axios";
@@ -11,10 +11,10 @@ const ItemType = {
   MESSAGE: "message",
 };
 
-const DraggableMessage = ({message, ws, messages, index, moveMessage, userId, meetingId}) => {
-  const [{isDragging}, ref] = useDrag({
+const DraggableMessage = ({ message, ws, messages, index, moveMessage, userId, meetingId }) => {
+  const [{ isDragging }, ref] = useDrag({
     type: ItemType.MESSAGE,
-    item: {index},
+    item: { index },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -29,32 +29,41 @@ const DraggableMessage = ({message, ws, messages, index, moveMessage, userId, me
       }
     },
     drop: (draggedItem) => {
-      if(JSON.parse(messages[index]).type !== "stt"){
+      if (JSON.parse(messages[index]).type !== "stt") {
         return;
       }
-      console.log("메시지는 "+messages[index]);
+      console.log("메시지는 " + messages[index]);
       let myId = JSON.parse(messages[index]).sttId;
       let upId = -1;
       let downId = -1;
-      for(let i=1; index-i > -1; i++){
-        if(JSON.parse(messages[index-i]).type !== "stt"){
+      for (let i = 1; index - i > -1; i++) {
+        if (JSON.parse(messages[index - i]).type !== "stt") {
           continue;
         }
-        upId = JSON.parse(messages[index-i]).sttId;
+        upId = JSON.parse(messages[index - i]).sttId;
         break;
       }
-      for(let i=1; index+i < messages.length; i++){
-        if(JSON.parse(messages[index+i]).type !== "stt"){
+      for (let i = 1; index + i < messages.length; i++) {
+        if (JSON.parse(messages[index + i]).type !== "stt") {
           continue;
         }
-        downId = JSON.parse(messages[index+i]).sttId;
+        downId = JSON.parse(messages[index + i]).sttId;
         break;
       }
       console.log("myId : " + myId);
       console.log("upId : " + upId);
       console.log("downId : " + downId);
 
-      ws.send("/app/move-message", {}, JSON.stringify({meetingId:meetingId, myId: Number.parseInt(myId), upId: Number.parseInt(upId), downId: Number.parseInt(downId)}));
+      ws.send(
+        "/app/move-message",
+        {},
+        JSON.stringify({
+          meetingId: meetingId,
+          myId: Number.parseInt(myId),
+          upId: Number.parseInt(upId),
+          downId: Number.parseInt(downId),
+        })
+      );
     },
   });
 
@@ -104,7 +113,7 @@ class WebSocketComponent extends React.Component {
     if (token) {
       const parsedToken = JSON.parse(atob(token.split(".")[1]));
       if (parsedToken && parsedToken.userId) {
-        this.setState({userId: parsedToken.userId});
+        this.setState({ userId: parsedToken.userId });
       }
     }
     const socket = new SockJS(window.SERVER_URL + "/ws");
@@ -114,24 +123,28 @@ class WebSocketComponent extends React.Component {
       stompClient.subscribe("/topic/" + meetingId, function (messageOutput) {
         let message = JSON.parse(messageOutput.body);
         let type = message.type;
-        if(type === "move-command"){
+        if (type === "move-command") {
           let myId = message.myId;
           let upId = message.upId;
-          let downId = message.downId
+          let downId = message.downId;
           let fromIndex = that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === myId);
-          let upindex = upId == -1? 0 : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === upId);
-          let downindex = downId == -1 ? that.state.messages.length-1 : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === downId);
-          let toIndex;
+          let upIndex =
+            upId == -1
+              ? -1
+              : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === upId);
+          let downIndex =
+            downId == -1
+              ? that.state.messages.length
+              : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === downId);
           console.log("fromIndex : " + fromIndex);
-          console.log("toIndex : " + toIndex);
-          if (fromIndex < upindex){
-            toIndex = Math.min(upindex, downindex);
-        } else if (fromIndex > downindex) {
-            toIndex = Math.max(upindex, downindex);
-        } else {
-            console.log("이동할 필요 x");
+          console.log("upIndex:" + upIndex);
+          console.log("downIndex:" + downIndex);
+          if (upIndex < fromIndex && fromIndex < downIndex) {
+            console.log("이동이 필요하지 않음");
             return;
-        }
+          }
+          let toIndex = fromIndex < upIndex ? upIndex : downIndex;
+          console.log("toIndex : " + toIndex);
           that.moveMessage(fromIndex, toIndex);
           return;
         }
@@ -142,7 +155,7 @@ class WebSocketComponent extends React.Component {
       stompClient.send(
         "/app/connect",
         {},
-        JSON.stringify({meetingId: meetingId, Authorization: "Bearer " + token})
+        JSON.stringify({ meetingId: meetingId, Authorization: "Bearer " + token })
       );
     });
     this.state.ws = stompClient;
@@ -162,7 +175,7 @@ class WebSocketComponent extends React.Component {
   moveMessage = (fromIndex, toIndex) => {
     // 드래그 시작 시 draggedIndex를 설정
     if (this.state.draggedIndex === null) {
-      this.setState({draggedIndex: fromIndex});
+      this.setState({ draggedIndex: fromIndex });
       return; // 여기서 종료하면 아이템의 위치는 실제로 이동하지 않습니다.
     }
 
@@ -176,7 +189,7 @@ class WebSocketComponent extends React.Component {
 
     // 끝날 때 draggedIndex와 toIndex를 함께 출력하고, draggedIndex를 다시 null로 초기화
     // this.printIndexes(this.state.draggedIndex, toIndex);
-    this.setState({draggedIndex: null});
+    this.setState({ draggedIndex: null });
   };
 
   render() {
@@ -188,8 +201,8 @@ class WebSocketComponent extends React.Component {
             <DraggableMessage
               key={index}
               messages={this.state.messages}
-              ws = {this.state.ws}
-              meetingId = {this.state.meetingId}
+              ws={this.state.ws}
+              meetingId={this.state.meetingId}
               index={index}
               message={JSON.parse(message)}
               moveMessage={this.moveMessage}
@@ -198,10 +211,7 @@ class WebSocketComponent extends React.Component {
             />
           ))}
         </div>
-        <SttComponent 
-          meetingId={this.state.meetingId}
-          muted={this.props.muted}
-         />
+        <SttComponent meetingId={this.state.meetingId} muted={this.props.muted} />
       </DndProvider>
     );
   }
