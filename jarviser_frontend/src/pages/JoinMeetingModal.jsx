@@ -7,7 +7,7 @@ import useAccessToken from "../components/useAccessToken";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
 
-function Reservation({ closeModal }) {
+function JoinMeetingModal({ closeModal }) {
   const navigate = useNavigate();
   const { accessToken } = useAccessToken();
 
@@ -16,188 +16,65 @@ function Reservation({ closeModal }) {
       navigate("/login");
     }
   }, [accessToken, navigate]);
-  const onSubmit = async (data) => {
-    const date = data.date.replaceAll("-", "");
-    const time = data.time.replaceAll(":", "");
-    const ReservatedRoom = {
-      meetingName: data.title,
-      startTime: date + time,
-      description: data.content,
-    };
 
-    const sendData = {
-      reservatedRoom: ReservatedRoom,
-      emails: userEmail, // 이메일 배열을 바로 할당
-    };
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-    };
-
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log(headers);
-    console.log(sendData);
-    try {
-      await axios.post("http://localhost:8081" + "/reservation", sendData, {
-        headers,
-      });
-
-      alert(JSON.stringify(sendData));
-
-      setUserEmail([]);
-      reset();
-    } catch (error) {
-      console.error("There was an error!", error);
-    }
-  };
-  const [userEmail, setUserEmail] = useState([]);
-  const addUserEmail = (email) => {
-    if (isValidEmail(email)) {
-      if (!userEmail.includes(email)) {
-        setUserEmail([...userEmail, email]);
-        setValue("userEmail", "");
-      } else {
-        alert("이미 추가된 이메일입니다.");
-      }
-    } else {
-      alert("유효한 이메일 주소를 입력하세요.");
-    }
-  };
-  const deleteUser = (index) => {
-    const updatedUser = [...userEmail];
-    updatedUser.splice(index, 1);
-    setUserEmail(updatedUser);
-  };
-  const isValidEmail = (email) => {
-    const emailPattern = /\S+@\S+\.\S+/;
-    return emailPattern.test(email);
-  };
   const {
     register,
     handleSubmit,
-    reset,
-    setValue,
     formState: { isSubmitting, isSubmitted, errors },
   } = useForm();
 
+  const onSubmit = (data) => {
+    let url = data.title;
+
+    // URL에 http:// 또는 https:// 접두사가 없으면 추가
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "http://" + url;
+    }
+
+    window.location.href = url; // 해당 URL로 이동
+
+    closeModal();
+  };
+
+  const handleContentClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <ModalBackdrop onClick={closeModal}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
+      <ModalContent onClick={handleContentClick}>
         <CloseButton onClick={closeModal}>X</CloseButton>
         <ModalHeader>
-          <h1>미팅 예약하기</h1>
+          <h1>입장하기</h1>
         </ModalHeader>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {" "}
+          {/* Add the form here */}
           <LeftContainer>
-            <ContentLabel htmlFor="title">제목</ContentLabel>
+            <ContentLabel htmlFor="title">URL</ContentLabel>
             <TitleField>
               <TitleText
                 id="title"
                 type="text"
-                placeholder="제목을 입력해주세요."
+                placeholder="URL을 입력해주세요."
                 aria-invalid={
                   isSubmitted ? (errors.title ? "true" : "false") : undefined
                 }
                 {...register("title", {
-                  required: "제목은 필수 입력입니다.",
-                  pattern: {},
+                  required: "URL은 필수 입력입니다.",
                 })}
               />
             </TitleField>
-            {errors.title && <small role="alert">{errors.title.message}</small>}
-            <br />
-            <ContentLabel htmlFor="date">날짜</ContentLabel>
-            <TimeField>
-              <TimeText
-                id="date"
-                type="date"
-                placeholder="날짜를 선택해주세요."
-                aria-invalid={
-                  isSubmitted ? (errors.date ? "true" : "false") : undefined
-                }
-                {...register("date", {
-                  required: "날짜는 필수 입력입니다.",
-                })}
-              />
-            </TimeField>
-            {errors.date && <small role="alert">{errors.date.message}</small>}
-            <br />
-            <ContentLabel htmlFor="time">시간</ContentLabel>
-            <TimeField>
-              <TimeText
-                id="time"
-                type="time"
-                placeholder="시간을 선택해주세요."
-                aria-invalid={
-                  isSubmitted ? (errors.time ? "true" : "false") : undefined
-                }
-                {...register("time", {
-                  required: "시간은 필수 입력입니다.",
-                })}
-              />
-            </TimeField>
-            {errors.time && <small role="alert">{errors.time.message}</small>}
-            <br />
-            <ContentLabel htmlFor="content">내용</ContentLabel>
-            <DescField>
-              <DescText
-                id="content"
-                type="textarea"
-                placeholder="내용을 입력해주세요."
-                aria-invalid={
-                  isSubmitted ? (errors.content ? "true" : "false") : undefined
-                }
-                {...register("content", {
-                  required: "내용은 필수 입력입니다.",
-                })}
-              />
-            </DescField>
-
             {errors.content && (
               <small role="alert">{errors.content.message}</small>
             )}
-            <br />
           </LeftContainer>
           <RightContainer>
-            <ContentLabel htmlFor="userEmail">초대 이메일</ContentLabel>
-            <EmailContainer>
-              <EmailText
-                id="userEmail"
-                type="email"
-                placeholder="이메일을 입력해주세요."
-                aria-invalid={
-                  isSubmitted
-                    ? errors.userEmail
-                      ? "true"
-                      : "false"
-                    : undefined
-                }
-                {...register("userEmail", {})}
-              />
-              <AddButton
-                type="button"
-                disabled={isSubmitting}
-                onClick={() =>
-                  addUserEmail(document.getElementById("userEmail").value)
-                }
-              >
-                추가
-              </AddButton>
-            </EmailContainer>
-            {userEmail.map((email, index) => (
-              <EmailItem key={index}>
-                {email}
-                <DeleteIcon onClick={() => deleteUser(index)} />
-              </EmailItem>
-            ))}
-
-            <SubmitButton
-              type="submit"
-              disabled={isSubmitting || userEmail.length === 0}
-            >
-              예약 완료
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              입장
             </SubmitButton>
           </RightContainer>
-        </Form>
+        </form>
       </ModalContent>
     </ModalBackdrop>
   );
@@ -433,4 +310,4 @@ const EmailContainer = styled.div`
 //   }
 // `;
 
-export default Reservation;
+export default JoinMeetingModal;

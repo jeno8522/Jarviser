@@ -31,7 +31,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@CrossOrigin(origins = {"http://localhost:3000/*", "http:70.12.247.36:3000", "https://i9a506.p.ssafy.io:4443"})
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
 

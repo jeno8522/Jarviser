@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/molecules/Header";
 import Footer from "./components/molecules/Footer";
 import Login from "./pages/Login";
@@ -12,7 +12,7 @@ import Reservation from "./pages/Reservation";
 import CreateMeeting from "./pages/CreateMeeting";
 import JoinMeeting from "./pages/JoinMeeting";
 import ReportDetail from "./pages/ReportDetail";
-
+import JoinMeetingModal from "./pages/JoinMeetingModal";
 import AppCSS from "./App.css";
 function App() {
   return (
@@ -29,7 +29,6 @@ function App() {
           <Route path="/reportdetail" element={<ReportDetail />} />
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/createmeeting" element={<CreateMeeting />} />
-
           <Route path="/joinMeeting/:urlKey" element={<JoinMeeting />} />
         </Routes>
       </Router>
