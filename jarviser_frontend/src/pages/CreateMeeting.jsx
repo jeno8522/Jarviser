@@ -55,7 +55,7 @@ const CreateMeeting = () => {
     event.preventDefault();
     console.log("sessionName === ", sessionName);
     console.log("accessToken === ", accessToken);
-    const endpoint = `${"http://localhost:8081"}/meeting/create/${sessionName}`;
+    const endpoint = `${window.SERVER_URL+""}/meeting/create/${sessionName}`;
     // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
     try {
       const response = await axios.post(
