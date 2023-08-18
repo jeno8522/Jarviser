@@ -69,15 +69,15 @@ function Sidebar() {
   return (
     <>
       <SidebarContianer>
-        <LogoImage src={User} alt="User" onClick={handleUserImageClick} />
+        <LogoImage src={User} alt="회원정보" onClick={handleUserImageClick} />
         <a href="/myCalendar">
-          <LogoImage src={Calendar} alt="MyCalendar" />
+          <LogoImage src={Calendar} alt="달력" />
         </a>
         <a href="/myReport">
-          <LogoImage src={Document} alt="Document" />
+          <LogoImage src={Document} alt="미팅내역" />
         </a>
         <a href="/">
-          <LogoImage src={LogoutIcon} alt="Logout" onClick={Logout} />
+          <LogoImage src={LogoutIcon} alt="로그아웃" onClick={Logout} />
         </a>
       </SidebarContianer>
       <StyledModal isOpen={isModalOpen} onRequestClose={closeModal}>
@@ -99,7 +99,7 @@ function Sidebar() {
 }
 export default Sidebar;
 
-const LogoImage = styled.img`
+const LogoImage = styled.div`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
@@ -107,8 +107,30 @@ const LogoImage = styled.img`
   margin: 40px;
   cursor: pointer;
   transition: transform 0.3s;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
   &:hover {
     transform: scale(1.2);
+
+    &::before {
+      content: "${(props) => props.alt}"; // 이미지의 alt 텍스트를 사용
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+      z-index: 2;
+      font-size: 1rem; // 원하는 폰트 크기로 조절
+      color: white; // 원하는 색상으로 설정
+      white-space: nowrap;
+    }
+
+    & img {
+      opacity: 0;
+    }
   }
 `;
 

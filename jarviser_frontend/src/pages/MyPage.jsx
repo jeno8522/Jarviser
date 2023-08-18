@@ -140,8 +140,11 @@ function MyPage() {
       <PageContent>
         <Sidebar />
         <ImgContainger>
-          <ProfileImageContainer $imgUrl={profileImage}>
+          {/* <ProfileImageContainer $imgUrl={profileImage}>
             <ProfileImage src={profileImage} alt="Profile" />
+          </ProfileImageContainer> */}
+          <ProfileImageContainer>
+            <ProfileImage src="/프로필.png" alt="Profile" />
           </ProfileImageContainer>
           <ProfileInput
             type="file"
