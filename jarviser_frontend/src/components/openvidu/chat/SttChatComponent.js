@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
-import {Stomp} from "@stomp/stompjs";
+import { Stomp } from "@stomp/stompjs";
 import VAD from "./vad";
-import {createAudioContext} from "./createAudioContext";
+import { createAudioContext } from "./createAudioContext";
 function SttChatComponent() {
   const [userText, setUserText] = useState(""); // 상태 변수와 상태 변경 함수를 선언
 
@@ -22,7 +22,7 @@ function SttChatComponent() {
     comeinsession: receivedComeIn,
     leavesession: receivedLeave,
   };
-  var socket = new SockJS(window.SERVER_URL+"/ws");
+  var socket = new SockJS(window.SERVER_URL+"" + "/ws");
   var stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
     stompClient.subscribe(
@@ -61,7 +61,7 @@ function SttChatComponent() {
 
   function uploadText(userText) {
     var token = localStorage.getItem("access-token");
-    var serverUrl = window.SERVER_URL+"/meeting/message"; // 서버의 URL
+    var serverUrl = window.SERVER_URL+"" + "/meeting/message"; // 서버의 URL
 
     var formData = new FormData();
     formData.append("meetingId", meetingId);
@@ -82,7 +82,7 @@ function SttChatComponent() {
 
   const handleVADStartClick = () => {
     navigator.mediaDevices
-      .getUserMedia({audio: true})
+      .getUserMedia({ audio: true })
       .then((stream) => startVAD(stream))
       .catch((err) => console.log("getUserMedia() failed: ", err));
   };
@@ -112,7 +112,7 @@ function SttChatComponent() {
 
   function stopVAD() {
     navigator.mediaDevices
-      .getUserMedia({audio: true, video: false})
+      .getUserMedia({ audio: true, video: false })
       .then(function (stream) {
         var audioTrack = stream.getAudioTracks()[0];
         audioTrack.enabled = false;
@@ -135,7 +135,7 @@ function SttChatComponent() {
   };
 
   const handleStop = () => {
-    let blob = new Blob(recordedChunks, {type: "audio/wav"});
+    let blob = new Blob(recordedChunks, { type: "audio/wav" });
     setRecordedChunks([]);
     sendAudio(blob);
     setIndex((prevIndex) => prevIndex + 1);
@@ -174,7 +174,7 @@ function SttChatComponent() {
 
   async function sendAudio(blob) {
     try {
-      const url = window.SERVER_URL+"/meeting/transcript";
+      const url = window.SERVER_URL+"" + "/meeting/transcript";
       const formData = new FormData();
       const testID = 3; //임시로 넣은 testID
       formData.append("file", blob, "audio" + index + ".wav");

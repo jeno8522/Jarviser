@@ -1,16 +1,25 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
 class SttComponent extends React.Component {
   async componentDidMount() {
     await this.initializeVAD();
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return !this.myvad;
+    if(!this.myvad){
+      return true;
+    }
+    if(nextProps.muted && this.myvad.listening){
+      this.myvad.pause();
+    }
+    if(!nextProps.muted && !this.myvad.listening){
+      this.myvad.start();
+    }
+    return false;
   }
 
   async initializeVAD() {
     try {
-      const myvad = await window.vad.MicVAD.new({
+      this.myvad = await window.vad.MicVAD.new({
         onSpeechStart: () => {
           console.log("speech start");
         },
@@ -20,7 +29,7 @@ class SttComponent extends React.Component {
           this.sendAudio(audioBlob);
         },
       });
-      myvad.start();
+      this.myvad.start();
     } catch (error) {
       console.log(error);
     }
@@ -62,13 +71,13 @@ class SttComponent extends React.Component {
       index += 2;
     }
 
-    return new Blob([view], {type: "audio/wav"});
+    return new Blob([view], { type: "audio/wav" });
   }
 
   async sendAudio(blob) {
     try {
       let token = localStorage.getItem("access-token");
-      const url = window.SERVER_URL+"/audio/transcript";
+      const url = window.SERVER_URL+"" + "/audio/transcript";
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("meetingId", this.props.meetingId);
@@ -76,7 +85,7 @@ class SttComponent extends React.Component {
       const response = await fetch(url, {
         method: "POST",
         body: formData,
-        headers: {Authorization: "Bearer " + token},
+        headers: { Authorization: "Bearer " + token },
       });
 
       if (!response.ok) {

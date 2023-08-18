@@ -39,6 +39,7 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      muted: false
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -243,17 +244,13 @@ class VideoRoomComponent extends Component {
       });
 
       console.log("response === ", response);
-      if (response.status === 202) {
-        console.log("Successfully end the meeting!", response.data.meeting);
-
-        // 미팅 참여에 성공했을 때 원하는 추가적인 로직을 수행할 수 있습니다.
-      } else {
-        console.error("Error end the meeting:", response.data);
-        alert("Error end the meeting. Please try again.");
-      }
+      console.log("Successfully end the meeting!", response.data.meeting);
+      alert("미팅이 종료되었습니다.");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while end the meeting. Please try again.");
+    } finally {
+      window.location.href = "/usermain";
     }
   };
 
@@ -580,7 +577,7 @@ class VideoRoomComponent extends Component {
   }
   copyMeetingIdToClipboard() {
     const el = document.createElement("textarea");
-    el.value = `https://i9a506.p.ssafy.io:4443/joinMeeting/${this.state.meetingId}`;
+    el.value = `${window.FRONT_URL}/joinMeeting/${this.state.meetingId}`;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
@@ -683,7 +680,9 @@ class VideoRoomComponent extends Component {
             )}
           {/* <SttChatComponent />
            */}
-          <WebSocketComponent meetingId={meetingId} />
+          {this.state.localUser && (<WebSocketComponent
+          meetingId={meetingId}
+          muted={!this.state.localUser.isAudioActive()}/>)}
         </div>
       </div>
     );

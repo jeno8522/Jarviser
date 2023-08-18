@@ -7,7 +7,7 @@ function Login() {
     try {
       await new Promise((r) => setTimeout(r, 1000));
       const response = await axios.post(
-        "http://localhost:8081/user/login",
+        window.SERVER_URL+"/user/login",
         data
       );
       const accessToken = response.data["access-token"];

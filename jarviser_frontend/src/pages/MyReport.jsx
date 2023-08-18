@@ -27,11 +27,12 @@ function MyReport() {
   async function getMyReport() {
     try {
       const response = await axios.get(
-        window.SERVER_URL+"/user/meetinglist",
+        window.SERVER_URL+"" + "/user/meetinglist",
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
+      console.log("response.data.meetinglist", response.data.meetinglist);
       setMyReport(response.data.meetinglist);
     } catch (error) {
       console.log(error);
@@ -52,20 +53,27 @@ function MyReport() {
         <Sidebar />
         <div>{/* <h1>회의록</h1> */}</div>
         <ul>
-          {getCurrentPageData().map((report, index) => (
-            <MeetingLi key={index}>
-              <MeetingInfo>
-                <h2>{report.meetingName}</h2>
-                <p>Host: {report.hostName}</p>
-                <p>Date: {report.date}</p>
-              </MeetingInfo>
-              <DetailButton>
-                <Link to={"/reportdetail"} className="no-underline">
-                  통계보기
-                </Link>
-              </DetailButton>
-            </MeetingLi>
-          ))}
+          {getCurrentPageData().map((report, index) => {
+            console.log("encryptedKey:", report.encryptedKey);
+            return (
+              <MeetingLi key={index}>
+                <MeetingInfo>
+                  <h2>{report.meetingName}</h2>
+                  <p>Host: {report.hostName}</p>
+                  <p>Date: {report.date}</p>
+                </MeetingInfo>
+                <DetailButton>
+                  <Link
+                    to={"/reportdetail"}
+                    state={{ encryptedKey: report.encryptedKey }}
+                    className="no-underline"
+                  >
+                    통계보기
+                  </Link>
+                </DetailButton>
+              </MeetingLi>
+            );
+          })}
         </ul>
         <Pagination>
           <PaginationButton
