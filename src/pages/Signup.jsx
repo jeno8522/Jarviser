@@ -5,7 +5,7 @@ import axios from "axios";
 function Signup() {
   const onSubmit = async (data) => {
     await new Promise((r) => setTimeout(r, 1000));
-    axios.post("http://localhost:8081/user/signup", data);
+    axios.post(window.SERVER_URL+"/user/signup", data);
     alert(JSON.stringify(data));
   };
   const {

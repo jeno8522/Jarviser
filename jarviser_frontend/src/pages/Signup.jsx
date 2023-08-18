@@ -27,14 +27,14 @@ function Signup() {
     }
 
     await new Promise((r) => setTimeout(r, 1000));
-    axios.post("http://localhost:8081" + "/user/signup", data);
+    axios.post(window.SERVER_URL+"" + "/user/signup", data);
     alert("회원가입 성공!");
     navigate("/login");
   };
 
   const checkEmailDuplication = async () => {
     const response = await axios.get(
-      `${"http://localhost:8081"}/user/${email}`
+      `${window.SERVER_URL+""}/user/${email}`
     );
     if (response.data.message === "success") {
       console.log(response.data);

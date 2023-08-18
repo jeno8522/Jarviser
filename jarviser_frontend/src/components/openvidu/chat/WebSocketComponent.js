@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import {Stomp} from "@stomp/stompjs";
+import {DndProvider, useDrag, useDrop} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 import "./WebSocketComponent.css";
 import SttComponent from "./stt/SttComponent";
 import axios from "axios";
@@ -11,40 +11,7 @@ const ItemType = {
   MESSAGE: "message",
 };
 
-//현웅 이거 만들어놓음 에러날 순 있음
-const handleMoveMesseage = async (from, to) => {
-  // event.preventDefault();
-  console.log("from === ", from, "to === ", to);
-  const accessToken = localStorage.getItem("access-token");
-
-  const endpoint = `${"http://localhost:8081"}/meeting/현웅,값을넣어야해`;
-  // 미팅을 생성하기 위해 서버에 요청을 보냅니다.
-  try {
-    const response = await axios.post(
-      endpoint,
-
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        data: { from: from, to: to },
-      }
-    );
-
-    console.log("response === ", response);
-    if (response.status === 202) {
-      console.log("Move Messeage Success!!!", response.data);
-      //로직 추가 해줘야해 현웅
-    } else {
-      console.error("Error creating meeting:", response.data);
-      alert("Error !!!. Please try again.");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("An error occurred !!. Please try again.");
-  }
-};
-const DraggableMessage = ({ message, index, moveMessage, userId }) => {
+const DraggableMessage = ({ message, ws, messages, index, moveMessage, userId, meetingId }) => {
   const [{ isDragging }, ref] = useDrag({
     type: ItemType.MESSAGE,
     item: { index },
@@ -62,8 +29,41 @@ const DraggableMessage = ({ message, index, moveMessage, userId }) => {
       }
     },
     drop: (draggedItem) => {
-      console.log(`Dragged from: ${draggedItem.index}, Dropped to: ${index}`);
-      // handleMoveMesseage(draggedItem.index, index);  현웅 이거 실행하면 axios 보내짐
+      if (JSON.parse(messages[index]).type !== "stt") {
+        return;
+      }
+      console.log("메시지는 " + messages[index]);
+      let myId = JSON.parse(messages[index]).sttId;
+      let upId = -1;
+      let downId = -1;
+      for (let i = 1; index - i > -1; i++) {
+        if (JSON.parse(messages[index - i]).type !== "stt") {
+          continue;
+        }
+        upId = JSON.parse(messages[index - i]).sttId;
+        break;
+      }
+      for (let i = 1; index + i < messages.length; i++) {
+        if (JSON.parse(messages[index + i]).type !== "stt") {
+          continue;
+        }
+        downId = JSON.parse(messages[index + i]).sttId;
+        break;
+      }
+      console.log("myId : " + myId);
+      console.log("upId : " + upId);
+      console.log("downId : " + downId);
+
+      ws.send(
+        "/app/move-message",
+        {},
+        JSON.stringify({
+          meetingId: meetingId,
+          myId: Number.parseInt(myId),
+          upId: Number.parseInt(upId),
+          downId: Number.parseInt(downId),
+        })
+      );
     },
   });
 
@@ -98,7 +98,7 @@ class WebSocketComponent extends React.Component {
         // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
         // '{"time": "16:32:52", "type": "connect", "userName": "3번참가자", "userId": "3", "content": "의뻘소리"}',
       ],
-
+      ws: null,
       meetingId: meetingId,
       draggedIndex: null, // 드래그가 시작된 인덱스를 저장할 state
       userId: null, // userId 상태
@@ -116,13 +116,38 @@ class WebSocketComponent extends React.Component {
         this.setState({ userId: parsedToken.userId });
       }
     }
-    const socket = new SockJS("http://localhost:8081" + "/ws");
+    const socket = new SockJS(window.SERVER_URL + "/ws");
     const stompClient = Stomp.over(socket);
     const meetingId = this.state.meetingId;
     stompClient.connect({}, function (frame) {
       stompClient.subscribe("/topic/" + meetingId, function (messageOutput) {
         let message = JSON.parse(messageOutput.body);
         let type = message.type;
+        if (type === "move-command") {
+          let myId = message.myId;
+          let upId = message.upId;
+          let downId = message.downId;
+          let fromIndex = that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === myId);
+          let upIndex =
+            upId == -1
+              ? -1
+              : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === upId);
+          let downIndex =
+            downId == -1
+              ? that.state.messages.length
+              : that.state.messages.findIndex((mes) => JSON.parse(mes).sttId === downId);
+          console.log("fromIndex : " + fromIndex);
+          console.log("upIndex:" + upIndex);
+          console.log("downIndex:" + downIndex);
+          if (upIndex < fromIndex && fromIndex < downIndex) {
+            console.log("이동이 필요하지 않음");
+            return;
+          }
+          let toIndex = fromIndex < upIndex ? upIndex : downIndex;
+          console.log("toIndex : " + toIndex);
+          that.moveMessage(fromIndex, toIndex);
+          return;
+        }
         that.setState((prevState) => ({
           messages: [...prevState.messages, messageOutput.body],
         }));
@@ -130,12 +155,10 @@ class WebSocketComponent extends React.Component {
       stompClient.send(
         "/app/connect",
         {},
-        JSON.stringify({
-          meetingId: meetingId,
-          Authorization: "Bearer " + token,
-        })
+        JSON.stringify({ meetingId: meetingId, Authorization: "Bearer " + token })
       );
     });
+    this.state.ws = stompClient;
     if (this.chatContainerRef.current) {
       const scrollHeight = this.chatContainerRef.current.scrollHeight;
       this.chatContainerRef.current.scrollTop = scrollHeight;
@@ -177,6 +200,9 @@ class WebSocketComponent extends React.Component {
           {this.state.messages.map((message, index) => (
             <DraggableMessage
               key={index}
+              messages={this.state.messages}
+              ws={this.state.ws}
+              meetingId={this.state.meetingId}
               index={index}
               message={JSON.parse(message)}
               moveMessage={this.moveMessage}
@@ -185,7 +211,7 @@ class WebSocketComponent extends React.Component {
             />
           ))}
         </div>
-        <SttComponent meetingId={this.state.meetingId} />
+        <SttComponent meetingId={this.state.meetingId} muted={this.props.muted} />
       </DndProvider>
     );
   }

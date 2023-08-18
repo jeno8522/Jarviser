@@ -2,6 +2,7 @@ package com.ssafy.jarviser.controller;
 
 import com.ssafy.jarviser.dto.SessionUserDto;
 import com.ssafy.jarviser.security.JwtService;
+import com.ssafy.jarviser.service.AudioService;
 import com.ssafy.jarviser.util.AESEncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class SocketController {
     private final JwtService jwtService;
     private final SimpMessagingTemplate messagingTemplate;
     private final AESEncryptionUtil aesEncryptionUtil;
+    private final AudioService audioService;
 
     private final HashMap<Long, HashSet<SessionUserDto>> connectSessionMap = new HashMap<>(); // TODO: 추후 보완 필요
     private final HashMap<String, SessionUserDto> sessionUserMap = new HashMap<>();
@@ -63,6 +65,33 @@ public class SocketController {
         }
     }
 
+    @MessageMapping(value = "/move-message")
+    public void moveMessage(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
+        Map<String, String> resultMap = new HashMap<>();
+        Date arriveDate = new Date();
+        String arriveTime = arriveDate.getHours() + ":" + arriveDate.getMinutes() + ":" + arriveDate.getSeconds();
+
+        String meetingId = (String) payload.get("meetingId");
+        Long myId = Long.parseLong(payload.get("myId").toString());
+        Long upId = Long.parseLong(payload.get("upId").toString());
+        Long downId = Long.parseLong(payload.get("downId").toString());
+
+        try {
+
+            resultMap.put("type", "move-command");
+            resultMap.put("time", arriveTime);
+            resultMap.put("myId", myId.toString());
+            resultMap.put("upId", upId.toString());
+            resultMap.put("downId", downId.toString());
+
+            messagingTemplate.convertAndSend("/topic/" + meetingId, resultMap);
+
+            audioService.moveStt(myId, upId, downId);
+        } catch (Exception e) {
+            log.error("error", e);
+        }
+    }
+
     @MessageMapping(value = "/connect")
     public void connectSession(@Payload Map<String, Object> payload, SimpMessageHeaderAccessor headerAccessor) {
         Map<String, String> resultMap = new HashMap<>();
@@ -86,8 +115,9 @@ public class SocketController {
             HashSet<SessionUserDto> participants = connectSessionMap.get(mId);
 
             // 새로 접속한 인원에게 기존의 참가자 명단 보내주기
-            targetResultMap.put("type", "participants");
+            targetResultMap.put("type", "first-connect");
             targetResultMap.put("content", participants);
+
             messagingTemplate.convertAndSendToUser(sessionId, destination, targetResultMap);
 
             SessionUserDto user = new SessionUserDto(userId, userName);

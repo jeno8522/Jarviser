@@ -15,7 +15,7 @@ const AudioMessage = ({
       await onSaveClick(editedContent);
 
       const response = await axios.post(
-        "http://localhost:8081" + "/meeting/audiomessage/update",
+        window.SERVER_URL+"" + "/meeting/audiomessage/update",
         {
           audioMessageId: audioMessage.audioMessageId,
           content: editedContent,
