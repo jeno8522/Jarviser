@@ -115,7 +115,35 @@ public class AudioServiceImp implements AudioService {
         }
     }
 
+    @Override
+    public void moveStt(long myId, long upId, long downId) throws ServerException {
+        changePriority(myId, upId, downId);
+    }
 
+    @Override
+    public List<AudioMessage> getAllSttByMeetingId(long meetingId) {
+        return audioMessageRepository.findAllByMeetingIdOrderByPriorityAsc(meetingId);
+    }
+
+    synchronized private void changePriority(long myId, long upId, long downId) {
+        long mId = audioMessageRepository.findById(myId).get().getMeeting().getId();
+        long upPriority = upId==-1? 0 : audioMessageRepository.findById(upId).get().getPriority();
+        long downPriority = downId==-1? indexMap.get(mId) : audioMessageRepository.findById(downId).get().getPriority();
+
+        if(downPriority - upPriority < 2){
+            List<AudioMessage> audioMessages = audioMessageRepository.findAllByMeetingIdOrderByPriorityAsc(mId);
+            for (int i = 0; i < audioMessages.size(); i++) {
+                audioMessages.get(i).setPriority((i+1)*1024L);
+            }
+            audioMessageRepository.saveAll(audioMessages);
+            upPriority = upId==-1? 0 : audioMessageRepository.findById(upId).get().getPriority();
+            downPriority = downId==-1? indexMap.get(mId) : audioMessageRepository.findById(downId).get().getPriority();
+        }
+
+        AudioMessage my = audioMessageRepository.findById(myId).get();
+        my.setPriority((upPriority+downPriority)/2);
+        audioMessageRepository.save(my);
+    }
 
     private String createPreprocessAudioFile(String filePath) {
         String tempFilePath = rootPath + "/audio/temp/" + System.currentTimeMillis() + ".webm";

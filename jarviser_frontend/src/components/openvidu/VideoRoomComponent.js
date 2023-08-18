@@ -39,6 +39,7 @@ class VideoRoomComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
+      muted: false
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -290,6 +291,7 @@ class VideoRoomComponent extends Component {
   }
 
   micStatusChanged() {
+    
     localUser.setAudioActive(!localUser.isAudioActive());
     localUser.getStreamManager().publishAudio(localUser.isAudioActive());
     this.sendSignalUserChanged({isAudioActive: localUser.isAudioActive()});
@@ -580,7 +582,7 @@ class VideoRoomComponent extends Component {
   }
   copyMeetingIdToClipboard() {
     const el = document.createElement("textarea");
-    el.value = `http://localhost:3000/joinMeeting/${this.state.meetingId}`;
+    el.value = `${window.FRONT_URL}/joinMeeting/${this.state.meetingId}`;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
@@ -683,7 +685,9 @@ class VideoRoomComponent extends Component {
             )}
           {/* <SttChatComponent />
            */}
-          <WebSocketComponent meetingId={meetingId} />
+          {this.state.localUser && (<WebSocketComponent
+          meetingId={meetingId} 
+          muted={!this.state.localUser.isAudioActive()}/>)}
         </div>
       </div>
     );

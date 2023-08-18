@@ -5,12 +5,21 @@ class SttComponent extends React.Component {
     await this.initializeVAD();
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return !this.myvad;
+    if(!this.myvad){
+      return true;
+    }
+    if(nextProps.muted && this.myvad.listening){
+      this.myvad.pause();
+    }
+    if(!nextProps.muted && !this.myvad.listening){
+      this.myvad.start();
+    }
+    return false;
   }
 
   async initializeVAD() {
     try {
-      const myvad = await window.vad.MicVAD.new({
+      this.myvad = await window.vad.MicVAD.new({
         onSpeechStart: () => {
           console.log("speech start");
         },
@@ -20,7 +29,7 @@ class SttComponent extends React.Component {
           this.sendAudio(audioBlob);
         },
       });
-      myvad.start();
+      this.myvad.start();
     } catch (error) {
       console.log(error);
     }
