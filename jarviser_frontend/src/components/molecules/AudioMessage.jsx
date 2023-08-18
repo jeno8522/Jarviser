@@ -38,7 +38,7 @@ const AudioMessage = ({
       <p>Name: {audioMessage.name}</p>
       {audioMessage.isEditing ? (
         <div>
-          <textarea
+          <Textarea
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
           />
@@ -61,4 +61,12 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   color: #f6f4eb;
+`;
+
+const Textarea = styled.textarea`
+  background-color: #4682a9;
+  color: #f6f4eb;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
 `;
