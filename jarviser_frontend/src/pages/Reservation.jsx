@@ -37,7 +37,7 @@ function Reservation({ closeModal }) {
     console.log(headers);
     console.log(sendData);
     try {
-      await axios.post("https://i9a506.p.ssafy.io:8081/reservation", sendData, {
+      await axios.post(window.SERVER_URL+"/reservation", sendData, {
         headers,
       });
 

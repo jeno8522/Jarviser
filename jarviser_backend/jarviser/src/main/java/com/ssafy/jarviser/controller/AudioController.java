@@ -63,7 +63,6 @@ public class AudioController {
                 return new ResponseEntity<>(resultMap, HttpStatus.OK);
             }
             String audioMessageId = audioService.createAudioMessage(userId, mId, startTime, filePath, stt).toString();
-            statisticsService.accumulateTranscript(Long.parseLong(mId),userName+stt);
 
             resultMap.put("type", "stt");
             resultMap.put("sttId", audioMessageId);

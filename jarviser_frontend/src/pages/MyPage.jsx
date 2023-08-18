@@ -36,7 +36,7 @@ function MyPage() {
       };
       reader.readAsDataURL(file);
       axios
-        .post("http://localhost:8081/user/upload", formData, {
+        .post(window.SERVER_URL+"/user/upload", formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",

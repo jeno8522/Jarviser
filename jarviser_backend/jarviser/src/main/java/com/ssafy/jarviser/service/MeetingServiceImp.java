@@ -28,7 +28,7 @@ public class MeetingServiceImp implements MeetingService{
     private final KeywordStatisticsRepository keywordStatisticsRepository;
     private final OpenAIService openAIService;
     private final ParticipantStatisticsRepository participantStatisticsRepository;
-
+    private final ReportRepository reportRepository;
     @Override
     public String createMeeting(Long hostId, String meetingName){
         //미팅 객체 생성
@@ -119,6 +119,13 @@ public class MeetingServiceImp implements MeetingService{
             meeting.addParticipantStatistics(participantStatistic);
             participantStatisticsRepository.save(participantStatistic);
         }
+    }
+
+    @Override
+    public void addReport(long meetingId, Report report) {
+        Meeting meeting = meetingRepository.findMeetingById(meetingId);
+        meeting.addReport(report);
+        reportRepository.save(report);
     }
 
     @Override
@@ -217,17 +224,7 @@ public class MeetingServiceImp implements MeetingService{
         return participantsStaticsDTOList;
     }
 
-    @Override
-    public String createLocalSummary(long meetingId) {
-        List<AudioMessage> allAudioMessage = findAllAudioMessage(meetingId);
-        StringBuilder contents = new StringBuilder();
-        for(AudioMessage audioMessage : allAudioMessage){
-            contents.append(audioMessage.getContent());
-        }
-        String contentsString = contents.toString();
-        Mono<String> stringMono = openAIService.chatGTPSummaryLocal(contentsString);
-        return stringMono.block();
+    public AudioMessageRepository getAudioMessageRepository() {
+        return audioMessageRepository;
     }
-
-
 }

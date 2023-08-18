@@ -20,7 +20,7 @@ function Login() {
     try {
       await new Promise((r) => setTimeout(r, 1000));
       const response = await axios.post(
-        "https://i9a506.p.ssafy.io:8081/user/login",
+        window.SERVER_URL+"/user/login",
         data
       );
       const accessToken = response.data["access-token"];
