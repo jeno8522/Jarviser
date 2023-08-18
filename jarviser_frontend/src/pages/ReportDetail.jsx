@@ -34,7 +34,7 @@ const ReportDetail = () => {
   const getMeetingDetails = async () => {
     try {
       const responseAudioMessage = await axios.get(
-        `http://localhost:8081/meeting/audiomessage/${encryptedKey}`,
+        `${window.SERVER_URL}/meeting/audiomessage/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -42,7 +42,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `http://localhost:8081/meeting/speech/${encryptedKey}`,
+        `${window.SERVER_URL}/meeting/speech/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -50,7 +50,7 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `http://localhost:8081/meeting/keywords/${encryptedKey}`,
+        `${window.SERVER_URL}/meeting/keywords/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -58,7 +58,7 @@ const ReportDetail = () => {
       );
 
       const responseSummary = await axios.get(
-        `http://localhost:8081/meeting/summary/${encryptedKey}`,
+        `${window.SERVER_URL}/meeting/summary/${encryptedKey}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -70,7 +70,7 @@ const ReportDetail = () => {
         try {
           // 현재 수정된 내용을 DB에 업데이트
           const response = await axios.post(
-            "http://localhost:8081/meeting/audiomessage/update",
+            window.SERVER_URL+"/meeting/audiomessage/update",
             {
               audioMessageId: audioMessages[index].audioMessageId,
               content: newContent,
@@ -115,7 +115,7 @@ const ReportDetail = () => {
   const handleSaveClick = async (index, newContent) => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/meeting/audiomessage/update",
+        window.SERVER_URL+"/meeting/audiomessage/update",
         {
           audioMessageId: audioMessages[index].audioMessageId,
           content: newContent,

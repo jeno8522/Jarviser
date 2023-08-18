@@ -27,7 +27,7 @@ function MyReport() {
   async function getMyReport() {
     try {
       const response = await axios.get(
-        "http://localhost:8081" + "/user/meetinglist",
+        window.SERVER_URL+"" + "/user/meetinglist",
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }

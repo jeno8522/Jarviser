@@ -77,7 +77,7 @@ class SttComponent extends React.Component {
   async sendAudio(blob) {
     try {
       let token = localStorage.getItem("access-token");
-      const url = "http://localhost:8081" + "/audio/transcript";
+      const url = window.SERVER_URL+"" + "/audio/transcript";
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("meetingId", this.props.meetingId);

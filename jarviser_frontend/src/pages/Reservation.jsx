@@ -37,7 +37,7 @@ function Reservation({ closeModal }) {
     console.log(headers);
     console.log(sendData);
     try {
-      await axios.post("http://localhost:8081" + "/reservation", sendData, {
+      await axios.post(window.SERVER_URL+"" + "/reservation", sendData, {
         headers,
       });
 

@@ -77,7 +77,7 @@ function startRecording(stream) {
 async function sendAudio(blob) {
   try {
     let token = localStorage.getItem("access-token");
-    const url = "http://localhost:8081" + "/audio/transcript";
+    const url = window.SERVER_URL+"" + "/audio/transcript";
     const formData = new FormData();
     const testID = "fRsFnxwhA7frdnfFMjNPKA=="; //임시로 넣은 testID
     formData.append("file", blob);
