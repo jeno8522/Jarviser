@@ -14,6 +14,8 @@ import styled from "styled-components";
 import Navigation from "../components/molecules/Navigation";
 import MainHeader from "../components/molecules/MainHeader";
 import Reservation from "./Reservation";
+import "animate.css";
+import man from "../logo/man.png";
 function UserMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -60,7 +62,7 @@ function UserMain() {
             </ButtonWithImage>
           </Link>
 
-          <Link to="/mainjoinmeeting" className="no-underline">
+          {/* <Link to="/mainjoinmeeting" className="no-underline">
             <ButtonWithImage>
               <StyledSVGButton>
                 <svg
@@ -81,7 +83,13 @@ function UserMain() {
                 입장하기
               </Button>
             </ButtonWithImage>
-          </Link>
+          </Link> */}
+
+          <MainImage
+            className="animate__animated animate__bounce"
+            src={man}
+            alt="man"
+          />
 
           <ButtonWithImage>
             <StyledSVGButton onClick={openModal}>
@@ -131,7 +139,7 @@ const ButtonFrame = styled.div`
   width: 100%; // 너비를 100%로 설정
   height: auto; // 높이를 자동으로 설정
   align-items: flex-start;
-  gap: 20%; // 버튼 사이의 간격을 퍼센티지로 설정
+  gap: 10%; // 버튼 사이의 간격을 퍼센티지로 설정
   flex-shrink: 0;
 `;
 
@@ -163,6 +171,12 @@ const ButtonWithImage = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px; // SVG 버튼과 일반 버튼 사이의 간격
+`;
+
+const MainImage = styled.img`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StyledSVGButton = styled.button`

@@ -163,11 +163,6 @@ const Whole = styled.div`
   margin-top: 120px;
 `;
 
-const CheckEmailButton = styled.button`
-  margin-top: 10px;
-  background-color: #F6F4EB;
-`;
-
 const ImageLogo = styled.img`
   width: 50%;
   height: 90%;
@@ -217,7 +212,29 @@ const SignupField = styled.input`
   border-radius: 15px;
   outline: none;
   padding-left: 10px;
-  background-color: #F6F4EB;
+  background-color: #f6f4eb;
+`;
+
+const CheckEmailButton = styled.button`
+  width: 40%; // 전체 너비
+  height: 10;
+  border: none; // 테두리 제거
+  border-radius: 4px; // 모서리 둥글게
+  background: #4682a9;
+  color: white; // 글씨색 변경
+  font-size: 12px;
+  cursor: pointer; // 마우스 커서 변경
+  transition: background 0.3s ease; // 효과 추가
+  margin-top: 10px;
+
+  &:hover {
+    background: #91c8e4; // 마우스 오버시 색상 변경
+  }
+
+  &:disabled {
+    background: #4682a9; // 비활성화시 색상 변경
+    cursor: not-allowed; // 마우스 커서 변경
+  }
 `;
 
 const RegisterButton = styled.button`
@@ -226,7 +243,7 @@ const RegisterButton = styled.button`
   padding: 12px;
   border: none; // 테두리 제거
   border-radius: 4px; // 모서리 둥글게
-  background: #4682A9;
+  background: #4682a9;
   color: white; // 글씨색 변경
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -236,11 +253,11 @@ const RegisterButton = styled.button`
   margin-top: 10px;
   margin-left: 45%;
   &:hover {
-    background: #91C8E4; // 마우스 오버시 색상 변경
+    background: #91c8e4; // 마우스 오버시 색상 변경
   }
 
   &:disabled {
-    background: #F6F4EB; // 비활성화시 색상 변경
+    background: #f6f4eb; // 비활성화시 색상 변경
     cursor: not-allowed; // 마우스 커서 변경
   }
 `;
@@ -249,7 +266,7 @@ const SignupHeadLine = styled.div`
   font-family: "Roboto", sans-serif;
   font-size: 24px; // 글자 크기 조정
   font-weight: 500; // 글씨 두껍게
-  color: #4682A9; // 글씨 색상 변경
+  color: #4682a9; // 글씨 색상 변경
   text-align: left; // 왼쪽 정렬
   letter-spacing: -1px; // 글자 간격 조정
   margin-bottom: 0px; // Header와 Form 간격 조정

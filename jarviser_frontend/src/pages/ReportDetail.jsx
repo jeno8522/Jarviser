@@ -30,7 +30,7 @@ const ReportDetail = () => {
     try {
       // 원래는 미팅 이렇게 종료할때 우리의 통계들이 db에 저장됨.
       const meetingEnded = await axios.get(
-        `${window.SERVER_URL}/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `${window.SERVER_URL}/meeting/end/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -38,7 +38,7 @@ const ReportDetail = () => {
       );
 
       const responseAudioMessage = await axios.get(
-        `${window.SERVER_URL}/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `${window.SERVER_URL}/meeting/audiomessage/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -46,7 +46,7 @@ const ReportDetail = () => {
       );
 
       const responseSpeech = await axios.get(
-        `${window.SERVER_URL}/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `${window.SERVER_URL}/meeting/speech/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -54,7 +54,7 @@ const ReportDetail = () => {
       );
 
       const responseKeywords = await axios.get(
-        `${window.SERVER_URL}/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA`,
+        `${window.SERVER_URL}/meeting/keywords/PUNQLHY4EEB3P23WO7CTEM2PFA======`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           data: { meetingId: id },
@@ -259,8 +259,8 @@ const KeywordWrapper = styled.div`
 `;
 
 const DownloadButton = styled.button`
-  background-color: #3742fa;
-  color: white;
+  background-color: #4682A9;
+  color: #F6F4EB;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;

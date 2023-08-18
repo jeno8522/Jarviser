@@ -9,12 +9,12 @@ function MeetingInfo({ date }) {
   const { accessToken } = useAccessToken();
   useEffect(() => {
     Promise.all([
-      axios.get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
+      axios.get(window.SERVER_URL+"/user/meetinglist", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       }),
-      axios.get("https://i9a506.p.ssafy.io:8081/user/meetinglist", {
+      axios.get(window.SERVER_URL+"/reservation", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -88,7 +88,7 @@ const CalendarData = styled.div`
 const MeetingTime = styled.div`
   span {
     font-size: 30px;
-    background-color: #cae1fd;
+    background-color: #91C8E4;
     border-radius: 10px;
     padding: 0 5px; // 배경색이 텍스트를 약간 감싸도록 패딩 추가
   }
