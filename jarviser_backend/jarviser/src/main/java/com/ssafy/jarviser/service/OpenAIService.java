@@ -122,8 +122,14 @@ public class OpenAIService {
 
         assert resultString != null;
         String[] split = resultString.split(", ");
-        return Arrays.asList(split);
 
+        List<String> keywords = new ArrayList<>();
+        for (String s : split){
+            if (s.length() < 20){
+                keywords.add(s);
+            }
+        }
+        return keywords;
     }
 
     public Mono<String> chatGTPSummaryLocal(String contents){
