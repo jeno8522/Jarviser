@@ -8,6 +8,7 @@ import com.ssafy.jarviser.util.AESEncryptionUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -145,6 +146,7 @@ public class MeetingServiceImp implements MeetingService{
 
     //미팅 아이디 기준으로 계산
     @Override
+    @Cacheable(value = "keywordsStatistics", key = "#meetingId")
     public List<KeywordStatistics> caculateKeywordsStatics(long meetingId) {
         Map<String,Integer> keywordCount = new HashMap<>();
         List<KeywordStatistics> keywordStatisticsList = new ArrayList<>();
@@ -183,6 +185,7 @@ public class MeetingServiceImp implements MeetingService{
     }
 
     @Override
+    @Cacheable(value = "participantsStatistics", key = "#meetingId")
     public List<ParticipantStatistics> caculateParticipantsStatics(long meetingId) {
         Map<Long,Integer> IdMap = new HashMap<>(); // 아이디 값 기준으로 총 발화된 Map
         List<ParticipantStatistics> participantsStaticsDTOList = new ArrayList<>();
